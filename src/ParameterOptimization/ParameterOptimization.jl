@@ -1,7 +1,7 @@
 """
-    Optimization
+    ParameterOptimization
 
-The `Optimization` module provides tools for optimizing SINDBAD models, including parameter estimation, model calibration, and cost function evaluation. It integrates various optimization algorithms and utilities to streamline the optimization workflow for SINDBAD experiments.
+The `ParameterOptimization` module provides tools for optimizing SINDBAD models, including parameter estimation, model calibration, and cost function evaluation. It integrates various optimization algorithms and utilities to streamline the optimization workflow for SINDBAD experiments.
 
 # Purpose:
 This module is designed to support optimization tasks in SINDBAD, such as calibrating model parameters to match observations or minimizing cost functions. It leverages multiple optimization libraries and provides a unified interface for running optimization routines.
@@ -20,7 +20,7 @@ This module is designed to support optimization tasks in SINDBAD, such as calibr
 - `GlobalSensitivity`: Sobol/variance-based sensitivity tooling for pre/post analysis.
 - `SindbadTEM` and `SindbadTEM.Utils`: Core TEM types and helper utilities.
 - `SindbadTEM.Metrics`: Metric/cost definitions referenced during optimization.
-- `Sindbad.SetupSimulation` / `Sindbad.Simulation`: Provide the experiment `info` and runtime hooks the optimizers call.
+- `Sindbad.Setup` / `Sindbad.Simulation`: Provide the experiment `info` and runtime hooks the optimizers call.
 
 # Included Files:
 1. **`prepOpti.jl`**:
@@ -56,11 +56,11 @@ runExperimentOpti(experiment_config)
 ```
 2. **Running a CMA-ES optimization**:
 ```julia
-using Sindbad.Optimization
+using Sindbad.ParameterOptimization
 optimized_params = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, CMAEvolutionStrategyCMAES())
 ```
 """
-module Optimization
+module ParameterOptimization
 
    using CMAEvolutionStrategy: minimize, xbest
    # using BayesOpt: ConfigParameters, set_kernel!, bayes_optimization, SC_MAP
@@ -81,7 +81,7 @@ module Optimization
    using SindbadTEM
    using SindbadTEM.Utils
    using SindbadTEM.Metrics
-   using ..SetupSimulation
+   using ..Setup
    # using ..Simulation
 
    include("prepOpti.jl")
@@ -90,4 +90,4 @@ module Optimization
    include("optimizeTEM.jl")
    include("sensitivityAnalysis.jl")
 
-end # module Optimization
+end # module ParameterOptimization

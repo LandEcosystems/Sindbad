@@ -1,8 +1,8 @@
 
 """
-   SetupSimulation
+   Setup
 
-The `SetupSimulation` module provides tools for setting up and configuring SINDBAD experiments and runs. It handles the creation of experiment configurations, model structures, parameters, and output setups, ensuring a streamlined workflow for SINDBAD simulations.
+The `Setup` module provides tools for setting up and configuring SINDBAD experiments and runs. It handles the creation of experiment configurations, model structures, parameters, and output setups, ensuring a streamlined workflow for SINDBAD simulations.
 
 # Purpose:
 This module is designed to produce the SINDBAD `info` object, which contains all the necessary configurations and metadata for running SINDBAD experiments. It facilitates reading configurations, building model structures, and preparing outputs.
@@ -54,11 +54,11 @@ This module is designed to produce the SINDBAD `info` object, which contains all
     - Final assembly step that integrates all previous pieces into the `info` object exported to simulations.
 
 # Notes:
-- The package re-exports several key packages (`Infiltrator`, `CSV`, `JLD2`) for convenience, allowing users to access their functionality directly through `SetupSimulation`.
+- The package re-exports several key packages (`Infiltrator`, `CSV`, `JLD2`) for convenience, allowing users to access their functionality directly through `Setup`.
 - Designed to be modular and extensible, enabling users to customize and expand the setup process for specific use cases.
 
 """
-module SetupSimulation
+module Setup
 
    using SindbadTEM
    using SindbadTEM.Utils
@@ -92,4 +92,4 @@ module SetupSimulation
    end
    include(ds_file)
 
-end # module SetupSimulation
+end # module Setup

@@ -445,7 +445,7 @@ function setupInfo(info::NamedTuple)
     info = (; info..., temp=(; info.temp..., helpers=(; info.temp.helpers..., land_init=land_init)))
 
     if (info.settings.experiment.flags.run_optimization || info.settings.experiment.flags.calc_cost) && hasproperty(info.settings.optimization, :algorithm_optimization)
-        # @info "  setupInfo: setting Optimization and Observation info..."
+        # @info "  setupInfo: setting ParameterOptimization and Observation info..."
         info = setOptimization(info)
     else
         parameter_table = info.temp.models.parameter_table

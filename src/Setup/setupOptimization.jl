@@ -314,7 +314,7 @@ function setAlgorithmOptions(info, which_algorithm)
             algo_method = GSAMorris()
         end
     end
-    default_opt = sindbadDefaultOptions(getproperty(SetupSimulation, nameof(typeof(algo_method)))())
+    default_opt = sindbadDefaultOptions(getproperty(Setup, nameof(typeof(algo_method)))())
     merged_options = mergeNamedTuple(default_opt, algo_options)
     tmp_algorithm = setTupleField(tmp_algorithm, (:method, algo_method))
     tmp_algorithm = setTupleField(tmp_algorithm, (:options, merged_options))
@@ -339,7 +339,7 @@ Sets up optimization-related fields in the experiment configuration.
 - Validates the parameters to be optimized against the model structure.
 """
 function setOptimization(info::NamedTuple)
-    showInfo(setOptimization, @__FILE__, @__LINE__, "setting Optimization and Observation Info...")
+    showInfo(setOptimization, @__FILE__, @__LINE__, "setting ParameterOptimization and Observation Info...")
     info = setTupleField(info, (:optimization, (;)))
 
     # set information related to cost metrics for each variable
