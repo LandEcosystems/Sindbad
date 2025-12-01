@@ -1,15 +1,15 @@
 export trainML
 
 """
-    trainML(hybrid_helpers, ::MLTrainingType)
+    trainML(hybrid_helpers, ::MachineLearningTrainingType)
 
 Train a machine learning (ML) or hybrid model in SINDBAD using the specified training method.
 
-This function performs the training loop for the ML model, handling batching, gradient computation, optimizer updates, loss calculation, and checkpointing. It supports hybrid modeling workflows where ML-derived parameters are used in process-based models, and is designed to work with the data structures prepared by `prepHybrid`.
+This function performs the training loop for theMachine Learningmodel, handling batching, gradient computation, optimizer updates, loss calculation, and checkpointing. It supports hybrid modeling workflows where ML-derived parameters are used in process-based models, and is designed to work with the data structures prepared by `prepHybrid`.
 
 # Arguments
-- `hybrid_helpers`: NamedTuple containing all prepared data, models, loss functions, indices, features, optimizers, and arrays needed for ML training and evaluation (as returned by `prepHybrid`).
-- `::MLTrainingType`: Type specifying the ML training method to use (e.g., `MixedGradient`).
+- `hybrid_helpers`: NamedTuple containing all prepared data, models, loss functions, indices, features, optimizers, and arrays needed forMachine Learningtraining and evaluation (as returned by `prepHybrid`).
+- `::MachineLearningTrainingType`: Type specifying theMachine Learningtraining method to use (e.g., `MixedGradient`).
 
 # Workflow
 - Iterates over epochs and batches of training sites.
@@ -23,8 +23,8 @@ This function performs the training loop for the ML model, handling batching, gr
     - Saves model checkpoints and loss arrays to disk if a checkpoint path is specified.
 
 # Notes
-- The function is extensible to support different training strategies via dispatch on `MLTrainingType`.
-- Designed for use with hybrid modeling, where ML models provide parameters to process-based models.
+- The function is extensible to support different training strategies via dispatch on `MachineLearningTrainingType`.
+- Designed for use with hybrid modeling, whereMachine Learningmodels provide parameters to process-based models.
 - Checkpointing enables resuming or analyzing training progress.
 
 # Example

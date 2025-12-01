@@ -2,16 +2,16 @@
 export mlModel
 
 """
-    mlModel(info, n_features, ::MLModelType)
+    mlModel(info, n_features, ::MachineLearningModelType)
 Builds a Flux dense neural network model.
 This function initializes a neural network model based on the provided `info` and `n_features`.
 
 # Arguments
 - `info`: The experiment information containing model options and parameters.
 - `n_features`: The number of features in the input data.
-- `::MLModelType`: Type dispatch for the machine learning model type.
+- `::MachineLearningModelType`: Type dispatch for the machine learning model type.
 
-# Supported MLModelType:
+# Supported MachineLearningModelType:
 - `::FluxDenseNN`: A simple dense neural network model implemented in Flux.jl.
 
 # Returns

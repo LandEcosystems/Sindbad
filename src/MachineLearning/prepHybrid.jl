@@ -166,7 +166,7 @@ function getLossFunctionHandles(info, run_helpers, sites)
 end
 
 """
-    prepHybrid(forcing, observations, info, ::MLTrainingType)
+    prepHybrid(forcing, observations, info, ::MachineLearningTrainingType)
 
 Prepare all data structures, loss functions, and machine learning components required for hybrid (process-based + machine learning) modeling in SINDBAD.
 
@@ -177,17 +177,17 @@ This function orchestrates the setup for hybrid modeling by:
 - Loading covariate features for all sites.
 - Building the machine learning model as specified in the configuration.
 - Preparing arrays for storing losses and loss components during training and evaluation.
-- Initializing the optimizer for ML training.
+- Initializing the optimizer forMachine Learningtraining.
 - Collecting all relevant metadata and configuration into a single `hybrid_helpers` NamedTuple for downstream training routines.
 
 # Arguments
 - `forcing`: Forcing data structure as required by the process-based model.
 - `observations`: Observational data structure.
 - `info`: The SINDBAD experiment info structure, containing all configuration and runtime options.
-- `::MLTrainingType`: Type specifying the ML training method to use (e.g., `MixedGradient`).
+- `::MachineLearningTrainingType`: Type specifying theMachine Learningtraining method to use (e.g., `MixedGradient`).
 
 # Returns
-- `hybrid_helpers`: A NamedTuple containing all prepared data, models, loss functions, indices, features, optimizers, and arrays needed for hybrid ML training and evaluation.
+- `hybrid_helpers`: A NamedTuple containing all prepared data, models, loss functions, indices, features, optimizers, and arrays needed for hybridMachine Learningtraining and evaluation.
 
 ## Fields of `hybrid_helpers`
 - `run_helpers`: Output of `prepTEM`, containing prepared model, forcing, observation, and output structures.
@@ -200,7 +200,7 @@ This function orchestrates the setup for hybrid modeling by:
 - `parameter_table`: Parameter table from `info.optimization`.
 - `loss_functions`: KeyedArray of callable loss functions, one per site.
 - `loss_component_functions`: KeyedArray of callable loss component functions, one per site.
-- `training_optimizer`: The optimizer object for ML training.
+- `training_optimizer`: The optimizer object forMachine Learningtraining.
 - `loss_array`: NamedTuple of arrays to store scalar losses for training, validation, and testing.
 - `loss_array_components`: NamedTuple of arrays to store loss components for training, validation, and testing.
 - `metadata_global`: Global metadata from the output configuration.
@@ -215,11 +215,11 @@ hybrid_helpers = prepHybrid(forcing, observations, info, MixedGradient())
 trainML(hybrid_helpers, MixedGradient())
 ```
 """
-function prepHybrid(forcing, observations, info, ::MLTrainingType)
+function prepHybrid(forcing, observations, info, ::MachineLearningTrainingType)
 
     run_helpers = prepTEM(info.models.forward, forcing, observations, info)
     sites_forcing = forcing.data[1].site;
-    showInfo(prepHybrid, @__FILE__, @__LINE__, "preparing hybrid ML helpers for $(length(sites_forcing)) sites", n_f=2)
+    showInfo(prepHybrid, @__FILE__, @__LINE__, "preparing hybridMachine Learninghelpers for $(length(sites_forcing)) sites", n_f=2)
     showInfo(nothing, @__FILE__, @__LINE__, "Building loss function handles for every site", n_m=4)
     loss_functions, loss_component_functions = getLossFunctionHandles(info, run_helpers, sites_forcing)
 
@@ -242,7 +242,7 @@ function prepHybrid(forcing, observations, info, ::MLTrainingType)
 
     ## get covariates
 
-    showInfo(prepHybrid, @__FILE__, @__LINE__, "Loading covariates for hybrid ML model", n_f=2)
+    showInfo(prepHybrid, @__FILE__, @__LINE__, "Loading covariates for hybridMachine Learningmodel", n_f=2)
     showInfo(nothing, @__FILE__, @__LINE__, "variables: $(info.hybrid.covariates.variables)", n_m=4)
     showInfo(nothing, @__FILE__, @__LINE__, "path: $(info.hybrid.covariates.path)", n_m=4)
     xfeatures = loadCovariates(sites_forcing; kind=info.hybrid.covariates.variables, cube_path=info.hybrid.covariates.path)
@@ -252,7 +252,7 @@ function prepHybrid(forcing, observations, info, ::MLTrainingType)
     features = (; n_features=n_features, data=xfeatures)
 
 
-    ## build ML model and get init predictions
+    ## buildMachine Learningmodel and get init predictions
     showInfo(prepHybrid, @__FILE__, @__LINE__, "Preparing machine learning model", n_f=2)
     ml_model = mlModel(info, n_features, info.hybrid.ml_model.method)
 

@@ -123,7 +123,7 @@ This function dispatches on the type of `grads_lib` to select the appropriate di
 
 # Notes
 - On Apple M1 systems, `PolyesterForwardDiffGrad` falls back to single-threaded `ForwardDiff` due to closure issues.
-- The function is used internally for both site-level and batch-level gradient computation in hybrid ML training.
+- The function is used internally for both site-level and batch-level gradient computation in hybridMachine Learningtraining.
 
 # Example
 ```julia
@@ -192,7 +192,7 @@ This function computes the gradients of the loss function with respect to model 
 # Arguments
 - `grads_lib`: Gradient computation library or method. Supported types include:
     - `PolyesterForwardDiffGrad`: Uses `PolyesterForwardDiff.jl` for multi-threaded chunked gradients.
-    - Other `MLGradType` subtypes: Use their respective backend.
+    - Other `MachineLearningGradType` subtypes: Use their respective backend.
 - `grads_batch`: Pre-allocated array for storing batched gradients (size: n_parameters × n_samples).
 - `chunk_size`: (Optional) Chunk size for threaded gradient computation (used by `PolyesterForwardDiffGrad`).
 - `gradient_options`: (Optional) NamedTuple of gradient options (e.g., chunk size).
@@ -244,7 +244,7 @@ function gradientBatch!(grads_lib::PolyesterForwardDiffGrad, dx_batch, gradient_
     end
 end
 
-function gradientBatch!(grads_lib::MLGradType, grads_batch, gradient_options::NamedTuple, loss_functions, scaled_params_batch, sites_batch; showprog=false)
+function gradientBatch!(grads_lib::MachineLearningGradType, grads_batch, gradient_options::NamedTuple, loss_functions, scaled_params_batch, sites_batch; showprog=false)
     # Threads.@spawn allows dynamic scheduling instead of static scheduling
     # of Threads.@threads macro.
     # See <https://github.com/JuliaLang/julia/issues/21017>
