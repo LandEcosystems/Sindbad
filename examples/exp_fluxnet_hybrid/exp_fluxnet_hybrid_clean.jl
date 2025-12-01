@@ -1,6 +1,6 @@
 using Utils
 using Sindbad
-using Sindbad.SetupSimulation
+using Sindbad.Setup
 using Sindbad.DataLoaders
 using Sindbad.DataLoaders.DimensionalData
 using Sindbad.DataLoaders.AxisKeys
@@ -9,7 +9,7 @@ using Sindbad.DataLoaders.YAXArrays
 using Sindbad.MachineLearning
 using Sindbad.MachineLearning.JLD2
 using ProgressMeter
-# using Sindbad.Optimization
+# using Sindbad.ParameterOptimization
 using Sindbad.MachineLearning.Zygote
 # import AbstractDifferentiation as AD, Zygote
 
@@ -99,7 +99,7 @@ xfeatures = loadCovariates(sites_forcing; kind="all", cube_path=path_covariates)
 nor_names_order = xfeatures.features;
 n_features = length(nor_names_order)
 
-## Build ML method
+## BuildMachine Learningmethod
 n_params = sum(tbl_params.is_ml);
 nlayers = 3 # Base.parse(Int, ARGS[2])
 n_neurons = 32 # Base.parse(Int, ARGS[3])

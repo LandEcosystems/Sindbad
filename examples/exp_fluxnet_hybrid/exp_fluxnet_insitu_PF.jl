@@ -1,5 +1,5 @@
 using Sindbad
-using Sindbad.SetupSimulation
+using Sindbad.Setup
 using Utils
 using Sindbad.DataLoaders
 using Sindbad.DataLoaders.DimensionalData
@@ -8,7 +8,7 @@ using Sindbad.DataLoaders.YAXArrays
 using Sindbad
 using Sindbad.MachineLearning
 using Sindbad.MachineLearning.JLD2
-using Sindbad.Optimization
+using Sindbad.ParameterOptimization
 using SindbadTEM.Metrics
 using ProgressMeter
 
@@ -120,9 +120,9 @@ upper_bounds = tbl_params.upper
 # and compare output and performance
 # use: (go for parallel/threaded approaches)
 
-# using Sindbad.Optimization.CMAEvolutionStrategy
+# using Sindbad.ParameterOptimization.CMAEvolutionStrategy
 
-results = Sindbad.Optimization.minimize(cost_function,
+results = Sindbad.ParameterOptimization.minimize(cost_function,
     default_values,
     1;
     lower=lower_bounds,
@@ -131,7 +131,7 @@ results = Sindbad.Optimization.minimize(cost_function,
     multi_threading=true,
 )
 
-optim_para = Sindbad.Optimization.xbest(results)
+optim_para = Sindbad.ParameterOptimization.xbest(results)
 
 # ? https://github.com/AStupidBear/GCMAES.jl
 
@@ -145,7 +145,7 @@ maxiter = 5
 xmin, fmin, status = GCMAES.minimize(cost_function, x0, σ0, lo, hi, maxiter=maxiter)
 
 # ? now speedup convergence with some gradient information
-using Sindbad.Optimization.ForwardDiff
+using Sindbad.ParameterOptimization.ForwardDiff
 ∇loss(x) = ForwardDiff.gradient(cost_functionFD, x)
 
 xmin, fmin, status = GCMAES.minimize((cost_functionFD, ∇loss), x0, σ0, lo, hi, maxiter=100);

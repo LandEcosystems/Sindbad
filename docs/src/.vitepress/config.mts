@@ -17,7 +17,7 @@ const settingsItems = [
   { text: 'Experiments', link: '/pages/settings/experiment' },
   { text: 'Forcing', link: '/pages/settings/forcing' },
   { text: 'Models', link: '/pages/settings/model_structure' },
-  { text: 'Optimization', link: '/pages/settings/optimization' },
+  { text: 'ParameterOptimization', link: '/pages/settings/optimization' },
   { text: 'Parameters', link: '/pages/settings/parameters' },
 ]
 
@@ -30,8 +30,8 @@ const codeItems = [
   { text: ' \u00A0\u00A0++ Utils', link: '/pages/code/utils' },
   { text: ' + DataLoaders', link: '/pages/code/data' },
   { text: ' + MachineLearning', link: '/pages/code/ml' },
-  { text: ' + Optimization', link: '/pages/code/optimization' },
-  { text: ' + SetupSimulation', link: '/pages/code/setup' },
+  { text: ' + ParameterOptimization', link: '/pages/code/optimization' },
+  { text: ' + Setup', link: '/pages/code/setup' },
   { text: ' + Simulation', link: '/pages/code/simulation' },
   { text: ' + Visualization', link: '/pages/code/visuals' }
 ]
@@ -44,8 +44,8 @@ const codeGenItems = [
   { text: ' + Metrics', link: '/pages/code_gen/SindbadMetrics' },
   { text: ' + ML', link: '/pages/code_gen/MachineLearning' },
   { text: ' + Models', link: '/pages/code_gen/SindbadModels' },
-  { text: ' + Optimization', link: '/pages/code_gen/Sindbad.Optimization' },
-  { text: ' + Setup', link: '/pages/code_gen/SetupSimulation' },
+  { text: ' + ParameterOptimization', link: '/pages/code_gen/Sindbad.ParameterOptimization' },
+  { text: ' + Setup', link: '/pages/code_gen/Setup' },
   { text: ' + TEM', link: '/pages/code_gen/SindbadTEM' },
   { text: ' + Utils', link: '/pages/code_gen/Utils' },
   // { text: ' + Visuals', link: '/pages/code_gen/Visualization' }
@@ -70,7 +70,7 @@ const manualItems = [
   { text: 'Experiment Outputs', link: '/pages/develop/sindbad_outputs' },
   { text: 'Spinup', link: '/pages/develop/spinup' },
   { text: 'Hybrid ML', link: '/pages/develop/hybrid_modeling' },
-  { text: 'Optimization Methods', link: '/pages/develop/optimization_method' },
+  { text: 'ParameterOptimization Methods', link: '/pages/develop/optimization_method' },
   { text: 'Cost Metrics', link: '/pages/develop/cost_metrics' },
   { text: 'Cost Function', link: '/pages/develop/cost_function' },
   { text: 'Documentation', link: '/pages/develop/how_to_doc' },

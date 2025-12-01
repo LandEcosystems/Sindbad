@@ -1,8 +1,8 @@
-# Optimization Configuration
+# ParameterOptimization Configuration
 
 The `optimization.json` file configures parameter optimization settings, including the optimization algorithm, target parameters, observational constraints, and cost calculation methods.
 
-## Optimization Algorithm
+## ParameterOptimization Algorithm
 
 The `algorithm_optimization` field specifies the optimization scheme, which can be either:
 - A direct algorithm name
@@ -30,7 +30,7 @@ The algorithm configuration file specifies detailed optimization settings:
 == Explanation
 ```json
 {
-    "method": "Optimization method name",
+    "method": "ParameterOptimization method name",
     "options": {
         "maxfevals": "Maximum function evaluations",
         "multi_threading": "Enable multi-threading support"
@@ -61,12 +61,12 @@ The algorithm configuration file specifies detailed optimization settings:
 ::: tip Available Methods
 To list all implemented optimization methods:
 ```julia
-using Sindbad.Optimization
-showMethodsOf(OptimizationMethod)
+using Sindbad.ParameterOptimization
+showMethodsOf(ParameterOptimizationMethod)
 ```
 :::
 
-## Optimization Parameters
+## ParameterOptimization Parameters
 
 This section defines default parameter properties and lists parameters to optimize.
 
@@ -118,7 +118,7 @@ Parameters follow the convention: `${approach},${parameter_name}`
 
 :::
 
-## Optimization Objective
+## ParameterOptimization Objective
 
 This section configures observational constraints and cost combination methods.
 

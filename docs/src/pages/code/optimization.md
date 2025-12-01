@@ -1,19 +1,19 @@
 ```@docs
-Optimization
+ParameterOptimization
 ```
 
 ## Exported
 ```@meta
 
 DocTestSetup= quote
-using Sindbad.Optimization
+using Sindbad.ParameterOptimization
 end
 ```
 
 ```@autodocs
-Modules = [Optimization]
+Modules = [ParameterOptimization]
 Private = false
-Filter = f -> !(f === Optimization)
+Filter = f -> !(f === ParameterOptimization)
 ```
 
 ## Internal
@@ -21,11 +21,11 @@ Filter = f -> !(f === Optimization)
 CollapsedDocStrings = false
 
 DocTestSetup= quote
-using Optimization
+using ParameterOptimization
 end
 ```
 
 ```@autodocs
-Modules = [Optimization]
+Modules = [ParameterOptimization]
 Public = false
 ```

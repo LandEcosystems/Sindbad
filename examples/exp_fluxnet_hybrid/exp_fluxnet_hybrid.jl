@@ -6,7 +6,7 @@ using Sindbad
 using Sindbad.MachineLearning
 using Sindbad.MachineLearning.JLD2
 using ProgressMeter
-using Sindbad.Optimization
+using Sindbad.ParameterOptimization
 include("load_covariates.jl")
 
 # load folds # $nfold $nlayer $neuron $batchsize

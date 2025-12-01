@@ -5,7 +5,7 @@ using Sindbad.DataLoaders.YAXArrays
 using Sindbad
 using Sindbad.MachineLearning
 using Sindbad.MachineLearning.JLD2
-using Sindbad.Optimization
+using Sindbad.ParameterOptimization
 using ProgressMeter
 
 experiment_json = "../exp_fluxnet_hybrid/settings_fluxnet_hybrid/experiment.json"
@@ -121,7 +121,7 @@ optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds
 # and compare output and performance
 # use: (go for parallel/threaded approaches)
 
-using Sindbad.Optimization.CMAEvolutionStrategy
+using Sindbad.ParameterOptimization.CMAEvolutionStrategy
 
 results = minimize(cost_function,
     default_values,
@@ -136,7 +136,7 @@ optim_para = xbest(results)
 
 # ? https://github.com/AStupidBear/GCMAES.jl
 
-using Sindbad.Optimization.GCMAES
+using Sindbad.ParameterOptimization.GCMAES
 x0 = default_values
 σ0 = 0.2
 lo = lower_bounds

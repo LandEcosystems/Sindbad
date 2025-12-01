@@ -178,7 +178,7 @@ Retrieves the default configuration options for optimization or sensitivity anal
 
 **Arguments**
 - `::MethodType`: The method type for which default options are requested. Supported types:
-  - `OptimizationMethod`: General optimization methods
+  - `ParameterOptimizationMethod`: General optimization methods
   - `GSAMethod`: General global sensitivity analysis methods
   - `GSAMorris`: Morris method for global sensitivity analysis
   - `GSASobol`: Sobol method for global sensitivity analysis

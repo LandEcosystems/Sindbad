@@ -188,7 +188,7 @@ y_real = y
 dist_arr = []
 predicted_vmax = []
 loss_arr = []
-# Optimization
+# ParameterOptimization
 st_opt = Optimisers.setup(Optimisers.ADAM(0.01), ps_NN)
 for i ∈ 1:300
     global st_opt, ps_NN

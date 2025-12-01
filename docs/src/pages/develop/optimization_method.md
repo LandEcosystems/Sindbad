@@ -1,4 +1,4 @@
-# Optimization Methods in SINDBAD
+# ParameterOptimization Methods in SINDBAD
 
 This documentation provides a comprehensive overview of optimization methods in SINDBAD, including available methods, configuration settings, and how to implement new ones.
 
@@ -8,7 +8,7 @@ SINDBAD uses a type-based dispatch system for optimization methods, allowing for
 
 ## Configuration
 
-Optimization settings are defined in the `optimization.json` file:
+ParameterOptimization settings are defined in the `optimization.json` file:
 
 ```json
 {
@@ -39,7 +39,7 @@ Key components:
 - `observational_constraints`: Variables to be used as constraints
 - `observations`: Cost metric and weight settings
 
-### Algorithm Optimization Configuration
+### Algorithm ParameterOptimization Configuration
 
 The `algorithm_optimization` field can be specified in two ways:
 
@@ -74,14 +74,14 @@ Using a JSON file for `algorithm_optimization` allows for:
 
 :::
 
-## Available Optimization Methods
+## Available ParameterOptimization Methods
 
 :::tip
 
 To list all available optimization methods and their purposes, use:
 ```julia
 using Sindbad.Simulation
-showMethodsOf(OptimizationMethod)
+showMethodsOf(ParameterOptimizationMethod)
 ```
 This will display a formatted list of all optimization methods and their descriptions.
 
@@ -111,8 +111,8 @@ These default options can be used as a starting point for customizing optimizati
 
 Current methods include:
 
-### Bayesian Optimization
-- `BayesOptKMaternARD5`: Bayesian Optimization using Matern 5/2 kernel with Automatic Relevance Determination from BayesOpt.jl
+### Bayesian ParameterOptimization
+- `BayesOptKMaternARD5`: Bayesian ParameterOptimization using Matern 5/2 kernel with Automatic Relevance Determination from BayesOpt.jl
 
 ### Evolution Strategies
 - `CMAEvolutionStrategyCMAES`: Covariance Matrix Adaptation Evolution Strategy (CMA-ES) from CMAEvolutionStrategy.jl
@@ -121,32 +121,32 @@ Current methods include:
 ### Gradient-based Methods
 - `OptimLBFGS`: Limited-memory BFGS method from Optim.jl
 - `OptimBFGS`: BFGS method from Optim.jl
-- `OptimizationBFGS`: BFGS method from Optimization.jl
-- `OptimizationFminboxGradientDescent`: Fminbox Gradient Descent method from Optimization.jl
-- `OptimizationFminboxGradientDescentFD`: Fminbox Gradient Descent with forward differentiation from Optimization.jl
+- `OptimizationBFGS`: BFGS method from ParameterOptimization.jl
+- `OptimizationFminboxGradientDescent`: Fminbox Gradient Descent method from ParameterOptimization.jl
+- `OptimizationFminboxGradientDescentFD`: Fminbox Gradient Descent with forward differentiation from ParameterOptimization.jl
 
-### Black Box Optimization
-- `OptimizationBBOadaptive`: Black Box Optimization (adaptive) method from Optimization.jl
-- `OptimizationBBOxnes`: Black Box Optimization (xNES) method from Optimization.jl
+### Black Box ParameterOptimization
+- `OptimizationBBOadaptive`: Black Box ParameterOptimization (adaptive) method from ParameterOptimization.jl
+- `OptimizationBBOxnes`: Black Box ParameterOptimization (xNES) method from ParameterOptimization.jl
 
 ### Other Methods
-- `OptimizationGCMAESDef`: GCMAES method from Optimization.jl
-- `OptimizationGCMAESFD`: GCMAES method with forward differentiation from Optimization.jl
-- `OptimizationMultistartOptimization`: Multistart Optimization method from Optimization.jl
-- `OptimizationNelderMead`: Nelder-Mead method from Optimization.jl
-- `OptimizationQuadDirect`: QuadDIRECT method from Optimization.jl
+- `OptimizationGCMAESDef`: GCMAES method from ParameterOptimization.jl
+- `OptimizationGCMAESFD`: GCMAES method with forward differentiation from ParameterOptimization.jl
+- `OptimizationMultistartOptimization`: Multistart ParameterOptimization method from ParameterOptimization.jl
+- `OptimizationNelderMead`: Nelder-Mead method from ParameterOptimization.jl
+- `OptimizationQuadDirect`: QuadDIRECT method from ParameterOptimization.jl
 
-## Adding a New Optimization Method
+## Adding a New ParameterOptimization Method
 
-### 1. Define the New Optimization Method Type
+### 1. Define the New ParameterOptimization Method Type
 
-In `src/Types/OptimizationTypes.jl`, add a new struct that subtypes `OptimizationMethod`:
+In `src/Types/ParameterOptimizationTypes.jl`, add a new struct that subtypes `ParameterOptimizationMethod`:
 
 ```julia
 import Utils: purpose
 
 # Define the new optimization type
-struct YourNewOptimizationMethod <: OptimizationMethod end
+struct YourNewOptimizationMethod <: ParameterOptimizationMethod end
 
 # Define its purpose
 purpose(::Type{YourNewOptimizationMethod}) = "Description of what YourNewOptimizationMethod does"
@@ -156,7 +156,7 @@ purpose(::Type{YourNewOptimizationMethod}) = "Description of what YourNewOptimiz
 
 When naming new optimization types that use external packages, follow the convention `PackageNameMethodName`. For example:
 - `CMAEvolutionStrategyCMAES` for the CMA-ES method from CMAEvolutionStrategy.jl
-- `OptimizationBFGS` for the BFGS method from Optimization.jl
+- `OptimizationBFGS` for the BFGS method from ParameterOptimization.jl
 - `BayesOptKMaternARD5` for the Matern 5/2 kernel method from BayesOpt.jl
 
 This convention helps identify both the package and the specific method being used.
@@ -199,7 +199,7 @@ When setting default options:
 
 :::
 
-### 3. Implement the Optimization Function
+### 3. Implement the ParameterOptimization Function
 
 In `optimizer.jl`, implement your optimization function with the following signature:
 
@@ -293,7 +293,7 @@ After implementing your new optimization method:
    - Configure appropriate stopping criteria
    - Adjust population sizes if needed
 
-3. **Performance Optimization**
+3. **Performance ParameterOptimization**
    - Implement efficient data structures
    - Consider parallelization
    - Optimize memory usage

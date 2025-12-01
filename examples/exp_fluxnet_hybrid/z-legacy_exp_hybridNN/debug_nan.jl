@@ -2,7 +2,7 @@ using Revise
 using Sindbad.DataLoaders
 using Sindbad.Simulation
 using SindbadTEM.Metrics
-using Sindbad.Optimization
+using Sindbad.ParameterOptimization
 #using Plots
 toggleStackTraceNT()
 experiment_json = "../exp_hack_gradient/settings_gradient/experiment.json"

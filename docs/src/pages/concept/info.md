@@ -13,7 +13,7 @@ The `info` variable name is strictly reserved within SINDBAD and plays a critica
 The `info` structure acts as the central nervous system of a SINDBAD experiment, containing all necessary information for:
 - Data ingestion and processing
 - Model initialization and execution
-- Optimization configuration
+- ParameterOptimization configuration
 - Output generation and analysis
 
 ## Structure Overview
@@ -49,9 +49,9 @@ Intermediary helper objects necessary for model run and type stability
 - numbers for selected `type` and numerical or mass-balance tolerance
 - runtime options and information of experiment
 
-### 6. Optimization Settings (`optimization`)
+### 6. ParameterOptimization Settings (`optimization`)
 Available when parameter estimation or model cost calculation is enabled:
-- Optimization algorithm settings (`optimizer`)
+- ParameterOptimization algorithm settings (`optimizer`)
 - Sensitivity analysis settings, when needed/set in `optimization.json` (`sensitivity_analysis`)
 - Cost function configuration (`cost_options`)
 - Parameter table with optimization parameters and their information
@@ -66,16 +66,16 @@ The `hybrid` field in the `info` structure contains all configuration and runtim
 - `ml_model`: Settings for the machine learning model (e.g., architecture, activation functions, number of layers/neurons, random seed).
 - `ml_training`: Training configuration, such as method, batch size, number of epochs, loss function, data split ratios, and fold information for cross-validation.
 - `ml_gradient`: Gradient computation method and options (e.g., which AD or finite difference library to use, chunk size).
-- `ml_optimizer`: Optimizer settings for training the ML model (e.g., optimizer type, learning rate, momentum parameters).
-- `covariates`: Information about covariate data used as ML features (e.g., file path, variables to use).
+- `ml_optimizer`: Optimizer settings for training theMachine Learningmodel (e.g., optimizer type, learning rate, momentum parameters).
+- `covariates`: Information about covariate data used asMachine Learningfeatures (e.g., file path, variables to use).
 - `replace_value_for_gradient`: Value to use for missing or masked data during gradient computation.
 - `save_checkpoint`: Boolean flag indicating whether to save model checkpoints during training.
-- `random_seed`: Seed for reproducibility of ML training and data splits.
+- `random_seed`: Seed for reproducibility ofMachine Learningtraining and data splits.
 
 This field is automatically populated by the SINDBAD preprocessor based on the relevant sections of your experiment's JSON configuration files (such as `parameter_learning.json` in example for hybrid modeling).
 
 Example usage:
-- Access ML model settings: `info.hybrid.ml_model`
+- AccessMachine Learningmodel settings: `info.hybrid.ml_model`
 - Get training options: `info.hybrid.ml_training.options`
 - Retrieve optimizer configuration: `info.hybrid.ml_optimizer.options`
 - Access covariate file path: `info.hybrid.covariates.path`

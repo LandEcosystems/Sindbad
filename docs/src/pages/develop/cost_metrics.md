@@ -158,7 +158,7 @@ mse = metric(y, yσ, ŷ, MSE())
 correlation = metric(y, yσ, ŷ, Pcor())
 ```
 
-### Using Multiple Metrics in Optimization
+### Using Multiple Metrics in ParameterOptimization
 
 ```julia
 # Define cost options for multiple variables

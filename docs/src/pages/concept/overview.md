@@ -30,7 +30,7 @@ The SINDBAD workflow consists of the following key steps:
 
 2. **Data Processing**
    - Load [forcing](../settings/forcing.md) and [observation](../settings/optimization.md) data using [DataLoaders](../code/data.md)
-   - Prepare model initial setups using [SetupSimulation](../code/setup.md)
+   - Prepare model initial setups using [Setup](../code/setup.md)
    - Configure [optimization settings](../settings/optimization.md)
 
 3. **Execution**
