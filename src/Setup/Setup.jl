@@ -18,13 +18,13 @@ This module is designed to produce the SINDBAD `info` object, which contains all
 
 # Included Files:
 1. **`defaultOptions.jl`**:
-   - Defines default configuration knobs for optimization, sensitivity, and ML routines referenced during setup.
+   - Defines default configuration knobs for optimization, sensitivity, andMachine Learningroutines referenced during setup.
 
 2. **`getConfiguration.jl`**:
    - Reads JSON/CSV configuration files and normalizes them into the internal settings representation.
 
-3. **`setupExperimentInfo.jl`**:
-   - Builds the experiment `info` NamedTuple that downstream modules consume.
+3. **`setupSimulationInfo.jl`**:
+   - Builds the simulation `info` NamedTuple that downstream modules consume.
 
 4. **`setupTypes.jl`**:
    - Instantiates SINDBAD types after parsing settings (time, land, metrics, optimization, etc.).
@@ -44,11 +44,11 @@ This module is designed to produce the SINDBAD `info` object, which contains all
 9. **`setupOutput.jl`**:
    - Configures diagnostic/output arrays, filenames, and write schedules.
 
-10. **`setupOptimization.jl`**:
+10. **`setupParameterOptimization.jl`**:
     - Collects optimizer-specific settings (algorithm, stopping criteria, restarts, etc.).
 
-11. **`setupHybridML.jl`**:
-    - Handles hybrid ML-specific configuration (fold definitions, feature sets, surrogate wiring).
+11. **`setupHybridMachineLearning.jl`**:
+    - Handles hybrid Machine Learning-specific configuration (fold definitions, feature sets, surrogate wiring).
 
 12. **`setupInfo.jl`**:
     - Final assembly step that integrates all previous pieces into the `info` object exported to simulations.
@@ -70,15 +70,15 @@ module Setup
 
    include("defaultOptions.jl")
    include("getConfiguration.jl")
-   include("setupExperimentInfo.jl")
+   include("setupSimulationInfo.jl")
    include("setupTypes.jl")
    include("setupPools.jl")
    include("updateParameters.jl")
    include("setupParameters.jl")
    include("setupModels.jl")
    include("setupOutput.jl")
-   include("setupOptimization.jl")
-   include("setupHybridML.jl")
+   include("setupParameterOptimization.jl")
+   include("setupHybridMachineLearning.jl")
    include("setupInfo.jl")
 
    #  include doc strings for all types in Types
