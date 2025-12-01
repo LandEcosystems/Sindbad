@@ -13,7 +13,7 @@ This module integrates various components and utilities required to execute the 
 - `SindbadTEM`: Provides the core SINDBAD models and types.
 - `DataLoaders`: Provides the SINDBAD data handling functions.
 - `SindbadTEM.Utils`: Provides utility functions for handling NamedTuple, spatial operations, and other helper tasks for spatial and temporal operations.
-- `SetupSimulation`: Provides the SINDBAD setup functions.
+- `Setup`: Provides the SINDBAD setup functions.
 - `ThreadPools`: Enables efficient thread-based parallelization for running simulations across multiple locations.
 
 # Included Files:
@@ -55,7 +55,7 @@ This module integrates various components and utilities required to execute the 
 
 # Notes:
 - The package is designed to be modular and extensible, allowing users to customize and extend its functionality for specific use cases.
-- It integrates tightly with the SINDBAD framework, leveraging shared types and utilities from `SetupSimulation`.
+- It integrates tightly with the SINDBAD framework, leveraging shared types and utilities from `Setup`.
 """
 module Simulation
    using YAXArrays
@@ -64,10 +64,10 @@ module Simulation
    using ProgressMeter
    using SindbadTEM
    using SindbadTEM.Utils
-   using ..SetupSimulation
+   using ..Setup
    using ..DataLoaders
    using ..Visualization
-   using ..Optimization
+   using ..ParameterOptimization
    using ThreadPools
 
    include("utilsSimulation.jl")

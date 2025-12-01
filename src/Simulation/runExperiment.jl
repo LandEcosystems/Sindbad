@@ -72,7 +72,7 @@ Run a SINDBAD experiment in different modes.
 This function is the main entry point for running SINDBAD experiments. It supports different modes of simulation:
 - Cost calculation: Compares model output with observations
 - Forward run: Executes the model without optimization
-- Optimization: Runs the model with parameter optimization
+- ParameterOptimization: Runs the model with parameter optimization
 
 The function handles different spatial configurations and can operate on both single-pixel and spatial domains.
 """
@@ -276,7 +276,7 @@ Run optimization experiment through `runExperiment` function in `DoRunOptimizati
 - A NamedTuple containing optimization results, model outputs, and cost metrics
 """
 function runExperimentOpti(sindbad_experiment::String; replace_info=Dict(), log_level=:warn)
-    showInfoSeparator(sep_text="Optimization Experiment")
+    showInfoSeparator(sep_text="ParameterOptimization Experiment")
     setLogLevel(log_level)
     replace_info["experiment.flags.run_optimization"] = true
     replace_info["experiment.flags.calc_cost"] = false
@@ -327,7 +327,7 @@ function runExperimentSensitivity(sindbad_experiment::String; replace_info=Dict(
     
     cost_function = opti_helpers.cost_function
 
-    # d_opt = getproperty(SetupSimulation, :GSAMorris)()
+    # d_opt = getproperty(Setup, :GSAMorris)()
     method_options =info.optimization.sensitivity_analysis.options
     setLogLevel(log_level)
 
