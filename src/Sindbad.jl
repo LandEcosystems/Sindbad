@@ -28,13 +28,13 @@ and visualization workflows.
 1. **DataLoaders** (`src/DataLoaders/`):
    - Handles file IO, preprocessing, and conversion into SINDBAD-native
      data structures; exposes reusable loaders and utility helpers.
-2. **SetupSimulation** (`src/SetupSimulation/`):
+2. **Setup** (`src/Setup/`):
    - Builds experiment `info` objects, validates model selections, and
      wires pools, spinup settings, and derived configuration metadata.
 3. **Simulation** (`src/Simulation/`):
    - Orchestrates terrestrial ecosystem simulations, including spinup,
      forward runs, diagnostics, and interaction with `SindbadTEM`.
-4. **Optimization** (`src/Optimization/`):
+4. **ParameterOptimization** (`src/ParameterOptimization/`):
    - Provides parameter-calibration utilities, optimizer bridges
      (NLopt, Optim, CMA-ES variants), and experiment-wide objective hooks.
 5. **MachineLearning** (`src/MachineLearning/`):
@@ -55,7 +55,7 @@ and visualization workflows.
 ```julia
 using Sindbad
 
-info = Sindbad.SetupSimulation.build_info("experiment_config.json")
+info = Sindbad.Setup.build_info("experiment_config.json")
 forcing = Sindbad.DataLoaders.load_forcing(info)
 results = Sindbad.Simulation.run(info, forcing)
 Sindbad.Visualization.plot_output(results)
@@ -69,12 +69,12 @@ module Sindbad
 
   include("DataLoaders/DataLoaders.jl")
   @reexport using .DataLoaders
-  include("SetupSimulation/SetupSimulation.jl")
-  @reexport using .SetupSimulation
+  include("Setup/Setup.jl")
+  @reexport using .Setup
   include("Visualization/Visualization.jl")
   @reexport using .Visualization
-  include("Optimization/Optimization.jl")
-  @reexport using .Optimization
+  include("ParameterOptimization/ParameterOptimization.jl")
+  @reexport using .ParameterOptimization
   include("Simulation/Simulation.jl")
   @reexport using .Simulation
   include("MachineLearning/MachineLearning.jl")

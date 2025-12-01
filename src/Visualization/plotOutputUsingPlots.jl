@@ -8,7 +8,7 @@ export plotTimeSeriesDebug
 Generate performance histograms based on optimization output data.
 
 # Arguments
-- `out_opti`: Optimization output data structure containing model outputs and information
+- `out_opti`: ParameterOptimization output data structure containing model outputs and information
 
 # Description
 Creates histogram plots to visualize the distribution of  performance metrics from optimization results.
@@ -69,7 +69,7 @@ end
     plotTimeSeriesWithObs(out_opti)
 Generate time series plots comparing optimized and default model outputs with observations.
 # Arguments
-- `out_opti`: Optimization output data structure containing model outputs and information
+- `out_opti`: ParameterOptimization output data structure containing model outputs and information
 # Description
 Generates time series plots that compare the optimized and default model outputs with observations. The function iterates over each variable specified in the cost options and creates a separate plot for each one. Each plot displays the observed data as scatter points, along with the default and optimized model outputs as line graphs. Additionally, it includes vertical lines indicating the calculated loss metric values for both the default and optimized models.
 """
@@ -180,7 +180,7 @@ end
     plotTimeSeriesWithObs(out,obs_array,cost_options,info)
 Generate time series plots comparing optimized and default model outputs with observations.
 # Arguments
-- `out_opti`: Optimization output data structure containing model outputs and information
+- `out_opti`: ParameterOptimization output data structure containing model outputs and information
 # Description
 Generates time series plots that compare the optimized and default model outputs with observations. The function iterates over each variable specified in the cost options and creates a separate plot for each one. Each plot displays the observed data as scatter points, along with the default and optimized model outputs as line graphs. Additionally, it includes vertical lines indicating the calculated loss metric values for both the default and optimized models.
 """
