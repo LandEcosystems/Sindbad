@@ -3,14 +3,14 @@ export prepOpti
 export prepParameters
 
 """
-    getCostVectorSize(algo_options, parameter_vector, ::OptimizationMethod || GSAMethod)
+    getCostVectorSize(algo_options, parameter_vector, ::ParameterOptimizationMethod || GSAMethod)
 
 Calculates the size of the cost vector required for a specific optimization or sensitivity analysis method.
 
 # Arguments:
 - `algo_options`: A NamedTuple or dictionary containing algorithm-specific options (e.g., population size, number of trajectories).
 - `parameter_vector`: A vector of parameters used in the optimization or sensitivity analysis.
-- `::OptimizationMethod`: The optimization or sensitivity analysis method. Supported methods include:
+- `::ParameterOptimizationMethod`: The optimization or sensitivity analysis method. Supported methods include:
     - `CMAEvolutionStrategyCMAES`: Covariance Matrix Adaptation Evolution Strategy.
     - `GSAMorris`: Morris method for global sensitivity analysis.
     - `GSASobol`: Sobol method for global sensitivity analysis.

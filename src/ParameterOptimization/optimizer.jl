@@ -1,7 +1,7 @@
 export optimizer
 
 """
-    optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, algorithm <: OptimizationMethod)
+    optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, algorithm <: ParameterOptimizationMethod)
 
 Optimize model parameters using various optimization algorithms.
 
@@ -18,7 +18,7 @@ Optimize model parameters using various optimization algorithms.
 
 # algorithm:
     
-    $(methodsOf(OptimizationMethod))
+    $(methodsOf(ParameterOptimizationMethod))
 
 ---
 
