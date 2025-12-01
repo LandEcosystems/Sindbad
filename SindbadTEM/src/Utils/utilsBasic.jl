@@ -78,7 +78,7 @@ A boolean array with the same dimensions as `_array`.
 function booleanizeArray(_array)
     _data_fill = 0.0
     _array = map(_data -> replaceInvalid(_data, _data_fill), _array)
-    _array_bits = all.(>(_data_fill), _array)
+    _array_bits = _array .> _data_fill
     return _array_bits
 end
 

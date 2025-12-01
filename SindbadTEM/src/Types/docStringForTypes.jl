@@ -180,13 +180,13 @@ SindbadTEM.Types.OutputYAXArray
 
 @doc """
 
-# ExperimentTypes
+# SimulationTypes
 
 Abstract type for model run flags and experimental setup and simulations in SINDBAD
 
 ## Type Hierarchy
 
-```ExperimentTypes <: SindbadTypes <: Any```
+```SimulationTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -227,7 +227,7 @@ Abstract type for model run flags and experimental setup and simulations in SIND
 
 
 """
-SindbadTEM.Types.ExperimentTypes
+SindbadTEM.Types.SimulationTypes
 
 @doc """
 
@@ -237,7 +237,7 @@ Abstract type for model output strategies in SINDBAD
 
 ## Type Hierarchy
 
-```OutputStrategy <: ExperimentTypes <: SindbadTypes <: Any```
+```OutputStrategy <: SimulationTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -263,7 +263,7 @@ Disable output of all model variables
 
 ## Type Hierarchy
 
-```DoNotOutputAll <: OutputStrategy <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotOutputAll <: OutputStrategy <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -277,7 +277,7 @@ Save output variables in separate files
 
 ## Type Hierarchy
 
-```DoNotSaveSingleFile <: OutputStrategy <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotSaveSingleFile <: OutputStrategy <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -291,7 +291,7 @@ Enable output of all model variables
 
 ## Type Hierarchy
 
-```DoOutputAll <: OutputStrategy <: ExperimentTypes <: SindbadTypes <: Any```
+```DoOutputAll <: OutputStrategy <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -305,7 +305,7 @@ Save all output variables in a single file
 
 ## Type Hierarchy
 
-```DoSaveSingleFile <: OutputStrategy <: ExperimentTypes <: SindbadTypes <: Any```
+```DoSaveSingleFile <: OutputStrategy <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -319,7 +319,7 @@ Abstract type for using different parallelization packages in SINDBAD
 
 ## Type Hierarchy
 
-```ParallelizationPackage <: ExperimentTypes <: SindbadTypes <: Any```
+```ParallelizationPackage <: SimulationTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -343,7 +343,7 @@ Use Qbmap for parallelization
 
 ## Type Hierarchy
 
-```QbmapParallelization <: ParallelizationPackage <: ExperimentTypes <: SindbadTypes <: Any```
+```QbmapParallelization <: ParallelizationPackage <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -357,7 +357,7 @@ Use Julia threads for parallelization
 
 ## Type Hierarchy
 
-```ThreadsParallelization <: ParallelizationPackage <: ExperimentTypes <: SindbadTypes <: Any```
+```ThreadsParallelization <: ParallelizationPackage <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -371,7 +371,7 @@ Abstract type for model run configuration flags in SINDBAD
 
 ## Type Hierarchy
 
-```RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -413,7 +413,7 @@ Enable cost calculation between model output and observations
 
 ## Type Hierarchy
 
-```DoCalcCost <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoCalcCost <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -427,7 +427,7 @@ Enable model debugging mode
 
 ## Type Hierarchy
 
-```DoDebugModel <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoDebugModel <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -441,7 +441,7 @@ Enable filtering of NaN values in spatial data
 
 ## Type Hierarchy
 
-```DoFilterNanPixels <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoFilterNanPixels <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -455,7 +455,7 @@ Enable inline updates of model state
 
 ## Type Hierarchy
 
-```DoInlineUpdate <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoInlineUpdate <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -469,7 +469,7 @@ Disable cost calculation between model output and observations
 
 ## Type Hierarchy
 
-```DoNotCalcCost <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotCalcCost <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -483,7 +483,7 @@ Disable model debugging mode
 
 ## Type Hierarchy
 
-```DoNotDebugModel <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotDebugModel <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -497,7 +497,7 @@ Disable filtering of NaN values in spatial data
 
 ## Type Hierarchy
 
-```DoNotFilterNanPixels <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotFilterNanPixels <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -511,7 +511,7 @@ Disable inline updates of model state
 
 ## Type Hierarchy
 
-```DoNotInlineUpdate <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotInlineUpdate <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -525,7 +525,7 @@ Disable forward model run
 
 ## Type Hierarchy
 
-```DoNotRunForward <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotRunForward <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -539,7 +539,7 @@ Disable model parameter optimization
 
 ## Type Hierarchy
 
-```DoNotRunOptimization <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotRunOptimization <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -553,7 +553,7 @@ Disable saving of model information
 
 ## Type Hierarchy
 
-```DoNotSaveInfo <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotSaveInfo <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -567,7 +567,7 @@ Disable terrestrial ecosystem model spinup
 
 ## Type Hierarchy
 
-```DoNotSpinupTEM <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotSpinupTEM <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -581,7 +581,7 @@ Disable storing of spinup results
 
 ## Type Hierarchy
 
-```DoNotStoreSpinup <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotStoreSpinup <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -595,7 +595,7 @@ Disable forward mode automatic differentiation
 
 ## Type Hierarchy
 
-```DoNotUseForwardDiff <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoNotUseForwardDiff <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -609,7 +609,7 @@ Enable forward model run
 
 ## Type Hierarchy
 
-```DoRunForward <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoRunForward <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -623,7 +623,7 @@ Enable model parameter optimization
 
 ## Type Hierarchy
 
-```DoRunOptimization <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoRunOptimization <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -637,7 +637,7 @@ Enable saving of model information
 
 ## Type Hierarchy
 
-```DoSaveInfo <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoSaveInfo <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -651,7 +651,7 @@ Enable terrestrial ecosystem model spinup
 
 ## Type Hierarchy
 
-```DoSpinupTEM <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoSpinupTEM <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -665,7 +665,7 @@ Enable storing of spinup results
 
 ## Type Hierarchy
 
-```DoStoreSpinup <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoStoreSpinup <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -679,7 +679,7 @@ Enable forward mode automatic differentiation
 
 ## Type Hierarchy
 
-```DoUseForwardDiff <: RunFlag <: ExperimentTypes <: SindbadTypes <: Any```
+```DoUseForwardDiff <: RunFlag <: SimulationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -1193,13 +1193,13 @@ SindbadTEM.Types.PreAllocYAXArray
 
 @doc """
 
-# MLTypes
+# MachineLearningTypes
 
 Abstract type for types in machine learning related methods in SINDBAD
 
 ## Type Hierarchy
 
-```MLTypes <: SindbadTypes <: Any```
+```MachineLearningTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -1207,7 +1207,7 @@ Abstract type for types in machine learning related methods in SINDBAD
 
 ## Available methods/subtypes:
 
- -  `MLGradType`: Abstract type for automatic differentiation or finite differences for gradient calculations 
+ -  `MachineLearningGradType`: Abstract type for automatic differentiation or finite differences for gradient calculations 
      -  `EnzymeGrad`: Use Enzyme.jl for automatic differentiation 
      -  `FiniteDiffGrad`: Use FiniteDiff.jl for finite difference calculations 
      -  `FiniteDifferencesGrad`: Use FiniteDifferences.jl for finite difference calculations 
@@ -1218,17 +1218,17 @@ Abstract type for types in machine learning related methods in SINDBAD
 
 
 """
-SindbadTEM.Types.MLTypes
+SindbadTEM.Types.MachineLearningTypes
 
 @doc """
 
-# MLGradType
+# MachineLearningGradType
 
 Abstract type for automatic differentiation or finite differences for gradient calculations
 
 ## Type Hierarchy
 
-```MLGradType <: MLTypes <: SindbadTypes <: Any```
+```MachineLearningGradType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -1246,7 +1246,7 @@ Abstract type for automatic differentiation or finite differences for gradient c
 
 
 """
-SindbadTEM.Types.MLGradType
+SindbadTEM.Types.MachineLearningGradType
 
 @doc """
 
@@ -1256,7 +1256,7 @@ Use Enzyme.jl for automatic differentiation
 
 ## Type Hierarchy
 
-```EnzymeGrad <: MLGradType <: MLTypes <: SindbadTypes <: Any```
+```EnzymeGrad <: MachineLearningGradType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -1270,7 +1270,7 @@ Use FiniteDiff.jl for finite difference calculations
 
 ## Type Hierarchy
 
-```FiniteDiffGrad <: MLGradType <: MLTypes <: SindbadTypes <: Any```
+```FiniteDiffGrad <: MachineLearningGradType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -1284,7 +1284,7 @@ Use FiniteDifferences.jl for finite difference calculations
 
 ## Type Hierarchy
 
-```FiniteDifferencesGrad <: MLGradType <: MLTypes <: SindbadTypes <: Any```
+```FiniteDifferencesGrad <: MachineLearningGradType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -1298,7 +1298,7 @@ Use ForwardDiff.jl for automatic differentiation
 
 ## Type Hierarchy
 
-```ForwardDiffGrad <: MLGradType <: MLTypes <: SindbadTypes <: Any```
+```ForwardDiffGrad <: MachineLearningGradType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -1312,7 +1312,7 @@ Use PolyesterForwardDiff.jl for automatic differentiation
 
 ## Type Hierarchy
 
-```PolyesterForwardDiffGrad <: MLGradType <: MLTypes <: SindbadTypes <: Any```
+```PolyesterForwardDiffGrad <: MachineLearningGradType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -1326,7 +1326,7 @@ Use Zygote.jl for automatic differentiation
 
 ## Type Hierarchy
 
-```ZygoteGrad <: MLGradType <: MLTypes <: SindbadTypes <: Any```
+```ZygoteGrad <: MachineLearningGradType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2278,13 +2278,13 @@ SindbadTEM.Types.DoNotCatchModelErrors
 
 @doc """
 
-# OptimizationTypes
+# ParameterOptimizationTypes
 
 Abstract type for optimization related functions and methods in SINDBAD
 
 ## Type Hierarchy
 
-```OptimizationTypes <: SindbadTypes <: Any```
+```ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -2301,7 +2301,7 @@ Abstract type for optimization related functions and methods in SINDBAD
      -  `GSAMorris`: Morris method for global sensitivity analysis 
      -  `GSASobol`: Sobol method for global sensitivity analysis 
      -  `GSASobolDM`: Sobol method with derivative-based measures for global sensitivity analysis 
- -  `OptimizationMethod`: Abstract type for optimization methods in SINDBAD 
+ -  `ParameterOptimizationMethod`: Abstract type for optimization methods in SINDBAD 
      -  `BayesOptKMaternARD5`: Bayesian Optimization using Matern 5/2 kernel with Automatic Relevance Determination from BayesOpt.jl 
      -  `CMAEvolutionStrategyCMAES`: Covariance Matrix Adaptation Evolution Strategy (CMA-ES) from CMAEvolutionStrategy.jl 
      -  `EvolutionaryCMAES`: Evolutionary version of CMA-ES optimization from Evolutionary.jl 
@@ -2325,7 +2325,7 @@ Abstract type for optimization related functions and methods in SINDBAD
 
 
 """
-SindbadTEM.Types.OptimizationTypes
+SindbadTEM.Types.ParameterOptimizationTypes
 
 @doc """
 
@@ -2335,7 +2335,7 @@ Abstract type for cost calculation methods in SINDBAD
 
 ## Type Hierarchy
 
-```CostMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```CostMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -2361,7 +2361,7 @@ cost calculation between model output and observations
 
 ## Type Hierarchy
 
-```CostModelObs <: CostMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```CostModelObs <: CostMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2375,7 +2375,7 @@ cost calculation between land model output and time series observations
 
 ## Type Hierarchy
 
-```CostModelObsLandTS <: CostMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```CostModelObsLandTS <: CostMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2389,7 +2389,7 @@ multi-threaded cost calculation between model output and observations
 
 ## Type Hierarchy
 
-```CostModelObsMT <: CostMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```CostModelObsMT <: CostMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2403,7 +2403,7 @@ cost calculation between model output, observations, and priors. NOTE THAT THIS 
 
 ## Type Hierarchy
 
-```CostModelObsPriors <: CostMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```CostModelObsPriors <: CostMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2417,7 +2417,7 @@ Abstract type for global sensitivity analysis methods in SINDBAD
 
 ## Type Hierarchy
 
-```GSAMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```GSAMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -2442,7 +2442,7 @@ Morris method for global sensitivity analysis
 
 ## Type Hierarchy
 
-```GSAMorris <: GSAMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```GSAMorris <: GSAMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2456,7 +2456,7 @@ Sobol method for global sensitivity analysis
 
 ## Type Hierarchy
 
-```GSASobol <: GSAMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```GSASobol <: GSAMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2470,7 +2470,7 @@ Sobol method with derivative-based measures for global sensitivity analysis
 
 ## Type Hierarchy
 
-```GSASobolDM <: GSAMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```GSASobolDM <: GSAMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2478,13 +2478,13 @@ SindbadTEM.Types.GSASobolDM
 
 @doc """
 
-# OptimizationMethod
+# ParameterOptimizationMethod
 
 Abstract type for optimization methods in SINDBAD
 
 ## Type Hierarchy
 
-```OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -2511,7 +2511,7 @@ Abstract type for optimization methods in SINDBAD
 
 
 """
-SindbadTEM.Types.OptimizationMethod
+SindbadTEM.Types.ParameterOptimizationMethod
 
 @doc """
 
@@ -2521,7 +2521,7 @@ Bayesian Optimization using Matern 5/2 kernel with Automatic Relevance Determina
 
 ## Type Hierarchy
 
-```BayesOptKMaternARD5 <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```BayesOptKMaternARD5 <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2535,7 +2535,7 @@ Covariance Matrix Adaptation Evolution Strategy (CMA-ES) from CMAEvolutionStrate
 
 ## Type Hierarchy
 
-```CMAEvolutionStrategyCMAES <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```CMAEvolutionStrategyCMAES <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2549,7 +2549,7 @@ Evolutionary version of CMA-ES optimization from Evolutionary.jl
 
 ## Type Hierarchy
 
-```EvolutionaryCMAES <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```EvolutionaryCMAES <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2563,7 +2563,7 @@ Broyden-Fletcher-Goldfarb-Shanno (BFGS) from Optim.jl
 
 ## Type Hierarchy
 
-```OptimBFGS <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimBFGS <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2577,7 +2577,7 @@ Limited-memory Broyden-Fletcher-Goldfarb-Shanno (L-BFGS) from Optim.jl
 
 ## Type Hierarchy
 
-```OptimLBFGS <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimLBFGS <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2591,7 +2591,7 @@ Black Box Optimization with adaptive parameters from Optimization.jl
 
 ## Type Hierarchy
 
-```OptimizationBBOadaptive <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimizationBBOadaptive <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2605,7 +2605,7 @@ Black Box Optimization using Natural Evolution Strategy (xNES) from Optimization
 
 ## Type Hierarchy
 
-```OptimizationBBOxnes <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimizationBBOxnes <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2619,7 +2619,7 @@ BFGS optimization with box constraints from Optimization.jl
 
 ## Type Hierarchy
 
-```OptimizationBFGS <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimizationBFGS <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2633,7 +2633,7 @@ Gradient descent optimization with box constraints from Optimization.jl
 
 ## Type Hierarchy
 
-```OptimizationFminboxGradientDescent <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimizationFminboxGradientDescent <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2647,7 +2647,7 @@ Gradient descent optimization with box constraints using forward differentiation
 
 ## Type Hierarchy
 
-```OptimizationFminboxGradientDescentFD <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimizationFminboxGradientDescentFD <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2661,7 +2661,7 @@ Global CMA-ES optimization with default settings from Optimization.jl
 
 ## Type Hierarchy
 
-```OptimizationGCMAESDef <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimizationGCMAESDef <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2675,7 +2675,7 @@ Global CMA-ES optimization using forward differentiation from Optimization.jl
 
 ## Type Hierarchy
 
-```OptimizationGCMAESFD <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimizationGCMAESFD <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2689,7 +2689,7 @@ Multi-start optimization to find global optimum from Optimization.jl
 
 ## Type Hierarchy
 
-```OptimizationMultistartOptimization <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimizationMultistartOptimization <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2703,7 +2703,7 @@ Nelder-Mead simplex optimization method from Optimization.jl
 
 ## Type Hierarchy
 
-```OptimizationNelderMead <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimizationNelderMead <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2717,7 +2717,7 @@ Quadratic Direct optimization method from Optimization.jl
 
 ## Type Hierarchy
 
-```OptimizationQuadDirect <: OptimizationMethod <: OptimizationTypes <: SindbadTypes <: Any```
+```OptimizationQuadDirect <: ParameterOptimizationMethod <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2731,7 +2731,7 @@ Abstract type for parameter scaling methods in SINDBAD
 
 ## Type Hierarchy
 
-```ParameterScaling <: OptimizationTypes <: SindbadTypes <: Any```
+```ParameterScaling <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -2756,7 +2756,7 @@ Scale parameters relative to their bounds
 
 ## Type Hierarchy
 
-```ScaleBounds <: ParameterScaling <: OptimizationTypes <: SindbadTypes <: Any```
+```ScaleBounds <: ParameterScaling <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2770,7 +2770,7 @@ Scale parameters relative to default values
 
 ## Type Hierarchy
 
-```ScaleDefault <: ParameterScaling <: OptimizationTypes <: SindbadTypes <: Any```
+```ScaleDefault <: ParameterScaling <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -2784,7 +2784,7 @@ No parameter scaling applied
 
 ## Type Hierarchy
 
-```ScaleNone <: ParameterScaling <: OptimizationTypes <: SindbadTypes <: Any```
+```ScaleNone <: ParameterScaling <: ParameterOptimizationTypes <: SindbadTypes <: Any```
 
 
 """
@@ -3585,13 +3585,13 @@ SindbadTEM.Types.TimeYearAnomaly
 
 @doc """
 
-# MLModelType
+# MachineLearningModelType
 
 Abstract type for machine learning models used in SINDBAD
 
 ## Type Hierarchy
 
-```MLModelType <: MLTypes <: SindbadTypes <: Any```
+```MachineLearningModelType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -3604,7 +3604,7 @@ Abstract type for machine learning models used in SINDBAD
 
 
 """
-SindbadTEM.Types.MLModelType
+SindbadTEM.Types.MachineLearningModelType
 
 @doc """
 
@@ -3614,7 +3614,7 @@ simple dense neural network model implemented in Flux.jl
 
 ## Type Hierarchy
 
-```FluxDenseNN <: MLModelType <: MLTypes <: SindbadTypes <: Any```
+```FluxDenseNN <: MachineLearningModelType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -3622,13 +3622,13 @@ SindbadTEM.Types.FluxDenseNN
 
 @doc """
 
-# MLOptimizerType
+# MachineLearningOptimizerType
 
-Abstract type for optimizers used for training ML models in SINDBAD
+Abstract type for optimizers used for trainingMachine Learningmodels in SINDBAD
 
 ## Type Hierarchy
 
-```MLOptimizerType <: MLTypes <: SindbadTypes <: Any```
+```MachineLearningOptimizerType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -3636,22 +3636,22 @@ Abstract type for optimizers used for training ML models in SINDBAD
 
 ## Available methods/subtypes:
 
- -  `OptimisersAdam`: Use Optimisers.jl Adam optimizer for training ML models in SINDBAD 
+ -  `OptimisersAdam`: Use Optimisers.jl Adam optimizer for trainingMachine Learningmodels in SINDBAD 
 
 
 
 """
-SindbadTEM.Types.MLOptimizerType
+SindbadTEM.Types.MachineLearningOptimizerType
 
 @doc """
 
 # OptimisersAdam
 
-Use Optimisers.jl Adam optimizer for training ML models in SINDBAD
+Use Optimisers.jl Adam optimizer for trainingMachine Learningmodels in SINDBAD
 
 ## Type Hierarchy
 
-```OptimisersAdam <: MLOptimizerType <: MLTypes <: SindbadTypes <: Any```
+```OptimisersAdam <: MachineLearningOptimizerType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -3659,13 +3659,13 @@ SindbadTEM.Types.OptimisersAdam
 
 @doc """
 
-# MLTrainingType
+# MachineLearningTrainingType
 
 Abstract type for training a hybrid algorithm in SINDBAD
 
 ## Type Hierarchy
 
-```MLTrainingType <: MLTypes <: SindbadTypes <: Any```
+```MachineLearningTrainingType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -3678,7 +3678,7 @@ Abstract type for training a hybrid algorithm in SINDBAD
 
 
 """
-SindbadTEM.Types.MLTrainingType
+SindbadTEM.Types.MachineLearningTrainingType
 
 @doc """
 
@@ -3688,7 +3688,7 @@ Use a mixed gradient approach for training using gradient from multiple methods 
 
 ## Type Hierarchy
 
-```MixedGradient <: MLTrainingType <: MLTypes <: SindbadTypes <: Any```
+```MixedGradient <: MachineLearningTrainingType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -3702,7 +3702,7 @@ Use a split of the data to calculate the folds for cross-validation. The default
 
 ## Type Hierarchy
 
-```CalcFoldFromSplit <: MLTrainingType <: MLTypes <: SindbadTypes <: Any```
+```CalcFoldFromSplit <: MachineLearningTrainingType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -3716,7 +3716,7 @@ Use precalculated data to load the folds for cross-validation. In this case, the
 
 ## Type Hierarchy
 
-```LoadFoldFromFile <: MLTrainingType <: MLTypes <: SindbadTypes <: Any```
+```LoadFoldFromFile <: MachineLearningTrainingType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -3726,11 +3726,11 @@ SindbadTEM.Types.LoadFoldFromFile
 
 # ActivationType
 
-Abstract type for activation functions used in ML models
+Abstract type for activation functions used inMachine Learningmodels
 
 ## Type Hierarchy
 
-```ActivationType <: MLTypes <: SindbadTypes <: Any```
+```ActivationType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 -----
 
@@ -3755,7 +3755,7 @@ Use Flux.jl ReLU activation function
 
 ## Type Hierarchy
 
-```FluxRelu <: ActivationType <: MLTypes <: SindbadTypes <: Any```
+```FluxRelu <: ActivationType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -3769,7 +3769,7 @@ Use Flux.jl Sigmoid activation function
 
 ## Type Hierarchy
 
-```FluxSigmoid <: ActivationType <: MLTypes <: SindbadTypes <: Any```
+```FluxSigmoid <: ActivationType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -3783,7 +3783,7 @@ Use Flux.jl Tanh activation function
 
 ## Type Hierarchy
 
-```FluxTanh <: ActivationType <: MLTypes <: SindbadTypes <: Any```
+```FluxTanh <: ActivationType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -3791,17 +3791,17 @@ SindbadTEM.Types.FluxTanh
 
 @doc """
 
-# LossModelObsML
+# LossModelObsMachineLearning
 
 Loss function using metrics between the predicted model and observation as defined in optimization.json
 
 ## Type Hierarchy
 
-```LossModelObsML <: MLTrainingType <: MLTypes <: SindbadTypes <: Any```
+```LossModelObsMachineLearning <: MachineLearningTrainingType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
-SindbadTEM.Types.LossModelObsML
+SindbadTEM.Types.LossModelObsMachineLearning
 
 @doc """
 
@@ -3811,7 +3811,7 @@ Use a custom sigmoid activation function. In this case, the `k_σ` parameter in 
 
 ## Type Hierarchy
 
-```CustomSigmoid <: ActivationType <: MLTypes <: SindbadTypes <: Any```
+```CustomSigmoid <: ActivationType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """
@@ -3821,11 +3821,11 @@ SindbadTEM.Types.CustomSigmoid
 
 # OptimisersDescent
 
-Use Optimisers.jl Descent optimizer for training ML models in SINDBAD
+Use Optimisers.jl Descent optimizer for trainingMachine Learningmodels in SINDBAD
 
 ## Type Hierarchy
 
-```OptimisersDescent <: MLOptimizerType <: MLTypes <: SindbadTypes <: Any```
+```OptimisersDescent <: MachineLearningOptimizerType <: MachineLearningTypes <: SindbadTypes <: Any```
 
 
 """

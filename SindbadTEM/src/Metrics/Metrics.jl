@@ -6,7 +6,7 @@ The `Metrics` module provides tools for evaluating the performance of SINDBAD mo
 # Purpose:
 This module is designed to define and compute metrics that assess the accuracy and reliability of SINDBAD models. It supports a wide range of statistical and performance metrics, enabling robust model evaluation and calibration.
 
-It has heavy usage in `Sindbad.Optimization` but the module is separated to reduce import burdens of optimization schemes. This allows for import into independent workflows for model evaluation and parameter estimation, e.g., in hybrid modeling.
+It has heavy usage in `Sindbad.ParameterOptimization` but the module is separated to reduce import burdens of optimization schemes. This allows for import into independent workflows for model evaluation and parameter estimation, e.g., in hybrid modeling.
 
 # Dependencies:
 - `SindbadTEM`: Provides the core SINDBAD models and types.

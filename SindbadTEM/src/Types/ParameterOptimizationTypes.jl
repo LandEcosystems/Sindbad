@@ -1,10 +1,10 @@
 
-export OptimizationTypes
-abstract type OptimizationTypes <: SindbadTypes end
-purpose(::Type{OptimizationTypes}) = "Abstract type for optimization related functions and methods in SINDBAD"
+export ParameterOptimizationTypes
+abstract type ParameterOptimizationTypes <: SindbadTypes end
+purpose(::Type{ParameterOptimizationTypes}) = "Abstract type for optimization related functions and methods in SINDBAD"
 
 # ------------------------- optimization TEM and algorithm -------------------------
-export OptimizationMethod
+export ParameterOptimizationMethod
 export BayesOptKMaternARD5
 export CMAEvolutionStrategyCMAES
 export EvolutionaryCMAES
@@ -21,52 +21,52 @@ export OptimizationMultistartOptimization
 export OptimizationNelderMead
 export OptimizationQuadDirect
 
-abstract type OptimizationMethod <: OptimizationTypes end
-purpose(::Type{OptimizationMethod}) = "Abstract type for optimization methods in SINDBAD"
+abstract type ParameterOptimizationMethod <: ParameterOptimizationTypes end
+purpose(::Type{ParameterOptimizationMethod}) = "Abstract type for optimization methods in SINDBAD"
 
-struct BayesOptKMaternARD5 <: OptimizationMethod end
+struct BayesOptKMaternARD5 <: ParameterOptimizationMethod end
 purpose(::Type{BayesOptKMaternARD5}) = "Bayesian Optimization using Matern 5/2 kernel with Automatic Relevance Determination from BayesOpt.jl"
 
-struct CMAEvolutionStrategyCMAES <: OptimizationMethod end
+struct CMAEvolutionStrategyCMAES <: ParameterOptimizationMethod end
 purpose(::Type{CMAEvolutionStrategyCMAES}) = "Covariance Matrix Adaptation Evolution Strategy (CMA-ES) from CMAEvolutionStrategy.jl"
 
-struct EvolutionaryCMAES <: OptimizationMethod end
+struct EvolutionaryCMAES <: ParameterOptimizationMethod end
 purpose(::Type{EvolutionaryCMAES}) = "Evolutionary version of CMA-ES optimization from Evolutionary.jl"
 
-struct OptimLBFGS <: OptimizationMethod end
+struct OptimLBFGS <: ParameterOptimizationMethod end
 purpose(::Type{OptimLBFGS}) = "Limited-memory Broyden-Fletcher-Goldfarb-Shanno (L-BFGS) from Optim.jl"
 
-struct OptimBFGS <: OptimizationMethod end
+struct OptimBFGS <: ParameterOptimizationMethod end
 purpose(::Type{OptimBFGS}) = "Broyden-Fletcher-Goldfarb-Shanno (BFGS) from Optim.jl"
 
-struct OptimizationBBOadaptive <: OptimizationMethod end
+struct OptimizationBBOadaptive <: ParameterOptimizationMethod end
 purpose(::Type{OptimizationBBOadaptive}) = "Black Box Optimization with adaptive parameters from Optimization.jl"
 
-struct OptimizationBBOxnes <: OptimizationMethod end
+struct OptimizationBBOxnes <: ParameterOptimizationMethod end
 purpose(::Type{OptimizationBBOxnes}) = "Black Box Optimization using Natural Evolution Strategy (xNES) from Optimization.jl"
 
-struct OptimizationBFGS <: OptimizationMethod end
+struct OptimizationBFGS <: ParameterOptimizationMethod end
 purpose(::Type{OptimizationBFGS}) = "BFGS optimization with box constraints from Optimization.jl"
 
-struct OptimizationFminboxGradientDescent <: OptimizationMethod end
+struct OptimizationFminboxGradientDescent <: ParameterOptimizationMethod end
 purpose(::Type{OptimizationFminboxGradientDescent}) = "Gradient descent optimization with box constraints from Optimization.jl"
 
-struct OptimizationFminboxGradientDescentFD <: OptimizationMethod end
+struct OptimizationFminboxGradientDescentFD <: ParameterOptimizationMethod end
 purpose(::Type{OptimizationFminboxGradientDescentFD}) = "Gradient descent optimization with box constraints using forward differentiation from Optimization.jl"
 
-struct OptimizationGCMAESDef <: OptimizationMethod end
+struct OptimizationGCMAESDef <: ParameterOptimizationMethod end
 purpose(::Type{OptimizationGCMAESDef}) = "Global CMA-ES optimization with default settings from Optimization.jl"
 
-struct OptimizationGCMAESFD <: OptimizationMethod end
+struct OptimizationGCMAESFD <: ParameterOptimizationMethod end
 purpose(::Type{OptimizationGCMAESFD}) = "Global CMA-ES optimization using forward differentiation from Optimization.jl"
 
-struct OptimizationMultistartOptimization <: OptimizationMethod end
+struct OptimizationMultistartOptimization <: ParameterOptimizationMethod end
 purpose(::Type{OptimizationMultistartOptimization}) = "Multi-start optimization to find global optimum from Optimization.jl"
 
-struct OptimizationNelderMead <: OptimizationMethod end
+struct OptimizationNelderMead <: ParameterOptimizationMethod end
 purpose(::Type{OptimizationNelderMead}) = "Nelder-Mead simplex optimization method from Optimization.jl"
 
-struct OptimizationQuadDirect <: OptimizationMethod end
+struct OptimizationQuadDirect <: ParameterOptimizationMethod end
 purpose(::Type{OptimizationQuadDirect}) = "Quadratic Direct optimization method from Optimization.jl"
 
 # ------------------------- global sensitivity analysis -------------------------
@@ -76,7 +76,7 @@ export GSAMorris
 export GSASobol
 export GSASobolDM
 
-abstract type GSAMethod <: OptimizationTypes end
+abstract type GSAMethod <: ParameterOptimizationTypes end
 purpose(::Type{GSAMethod}) = "Abstract type for global sensitivity analysis methods in SINDBAD"
 
 struct GSAMorris <: GSAMethod end
@@ -96,7 +96,7 @@ export CostModelObsLandTS
 export CostModelObsMT
 export CostModelObsPriors
 
-abstract type CostMethod <: OptimizationTypes end
+abstract type CostMethod <: ParameterOptimizationTypes end
 purpose(::Type{CostMethod}) = "Abstract type for cost calculation methods in SINDBAD"
 
 struct CostModelObs <: CostMethod end
@@ -118,7 +118,7 @@ export ScaleNone
 export ScaleDefault
 export ScaleBounds
 
-abstract type ParameterScaling <: OptimizationTypes end
+abstract type ParameterScaling <: ParameterOptimizationTypes end
 purpose(::Type{ParameterScaling}) = "Abstract type for parameter scaling methods in SINDBAD"
 
 struct ScaleNone <: ParameterScaling end

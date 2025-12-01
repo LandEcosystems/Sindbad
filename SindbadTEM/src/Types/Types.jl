@@ -29,16 +29,16 @@ This module serves as the backbone for type definitions in SINDBAD, ensuring mod
 6. **`InputTypes.jl`**:
    - Defines types for input data and configurations, managing input flows and forcing data.
 
-7. **`ExperimentTypes.jl`**:
+7. **`SimulationTypes.jl`**:
    - Defines types for experiments conducted in SindbadTEM, representing experimental setups, configurations, and results.
 
-8. **`OptimizationTypes.jl`**:
+8. **`ParameterOptimizationTypes.jl`**:
    - Defines types for optimization-related functions and methods, separating methods for optimization, cost functions, etc.
 
 9. **`MetricsTypes.jl`**:
    - Defines types for metrics used to evaluate model performance, representing performance metrics and cost evaluation.
 
-10. **`MLTypes.jl`**:
+10. **`MachineLearningTypes.jl`**:
     - Defines types for machine learning components, supporting machine learning workflows and data structures.
 
 11. **`LongTuple.jl`**:
@@ -115,10 +115,10 @@ module Types
     include("LandTypes.jl")
     include("ArrayTypes.jl")
     include("InputTypes.jl")
-    include("SetupTypes.jl")
+    include("SimulationTypes.jl")
     include("ParameterOptimizationTypes.jl")
     include("MetricsTypes.jl")
-    include("MLTypes.jl")
+    include("MachineLearningTypes.jl")
     include("LongTuple.jl")
     include("TypesFunctions.jl")
 
