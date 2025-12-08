@@ -23,20 +23,17 @@ This module is designed to support optimization tasks in SINDBAD, such as calibr
 - `Sindbad.Setup` / `Sindbad.Simulation`: Provide the experiment `info` and runtime hooks the optimizers call.
 
 # Included Files:
-1. **`prepOpti.jl`**:
-   - Prepares the necessary inputs and configurations for running optimization routines.
-
-2. **`optimizer.jl`**:
+1. **`optimizer.jl`**:
    - Implements the core optimization logic, including merging algorithm options and selecting optimization methods.
 
-3. **`cost.jl`**:
+2. **`cost.jl`**:
    - Defines cost functions for evaluating the loss of SINDBAD models against observations.
 
-4. **`optimizeTEM.jl`**:
+3. **`optimizeTEM.jl`**:
    - Provides functions for optimizing SINDBAD TEM parameters for single locations or small spatial grids.
    - Functionality to handle optimization using large-scale 3D data YAXArrays cubes, enabling parameter calibration across spatial dimensions.
 
-5. **`sensitivityAnalysis.jl`**:
+4. **`sensitivityAnalysis.jl`**:
    - Provides functions for performing sensitivity analysis on SINDBAD models, including global sensitivity analysis and local sensitivity analysis.
 
 !!! note
@@ -62,31 +59,31 @@ optimized_params = optimizer(cost_function, default_values, lower_bounds, upper_
 """
 module ParameterOptimization
 
-   using CMAEvolutionStrategy: minimize, xbest
+   # using CMAEvolutionStrategy: minimize, xbest
    # using BayesOpt: ConfigParameters, set_kernel!, bayes_optimization, SC_MAP
-   using Evolutionary: Evolutionary
-   using ForwardDiff
-   using GlobalSensitivity
-   using MultistartOptimization: MultistartOptimization
-   using NLopt: NLopt
-   using Optim
-   using Optimization
-   using OptimizationOptimJL
-   # using OptimizationBBO
-   using OptimizationGCMAES
-   using OptimizationCMAEvolutionStrategy
-   # using OptimizationQuadDIRECT
-   using QuasiMonteCarlo
+   # using Evolutionary: Evolutionary
+   # using ForwardDiff
+   # using GlobalSensitivity
+   # using MultistartOptimization: MultistartOptimization
+   # using NLopt: NLopt
+   # using Optim
+   # using Optimization
+   # using OptimizationOptimJL
+   # # using OptimizationBBO
+   # using OptimizationGCMAES
+   # using OptimizationCMAEvolutionStrategy
+   # # using OptimizationQuadDIRECT
+   # using QuasiMonteCarlo
    using StableRNGs
    using SindbadTEM
    using SindbadTEM.Utils
    using SindbadTEM.Metrics
    using ..Setup
-   # using ..Simulation
+   using ..Simulation
 
-   include("prepOpti.jl")
    include("optimizer.jl")
    include("cost.jl")
+   include("prepOpti.jl")
    include("optimizeTEM.jl")
    include("sensitivityAnalysis.jl")
 

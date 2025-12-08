@@ -73,10 +73,13 @@ module Sindbad
   @reexport using .Setup
   include("Visualization/Visualization.jl")
   @reexport using .Visualization
-  include("ParameterOptimization/ParameterOptimization.jl")
-  @reexport using .ParameterOptimization
   include("Simulation/Simulation.jl")
   @reexport using .Simulation
-  include("MachineLearning/MachineLearning.jl")
-  @reexport using .MachineLearning
+  include("ParameterOptimization/ParameterOptimization.jl")
+  @reexport using .ParameterOptimization
+  # include("MachineLearning/MachineLearning.jl")
+  # @reexport using .MachineLearning
+  include("Experiment/Experiment.jl")
+  @reexport using .Experiment
+
 end # module Sindbad

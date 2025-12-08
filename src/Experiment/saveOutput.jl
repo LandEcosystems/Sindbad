@@ -41,7 +41,7 @@ function getYaxForVariable(data_out, data_dim, variable_name, catalog_name, t_st
     if size(data_out, 2) == 1
         data_out = getModelDataArray(data_out)
     end
-    data_yax = YAXArray(data_dim, data_out, data_prop)
+    data_yax = DataLoaders.YAXArray(data_dim, data_out, data_prop)
     return data_yax
 end
 
@@ -75,8 +75,8 @@ function saveOutCubes(data_path_base, global_metadata, data, data_dims, var_pair
     all_yax = Tuple(getYaxForVariable.(data, data_dims, variable_names, catalog_names, Ref(t_step)))
     data_path = data_path_base * "_all_variables.$(out_format)"
     showInfo(nothing, @__FILE__, @__LINE__, "saved all variables to `$(data_path)`", n_m=4)
-    ds_new = YAXArrays.Dataset(; (; zip(variable_names, all_yax)...)..., properties=global_metadata)
-    savedataset(ds_new, path=data_path, append=true, overwrite=true)
+    ds_new = DataLoaders.YAXArrays.Dataset(; (; zip(variable_names, all_yax)...)..., properties=global_metadata)
+    DataLoaders.YAXArrays.savedataset(ds_new, path=data_path, append=true, overwrite=true)
     return nothing
 end
 
@@ -90,8 +90,8 @@ function saveOutCubes(data_path_base, global_metadata, data, data_dims, var_pair
         data_yax = getYaxForVariable(data[vn], data_dims[vn], variable_name, catalog_name, t_step)
         data_path = data_path_base * "_$(variable_name).$(out_format)"
         showInfo(nothing, @__FILE__, @__LINE__, "saved `$(variable_name)` to `$(data_path)`", n_m=4)
-        ds_new = YAXArrays.Dataset(; (variable_name => data_yax,)..., properties=global_metadata)
-        savedataset(ds_new, path=data_path, overwrite=true)
+        ds_new = DataLoaders.YAXArrays.Dataset(; (variable_name => data_yax,)..., properties=global_metadata)
+        DataLoaders.YAXArrays.savedataset(ds_new, path=data_path, overwrite=true)
     end
     return nothing
 end

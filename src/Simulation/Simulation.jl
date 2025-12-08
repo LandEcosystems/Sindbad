@@ -32,25 +32,28 @@ This module integrates various components and utilities required to execute the 
 5. **`prepTEM.jl`**:
    - Prepares the necessary inputs and configurations for running the TEM, including spatial and temporal data preparation.
 
-6. **`runTEMLoc.jl`**:
+6. **`prepOpti.jl`**:
+   - Prepares the necessary inputs and configurations for running optimization routines.
+
+7. **`runTEMLoc.jl`**:
    - Implements the logic for running the TEM for a single location, including optional spinup and the main simulation loop.
 
-7. **`runTEMSpace.jl`**:
+8. **`runTEMSpace.jl`**:
    - Extends the functionality to handle spatial grids, enabling simulations across multiple locations with parallel execution.
 
-8. **`runTEMCube.jl`**:
+9. **`runTEMCube.jl`**:
    - Adds support for running the TEM on 3D `YAXArrays` cubes, useful for large-scale simulations with spatial dimensions.
 
-9. **`runExperiment.jl`**:
+10. **`runExperiment.jl`**:
    - High-level orchestration that wires setup, simulation, and optional optimization/ML hooks into a repeatable workflow.
 
-10. **`saveOutput.jl`**:
+11. **`saveOutput.jl`**:
     - Serialization helpers for storing simulation outputs and diagnostics.
 
-11. **`spinupTEM.jl`**:
+12. **`spinupTEM.jl`**:
    - Manages the spinup process, initializing the model to a steady state using various methods (e.g., ODE solvers, fixed-point solvers).
 
-12. **`spinupSequence.jl`**:
+13. **`spinupSequence.jl`**:
     - Handles sequential spinup loops, allowing for iterative refinement of model states during the spinup process.
 
 # Notes:
@@ -58,16 +61,13 @@ This module integrates various components and utilities required to execute the 
 - It integrates tightly with the SINDBAD framework, leveraging shared types and utilities from `Setup`.
 """
 module Simulation
-   using YAXArrays
    using ComponentArrays
-   using NLsolve
+   # using NLsolve
    using ProgressMeter
    using SindbadTEM
    using SindbadTEM.Utils
    using ..Setup
-   using ..DataLoaders
-   using ..Visualization
-   using ..ParameterOptimization
+   using ..DataLoaders: YAXArrays
    using ThreadPools
 
    include("utilsSimulation.jl")
@@ -80,7 +80,5 @@ module Simulation
    include("runTEMCube.jl")
    include("spinupTEM.jl")
    include("spinupSequence.jl")
-   include("runExperiment.jl")
-   include("saveOutput.jl")
 
 end # module Simulation
