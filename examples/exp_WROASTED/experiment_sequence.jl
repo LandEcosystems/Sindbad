@@ -2,6 +2,7 @@ using Revise
 using Sindbad
 using Dates
 using Plots
+using NetCDF
 toggleStackTraceNT()
 experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
 begin_year = "1979"
@@ -40,7 +41,7 @@ for domain ∈ sites
     nrepeat = 200
     data_path = joinpath("./examples/exp_WROASTED",path_input)
     # data_path = getAbsDataPath(info, path_input)
-    nc = DataLoaders.NetCDF.open(data_path)
+    nc = NetCDF.open(data_path)
     y_dist = nc.gatts["last_disturbance_on"]
 
     nrepeat_d = -1

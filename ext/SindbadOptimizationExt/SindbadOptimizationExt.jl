@@ -1,0 +1,10 @@
+module SindbadOptimizationExt
+
+import Sindbad: OptimizationBFGS, OptimizationBBOxnes, OptimizationBBOadaptive, OptimizationFminboxGradientDescentFD, OptimizationFminboxGradientDescent, OptimizationGCMAESDef, OptimizationGCMAESFD, OptimizationMultistartOptimization, OptimizationNelderMead, OptimizationQuadDirect
+
+import Optimization
+import Sindbad
+
+include("ParameterOptimizationOptimizer.jl")
+
+end
