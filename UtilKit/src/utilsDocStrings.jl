@@ -18,7 +18,7 @@ This function generates a formatted docstring for a type, including its purpose 
 - A string containing the formatted docstring for the type.
 
 """
-function getTypeDocString(T::Type; purpose_function=Base.Docs.doc)
+function getTypeDocString(T::Type; purpose_function=purpose)
     doc_string = ""
     doc_string *= "\n# $(nameof(T))\n\n"
     doc_string *= "$(purpose_function(T))\n\n"
@@ -50,12 +50,16 @@ This function writes a docstring for a type to a file.
 - `o_file`: The file with the docstring written to it
 
 """
-function writeTypeDocString(o_file, T)
+function writeTypeDocString(o_file, T; purpose_function=purpose)
     doc_string = base_doc(T)
+    println("Doc string: $doc_string")
     if startswith(string(doc_string), "No documentation found for public symbol")
-       write(o_file, "@doc \"\"\"\n$(getTypeDocString(T))\n\"\"\"\n")
-       # write(o_file, "$(nameof(T))\n\n")
-       write(o_file, "$(T)\n\n")
+       write(o_file, "@doc \"\"\"\n$(getTypeDocString(T, purpose_function=purpose_function))\n\"\"\"\n")
+       write(o_file, "$(nameof(T))\n\n")
+    #    write(o_file, "$(T)\n\n")
+    else
+        write(o_file, "$(nameof(T))\n\n")
+        println("Doc string already exists for $(T), $(doc_string)")
     end
     return o_file
  end
@@ -76,11 +80,11 @@ This function writes a docstring for a type to a file.
 - `o_file`: The file with the docstring written to it
 
 """
- function loopWriteTypeDocString(o_file, T)
-    writeTypeDocString(o_file, T)
+ function loopWriteTypeDocString(o_file, T; purpose_function=purpose)
+    writeTypeDocString(o_file, T, purpose_function=purpose_function)
     sub_types = subtypes(T)
     for sub_type in sub_types
-       o_file = loopWriteTypeDocString(o_file, sub_type)
+       o_file = loopWriteTypeDocString(o_file, sub_type, purpose_function=purpose_function)
     end
     return o_file
  end

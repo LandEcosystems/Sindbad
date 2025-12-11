@@ -1,56 +1,98 @@
 """
     UtilKit
 
-The `UtilKit` module provides a collection of utility functions and tools for handling data, managing NamedTuples, and performing spatial and temporal operations in the SINDBAD framework. It serves as a foundational package for simplifying common tasks and ensuring consistency across SINDBAD experiments.
+A comprehensive utility package providing foundational functions for data manipulation, collections management, display formatting, and type introspection in the SINDBAD framework.
 
-# Purpose:
-This module is designed to provide reusable utilities for data manipulation, statistical operations, and spatial/temporal processing.
+# Overview
 
-# Dependencies:
-- `Crayons`: Enables colored terminal output, improving the readability of logs and messages.
-- `StyledStrings`: Provides styled text for enhanced terminal output.
-- `DataStructures`: Provides data structure utilities for collections and ordered containers.
-- `Logging`: Provides logging utilities for debugging and monitoring SINDBAD workflows.
-- `FIGlet`: Generates ASCII art text, useful for creating visually appealing headers in logs or outputs.
-- `Accessors`: Provides utilities for accessing and modifying nested data structures.
+`UtilKit` serves as a core utility library that provides reusable functions for common programming tasks. It is designed to be type-stable, performant, and consistent across SINDBAD packages.
 
-# Included Files:
-1. **`utilsArray.jl`**:
-   - Implements functions for working with arrays, including views and array operations.
+# Main Features
 
-2. **`utilsCollections.jl`**:
-   - Contains utilities for working with collections and data structures.
+## Array Operations
+- Array booleanization and masking
+- Matrix diagonal operations (upper, lower, off-diagonal)
+- Array stacking and view operations
+- Invalid value handling and replacement
 
-3. **`utilsDisp.jl`**:
-   - Provides display and formatting utilities for output.
+## Collections and Data Structures
+- Dictionary to NamedTuple conversion
+- NamedTuple manipulation (field dropping, combining, setting)
+- Table to NamedTuple conversion
+- List tabularization
+- Unique/non-unique element detection
 
-4. **`utilsDocstrings.jl`**:
-   - Contains utilities for generating and managing docstrings.
+## String Utilities
+- String case conversion and formatting
+- Prefix/suffix manipulation
 
-5. **`utilsLongTuple.jl`**:
-   - Provides utilities for working with long tuples and tuple operations.
+## Number Utilities
+- Value clamping and validation
+- Invalid number detection and replacement
+- Fractional and cumulative sum operations
 
-6. **`utilsMethods.jl`**:
-   - Contains utilities for method manipulation and introspection.
+## Display and Formatting
+- Colored terminal output with `Crayons` and `StyledStrings`
+- ASCII art banners with `FIGlet`
+- Logging level management
+- Type information display with color coding
+- Banner and separator display functions
 
-# Notes:
-- The module provides foundational utilities used across all SINDBAD packages.
-- Functions are designed to be type-stable and performant for use in performance-critical workflows.
-- NamedTuple utilities enable efficient manipulation of SINDBAD's structured data types.
+## Type and Method Utilities
+- Type introspection and hierarchy exploration
+- Docstring generation for types
+- Method manipulation utilities
+- Long tuple handling
 
-# Examples:
-1. **Working with utilities**:
+## Documentation Utilities
+- Automated docstring generation
+- Type documentation formatting
+- Purpose function integration
+
+# Dependencies
+
+- `Accessors`: Utilities for accessing and modifying nested data structures
+- `Crayons`: Colored terminal output
+- `DataStructures`: Data structure utilities for collections
+- `FIGlet`: ASCII art text generation
+- `InteractiveUtils`: Interactive utilities for Julia REPL
+- `Logging`: Logging framework
+- `StyledStrings`: Styled text for terminal output
+- `TypedTables`: Typed table data structures
+
+# Usage Example
+
 ```julia
 using UtilKit
-# Various utility functions are available for collections, arrays, tuples, and more
+
+# Convert dictionary to NamedTuple
+dict = Dict(:a => 1, :b => 2)
+nt = dictToNamedTuple(dict)
+
+# Display a banner
+displayBanner("SINDBAD")
+
+# Work with arrays
+arr = [1, 2, 3, 0, -1, 5]
+bool_arr = booleanizeArray(arr)
+
+# String utilities
+str = toUpperCaseFirst("hello_world", "Time")  # Returns :TimeHelloWorld
 ```
 
-2. **Display and formatting**:
-```julia
-using UtilKit
-# Display utilities and formatting functions are available
-```
+# Notes
 
+- Functions are designed to be type-stable for performance-critical workflows
+- The package provides foundational utilities used across all SINDBAD packages
+- Display utilities support both colored and plain text output
+- NamedTuple utilities enable efficient manipulation of structured data types
+
+# See Also
+
+- [`dictToNamedTuple`](@ref) for dictionary conversion
+- [`displayBanner`](@ref) for ASCII art display
+- [`booleanizeArray`](@ref) for array booleanization
+- [`getTypeDocString`](@ref) for type documentation generation
 """
 module UtilKit
    using Crayons
