@@ -1,17 +1,17 @@
 """
-    getdim(a::TimeAggregatorViewInstance{<:Any, <:Any, D})
+    getdim(a::TimeSamplerViewInstance{<:Any, <:Any, D})
 
-get the dimension to aggregate for TimeAggregatorViewInstance type
+get the dimension to aggregate for TimeSamplerViewInstance type
 """
-getdim(a::TimeAggregatorViewInstance{<:Any,<:Any,D}) where {D} = D
+getdim(a::TimeSamplerViewInstance{<:Any,<:Any,D}) where {D} = D
 
 
 """
-    Base.size(a::TimeAggregatorViewInstance, i)
+    Base.size(a::TimeSamplerViewInstance, i)
 
-extend the size function for TimeAggregatorViewInstance type
+extend the size function for TimeSamplerViewInstance type
 """
-function Base.size(a::TimeAggregatorViewInstance, i)
+function Base.size(a::TimeSamplerViewInstance, i)
     if i === getdim(a)
         size(a.agg.indices, 1)
     else
@@ -19,32 +19,32 @@ function Base.size(a::TimeAggregatorViewInstance, i)
     end
 end
 
-Base.size(a::TimeAggregatorViewInstance) = ntuple(i -> size(a, i), ndims(a))
+Base.size(a::TimeSamplerViewInstance) = ntuple(i -> size(a, i), ndims(a))
 
 """
-    Base.getindex(a::TimeAggregatorViewInstance, I::Vararg{Int, N})
+    Base.getindex(a::TimeSamplerViewInstance, I::Vararg{Int, N})
 
-extend the getindex function for TimeAggregatorViewInstance type
+extend the getindex function for TimeSamplerViewInstance type
 """
-function Base.getindex(a::TimeAggregatorViewInstance, I::Vararg{Int,N}) where {N}
+function Base.getindex(a::TimeSamplerViewInstance, I::Vararg{Int,N}) where {N}
     idim = getdim(a)
     indices = I
     indices = Base.setindex(indices, a.agg.indices[I[idim]], idim)
-    a.agg.aggr_func(view(a.parent, indices...))
+    a.agg.sampler_func(view(a.parent, indices...))
 end
 
 """
-    Base.view(x::AbstractArray, v::TimeAggregator; dim = 1)
+    Base.view(x::AbstractArray, v::TimeSampler; dim = 1)
 
-extend the view function for TimeAggregatorViewInstance type
+extend the view function for TimeSamplerViewInstance type
 
 # Arguments:
 - `x`: input array to be viewed
 - `v`: time aggregator struct with indices and function
-- `dim`: the dimension along which the aggregation should be done
+- `dim`: the dimension along which the sampling/aggregation should be done
 """
-function Base.view(x::AbstractArray, v::TimeAggregator; dim=1)
+function Base.view(x::AbstractArray, v::TimeSampler; dim=1)
     subarray_t = Base.promote_op(getindex, typeof(x), eltype(v.indices))
-    t = Base.promote_op(v.aggr_func, subarray_t)
-    TimeAggregatorViewInstance{t,ndims(x),dim,typeof(x),typeof(v)}(x, v, Val{dim}())
+    t = Base.promote_op(v.sampler_func, subarray_t)
+    TimeSamplerViewInstance{t,ndims(x),dim,typeof(x),typeof(v)}(x, v, Val{dim}())
 end

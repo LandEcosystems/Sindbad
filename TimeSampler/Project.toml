@@ -1,16 +1,17 @@
-name = "TimeAggregation"
+name = "TimeSampler"
 uuid = "a27efc82-29b7-4223-84cd-12fc64c7a5bb"
 version = "0.1.0"
 authors = ["SINDBAD Contributors <sindbad@bgc-jena.mpg.de>"]
+description = "A package for temporal sampling, aggregation, and resampling of time series data"
+license = "EUPL-1.2"
+readme = "README.md"
+repository = "https://github.com/EarthyScience/SINDBAD"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
-UtilKit = "202e6067-a2be-48c9-bc21-3d3d20912f89"
-
-[sources]
-UtilKit = {path = "../UtilKit"}
 
 [compat]
 Dates = "1.11.0"
 StatsBase = "0.34.9"
+julia = "1.6"
