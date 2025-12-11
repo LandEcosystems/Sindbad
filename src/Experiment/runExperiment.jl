@@ -27,7 +27,7 @@ This function initializes an experiment by:
 3. Preparing output settings
 """
 function prepExperiment(sindbad_experiment::String; replace_info=Dict())
-    sindbadBanner()
+    displayBanner()
 
     info = getExperimentInfo(sindbad_experiment; replace_info=replace_info)
 

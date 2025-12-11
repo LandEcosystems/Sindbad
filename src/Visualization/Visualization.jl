@@ -42,8 +42,9 @@ plotIOModelStructure(info)
 """
 module Visualization
     using SindbadTEM
-    using SindbadTEM.Utils
-    using SindbadTEM.Metrics
+    using UtilKit
+    using ..Types
+    using ..Metrics
     # using GLMakie
     # @reexport using GLMakie.Makie
     # using Colors

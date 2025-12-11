@@ -76,8 +76,9 @@ module ParameterOptimization
    # using QuasiMonteCarlo
    using StableRNGs
    using SindbadTEM
-   using SindbadTEM.Utils
-   using SindbadTEM.Metrics
+   using ..Types
+   using UtilKit
+   using ..Metrics
    using ..Setup
    using ..Simulation
 

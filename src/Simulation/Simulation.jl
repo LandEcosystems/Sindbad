@@ -62,10 +62,11 @@ This module integrates various components and utilities required to execute the 
 """
 module Simulation
    using ComponentArrays
-   # using NLsolve
    using ProgressMeter
    using SindbadTEM
-   using SindbadTEM.Utils
+   using TimeAggregation
+   using ..Types
+   using UtilKit
    using ..Setup
    using ..DataLoaders: YAXArrays
    using ThreadPools
@@ -73,11 +74,10 @@ module Simulation
    include("utilsSimulation.jl")
    include("deriveSpinupForcing.jl")
    include("prepTEMOut.jl")
-   include("runModels.jl")
    include("prepTEM.jl")
-   include("runTEMLoc.jl")
-   include("runTEMSpace.jl")
-   include("runTEMCube.jl")
+   include("runTEMForLocation.jl")
+   include("runTEMInSpace.jl")
+   include("runTEMOnCube.jl")
    include("spinupTEM.jl")
    include("spinupSequence.jl")
 

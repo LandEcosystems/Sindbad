@@ -66,6 +66,7 @@ module MachineLearning
     # using YAXArrays
     # using Zarr
     # using AxisKeys
+    using ..Types
     using ..DataLoaders: AllNaN
     using ..DataLoaders: yaxCubeToKeyedArray
     using ..Setup: updateModels
@@ -81,7 +82,7 @@ module MachineLearning
     include("prepHybrid.jl")
     include("mlGradient.jl")
     include("mlTrain.jl")
-    include("neuralNetwork.jl")
+    # include("neuralNetwork.jl")
     include("siteLosses.jl")
     include("oneHots.jl")
     include("loadCovariates.jl")

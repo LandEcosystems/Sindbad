@@ -14,7 +14,6 @@ calculate the performance/loss metric for given observation and model simulation
 # Returns:
 - `metric`: The calculated metric value
 
-$(methodsOf(PerfMetric))
 """
 function metric end
 

@@ -37,10 +37,11 @@ runExperimentForward(experiment_config)
 """
 module Experiment
     using ...SindbadTEM
-    using ..SindbadTEM.Utils
+    using ..Types
+    using UtilKit
     using ..Setup
     using ..DataLoaders
-   #  using ..DataLoaders: YAXArrays, savedataset
+    using ..Metrics
     using ..Simulation
     using ..ParameterOptimization
     using ..Visualization

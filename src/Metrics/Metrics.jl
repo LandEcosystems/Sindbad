@@ -43,9 +43,10 @@ correlation = metric(model_output, observations, Pcor())
 """
 module Metrics
 
-   using ..SindbadTEM
-   using ..Utils: doTemporalAggregation
-   using StatsBase
+   using ..SindbadTEM: methodsOf
+   using ..Types
+   using TimeAggregation: doTemporalAggregation
+   using SindbadTEM.StatsBase
 
    include("handleDataForLoss.jl")
    include("getMetric.jl")

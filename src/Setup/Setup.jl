@@ -61,14 +61,20 @@ This module is designed to produce the SINDBAD `info` object, which contains all
 module Setup
 
    using SindbadTEM
-   using SindbadTEM.Utils
+   @reexport using UtilKit: Table
+   using TimeAggregation
+   using ..Types
    using ConstructionBase
+   using Dates
+   using NaNStatistics
    @reexport using CSV: CSV
    @reexport using Infiltrator
    using JSON: parsefile, json, print as json_print
    @reexport using JLD2: @save, load
 
    include("defaultOptions.jl")
+   include("utilsSetup.jl")
+   include("generateCode.jl")
    include("getConfiguration.jl")
    include("setupSimulationInfo.jl")
    include("setupTypes.jl")
@@ -80,16 +86,5 @@ module Setup
    include("setupParameterOptimization.jl")
    include("setupHybridMachineLearning.jl")
    include("setupInfo.jl")
-
-   #  include doc strings for all types in Types
-   ds_file = joinpath(dirname(pathof(SindbadTEM)), "Types/docStringForTypes.jl")
-   loc_types = subtypes(SindbadTypes)
-   open(ds_file, "a") do o_file
-      writeTypeDocString(o_file, SindbadTypes)
-      for T in loc_types
-         o_file = loopWriteTypeDocString(o_file, T)
-      end
-   end
-   include(ds_file)
 
 end # module Setup
