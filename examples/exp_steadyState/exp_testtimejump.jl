@@ -46,14 +46,14 @@ for (i, tj) ∈ enumerate(tjs)
     sp = ODETsit5()
     @show "ODE_Init", tj
 
-    @time out_sp_ode = SindbadTEM.spinup(spinup_models, sel_forcing, loc_forcing_t, deepcopy(land_init), tem_info.model_helpers, n_timesteps, sp)
+    @time out_sp_ode = Sindbad.Simulation.spinup(spinup_models, sel_forcing, loc_forcing_t, deepcopy(land_init), tem_info.model_helpers, n_timesteps, sp)
 
     out_sp_ode_init = deepcopy(out_sp_ode)
     @show "Exp_Init", tj
     sp = selSpinupModels()
     out_sp_exp = land_init
     @time for nl ∈ 1:Int(tem_info.differential_eqn.time_jump)
-        @time out_sp_exp = SindbadTEM.spinup(spinup_models, sel_forcing, loc_forcing_t, deepcopy(out_sp_exp), tem_info.model_helpers, n_timesteps, sp)
+        @time out_sp_exp = Sindbad.Simulation.spinup(spinup_models, sel_forcing, loc_forcing_t, deepcopy(out_sp_exp), tem_info.model_helpers, n_timesteps, sp)
     end
     out_sp_exp_init = deepcopy(out_sp_exp)
     expSol[:, i] = getfield(out_sp_ode_init.pools, sel_pool)

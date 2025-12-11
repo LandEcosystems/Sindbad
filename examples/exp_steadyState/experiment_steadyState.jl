@@ -112,14 +112,14 @@ for model_array_type ∈ ("static_array",) #, "array") #, "static_array")
         xtname_w = get_xtick_names(info, land_for_s, :TWS)
         println("pre-run: ", sel_pool)
         @time for nl ∈ 1:nLoop_pre_spin
-            land_for_s = SindbadTEM.spinup(spinup_models, theforcing, loc_forcing_t, land_for_s, tem_info, n_timesteps, SelSpinupModels())
+            land_for_s = Sindbad.Simulation.spinup(spinup_models, theforcing, loc_forcing_t, land_for_s, tem_info, n_timesteps, SelSpinupModels())
         end
         println("..............................")
 
         # sel_pool = :TWS
-        sp_method = getfield(SindbadTEM, toUpperCaseFirst("nlsolve_fixedpoint_trustregion_$(string(sel_pool))"))()
+        sp_method = getfield(Types, toUpperCaseFirst("nlsolve_fixedpoint_trustregion_$(string(sel_pool))"))()
         println("NL_solve: ")
-        @time out_sp_nl = SindbadTEM.spinup(spinup_models, theforcing, loc_forcing_t, deepcopy(land_for_s), tem_info, n_timesteps, sp_method)
+        @time out_sp_nl = Sindbad.Simulation.spinup(spinup_models, theforcing, loc_forcing_t, deepcopy(land_for_s), tem_info, n_timesteps, sp_method)
         println("..............................")
 
         for tj ∈ tjs
@@ -128,13 +128,13 @@ for model_array_type ∈ ("static_array",) #, "array") #, "static_array")
             sp = SelSpinupModels()
             out_sp_exp = deepcopy(land_for_s)
             @time for nl ∈ 1:tj
-                out_sp_exp = SindbadTEM.spinup(spinup_models, theforcing, loc_forcing_t, out_sp_exp, tem_info, n_timesteps, sp)
+                out_sp_exp = Sindbad.Simulation.spinup(spinup_models, theforcing, loc_forcing_t, out_sp_exp, tem_info, n_timesteps, sp)
             end
             println("..............................")
             println("Exp_NL: ", tj)
             out_sp_exp_nl = deepcopy(out_sp_nl)
             @time for nl ∈ 1:tj
-                out_sp_exp_nl = SindbadTEM.spinup(spinup_models, theforcing, loc_forcing_t, out_sp_exp_nl, tem_info, n_timesteps, sp)
+                out_sp_exp_nl = Sindbad.Simulation.spinup(spinup_models, theforcing, loc_forcing_t, out_sp_exp_nl, tem_info, n_timesteps, sp)
             end
             println("..............................")
             if sel_pool in (:cEco_TWS,)
