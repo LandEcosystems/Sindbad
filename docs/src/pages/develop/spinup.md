@@ -42,7 +42,7 @@ Spinup methods are stored in spinup functions within SindbadTEM. The different m
 
 ```julia
 using Sindbad.Simulation
-?SindbadTEM.spinup
+?Sindbad.Simulation.spinup
 ```
 
 ::: tip

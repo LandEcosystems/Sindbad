@@ -212,7 +212,7 @@ This section configures observational constraints and cost combination methods.
 ::: tip Available Methods
 - Use `showMethodsOf(PerfMetric)` for cost metrics
 - Use `showMethodsOf(SpatialMetricAggr)` for spatial aggregation
-- Use `showMethodsOf(TimeAggregation)` for temporal methods
+- Use `showMethodsOf(TimeAggregatorMethod)` for temporal methods
 :::
 
 ### Default Observation Settings

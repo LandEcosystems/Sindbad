@@ -73,8 +73,8 @@ graph TD
     SindbadTEM[Sindbad TEM] --> Types[Types]
     
     %% Core dependencies
-    SindbadTEM --> ModelTypes[ModelTypes]
-    SindbadTEM --> TimeTypes[TimeTypes]
+    SindbadTEM --> TEMTypes[TEMTypes]
+    SindbadTEM --> TimeAggregators[TimeAggregators]
     SindbadTEM --> LandTypes[LandTypes]
     SindbadTEM --> ArrayTypes[ArrayTypes]
     

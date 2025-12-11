@@ -7,19 +7,19 @@ This page serves as an overview of the type definitions and modules within the S
 
 This file establishes the `purpose` function, which provides descriptive information about types in the SINDBAD framework. It defines the base `SindbadTypes` abstract type from which all other SINDBAD types inherit. The file includes all other type definition files and provides documentation for the type system.
 
-## ModelTypes.jl
+## TEMTypes.jl
 **Defines the core model type hierarchy for SINDBAD.**
 
-This file establishes the `ModelTypes` abstract type and its subtypes, particularly focusing on land ecosystem models. It includes:
+This file establishes the `TEMTypes` abstract type and its subtypes, particularly focusing on land ecosystem models. It includes:
 - `LandEcosystem`: Abstract type for all land ecosystem models
 - Error handling types: `DoCatchModelErrors` and `DoNotCatchModelErrors`
 
 The file also implements recursive purpose retrieval for model types.
 
-## TimeTypes.jl
+## TimeAggregators.jl
 **Defines time-related types for temporal subsetting and aggregation.**
 
-This file defines `TimeTypes` abstract type and provides a comprehensive set of time-related types for handling different temporal scales and aggregation methods:
+This file defines `TimeAggregators` abstract type and provides a comprehensive set of time-related types for handling different temporal scales and aggregation methods:
 - `TimeAggregator`: Core structure for temporal aggregation
 - Various time scales: `TimeHour`, `TimeDay`, `TimeMonth`, `TimeYear`
 - Specialized time slice views: `TimeAllYears`, `TimeFirstYear`, `TimeRandomYear`
@@ -120,7 +120,7 @@ This file implements the `LongTuple` type, which splits large tuples into smalle
 **Provides utility functions for working with SINDBAD types.**
 
 This file contains functions for:
-- `getSindbadDefinitions`: Retrieving defined objects in SINDBAD
+- `getDefinitions`: Retrieving defined objects in SINDBAD
 - `getTypeDocString`: Generating formatted documentation for types
 - `methodsOf`: Displaying subtypes and their purposes
 - `writeTypeDocString`: Writing type documentation to files

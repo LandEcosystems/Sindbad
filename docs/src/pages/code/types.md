@@ -1,19 +1,19 @@
 ```@docs
-SindbadTEM.Types
+Sindbad.Types
 ```
 
 ## Exported
 ```@meta
 
 DocTestSetup= quote
-using SindbadTEM.Types
+using Sindbad.Types
 end
 ```
 
 ```@autodocs
-Modules = [SindbadTEM.Types]
+Modules = [Sindbad.Types]
 Private = false
-Filter = f -> !(f === SindbadTEM.Types)
+Filter = f -> !(f === Sindbad.Types)
 ```
 
 ## Internal
@@ -21,11 +21,11 @@ Filter = f -> !(f === SindbadTEM.Types)
 CollapsedDocStrings = false
 
 DocTestSetup= quote
-using SindbadTEM.Types
+using Sindbad.Types
 end
 ```
 
 ```@autodocs
-Modules = [SindbadTEM.Types]
+Modules = [Sindbad.Types]
 Public = false
 ```
