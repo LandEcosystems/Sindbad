@@ -1,4 +1,7 @@
 export LongTuple
+export foldlLongTuple
+export getTupleFromLongTuple
+export makeLongTuple
 
 """
     LongTuple{NSPLIT,T}
@@ -105,4 +108,69 @@ function show_element(io::IO, elem, indent)
     else
         printstyled(io, " parameters\n"; color=:light_black)
     end
+end
+
+
+@generated function foldlLongTuple(f, x::LongTuple{NSPL,T}; init) where {T,NSPL}
+    exes = []
+    N = length(T.parameters)
+    lastlength = length(last(T.parameters).parameters)
+    for i in 1:N
+        N2 = i==N ? lastlength : NSPL
+        for j in 1:N2
+            push!(exes, :(init = f(x.data[$i][$j], init)))
+        end
+    end
+    return Expr(:block, exes...)
+end
+
+
+"""
+    getTupleFromLongTuple(long_tuple)
+
+Convert a LongTuple to a regular tuple.
+
+# Arguments
+- `long_tuple`: The input LongTuple
+
+# Returns
+- A regular tuple containing all elements from the LongTuple
+"""
+function getTupleFromLongTuple(long_tuple)
+    emp_vec = []
+    foreach(long_tuple) do lt
+        push!(emp_vec, lt)
+    end
+    return Tuple(emp_vec)
+end
+
+
+
+"""
+    makeLongTuple(normal_tuple; longtuple_size=5)
+
+Create a LongTuple from a normal tuple.
+
+# Arguments
+- `normal_tuple`: The input tuple to convert
+- `longtuple_size`: Size to break down the tuple into (default: 5)
+
+# Returns
+- A LongTuple containing the elements of the input tuple
+"""
+function makeLongTuple(normal_tuple::Tuple, longtuple_size=5)
+    longtuple_size = min(length(normal_tuple), longtuple_size)
+    LongTuple{longtuple_size}(normal_tuple...)
+end
+
+
+"""
+    makeLongTuple(normal_tuple; longtuple_size=5)
+
+# Arguments:
+- `normal_tuple`: a normal tuple
+- `longtuple_size`: size to break down the tuple into
+"""
+function makeLongTuple(long_tuple::LongTuple, longtuple_size=5)
+    long_tuple
 end

@@ -1,31 +1,37 @@
 """
-    Utils
+    UtilKit
 
-The `Utils` module provides a collection of utility functions and tools for handling data, managing NamedTuples, and performing spatial and temporal operations in the SINDBAD framework. It serves as a foundational package for simplifying common tasks and ensuring consistency across SINDBAD experiments.
+The `UtilKit` module provides a collection of utility functions and tools for handling data, managing NamedTuples, and performing spatial and temporal operations in the SINDBAD framework. It serves as a foundational package for simplifying common tasks and ensuring consistency across SINDBAD experiments.
 
 # Purpose:
 This module is designed to provide reusable utilities for data manipulation, statistical operations, and spatial/temporal processing.
 
 # Dependencies:
-- `SindbadTEM`: Provides the core SINDBAD models and types.
 - `Crayons`: Enables colored terminal output, improving the readability of logs and messages.
 - `StyledStrings`: Provides styled text for enhanced terminal output.
-- `Dates`: Facilitates date and time operations, useful for temporal data processing.
-- `FIGlet`: Generates ASCII art text, useful for creating visually appealing headers in logs or outputs.
+- `DataStructures`: Provides data structure utilities for collections and ordered containers.
 - `Logging`: Provides logging utilities for debugging and monitoring SINDBAD workflows.
+- `FIGlet`: Generates ASCII art text, useful for creating visually appealing headers in logs or outputs.
+- `Accessors`: Provides utilities for accessing and modifying nested data structures.
 
 # Included Files:
-1. **`getArrayView.jl`**:
-   - Implements functions for creating views of arrays, enabling efficient data slicing and subsetting.
+1. **`utilsArray.jl`**:
+   - Implements functions for working with arrays, including views and array operations.
 
-2. **`utilsBasic.jl`**:
-   - Contains general-purpose utility functions for data manipulation and processing.
+2. **`utilsCollections.jl`**:
+   - Contains utilities for working with collections and data structures.
 
-3. **`utilsNT.jl`**:
-   - Provides utilities for working with NamedTuples, including transformations and access operations.
+3. **`utilsDisp.jl`**:
+   - Provides display and formatting utilities for output.
 
-4. **`utilsTemporal.jl`**:
-   - Handles temporal operations, including time-based filtering and aggregation.
+4. **`utilsDocstrings.jl`**:
+   - Contains utilities for generating and managing docstrings.
+
+5. **`utilsLongTuple.jl`**:
+   - Provides utilities for working with long tuples and tuple operations.
+
+6. **`utilsMethods.jl`**:
+   - Contains utilities for method manipulation and introspection.
 
 # Notes:
 - The module provides foundational utilities used across all SINDBAD packages.
@@ -33,34 +39,37 @@ This module is designed to provide reusable utilities for data manipulation, sta
 - NamedTuple utilities enable efficient manipulation of SINDBAD's structured data types.
 
 # Examples:
-1. **Working with array views**:
+1. **Working with utilities**:
 ```julia
-using SindbadTEM.Utils
-view = getArrayView(data, indices)
+using UtilKit
+# Various utility functions are available for collections, arrays, tuples, and more
 ```
 
-2. **Manipulating NamedTuples**:
+2. **Display and formatting**:
 ```julia
-using SindbadTEM.Utils
-# Utilities for NamedTuple operations are available throughout SINDBAD
+using UtilKit
+# Display utilities and formatting functions are available
 ```
 
 """
-module Utils
-   using ..SindbadTEM
-   using ..SindbadTEM.Types
+module UtilKit
    using Crayons
    using StyledStrings
-   using FIGlet
-   using Logging
-   using Accessors
-   using Dates
    using DataStructures
-   using StatsBase
+   using Logging
+   using FIGlet
+   using Accessors
+   using TypedTables: Table
+   using InteractiveUtils
+   using Base.Docs: doc as base_doc
+
+   include("utilsNumber.jl")
+   include("utilsString.jl")
+   include("utilsCollections.jl")
+   include("utilsLongTuple.jl")
+   include("utilsArray.jl")
+   include("utilsDisp.jl")
+   include("utilsDocstrings.jl")
+   include("utilsMethods.jl")
    
-   include("getArrayView.jl")
-   include("utilsBasic.jl")
-   include("utilsNT.jl")
-   include("utilsTemporal.jl")
-   
-end # module Utils
+end # module UtilKit

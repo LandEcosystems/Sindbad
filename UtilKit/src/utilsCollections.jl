@@ -1,15 +1,14 @@
 export dictToNamedTuple
 export dropFields
-export foldlLongTuple
 export foldlUnrolled
 export getCombinedNamedTuple
 export getNamedTupleFromTable
-export getTupleFromLongTuple
-export makeLongTuple
 export makeNamedTuple
+export nonUnique
 export removeEmptyTupleFields
 export setTupleField
 export setTupleSubfield
+export tabularizeList
 export tcPrint
 
 
@@ -64,21 +63,6 @@ function dictToNamedTuple(d::AbstractDict)
     dTuple = NamedTuple{Tuple(Symbol.(keys(d)))}(values(d))
     return dTuple
 end
-
-
-@generated function foldlLongTuple(f, x::LongTuple{NSPL,T}; init) where {T,NSPL}
-    exes = []
-    N = length(T.parameters)
-    lastlength = length(last(T.parameters).parameters)
-    for i in 1:N
-        N2 = i==N ? lastlength : NSPL
-        for j in 1:N2
-            push!(exes, :(init = f(x.data[$i][$j], init)))
-        end
-    end
-    return Expr(:block, exes...)
-end
-
 
 
 """
@@ -182,26 +166,6 @@ function getNamedTupleFromTable(tbl;replace_missing_values=false)
 end
 
 
-
-"""
-    getTupleFromLongTuple(long_tuple)
-
-Convert a LongTuple to a regular tuple.
-
-# Arguments
-- `long_tuple`: The input LongTuple
-
-# Returns
-- A regular tuple containing all elements from the LongTuple
-"""
-function getTupleFromLongTuple(long_tuple)
-    emp_vec = []
-    foreach(long_tuple) do lt
-        push!(emp_vec, lt)
-    end
-    return Tuple(emp_vec)
-end
-
 """
     getTypes!(d, all_types)
 
@@ -227,35 +191,6 @@ function getTypes!(d, all_types)
 end
 
 
-
-"""
-    makeLongTuple(normal_tuple; longtuple_size=5)
-
-Create a LongTuple from a normal tuple.
-
-# Arguments
-- `normal_tuple`: The input tuple to convert
-- `longtuple_size`: Size to break down the tuple into (default: 5)
-
-# Returns
-- A LongTuple containing the elements of the input tuple
-"""
-function makeLongTuple(normal_tuple::Tuple, longtuple_size=5)
-    longtuple_size = min(length(normal_tuple), longtuple_size)
-    LongTuple{longtuple_size}(normal_tuple...)
-end
-
-
-"""
-    makeLongTuple(normal_tuple; longtuple_size=5)
-
-# Arguments:
-- `normal_tuple`: a normal tuple
-- `longtuple_size`: size to break down the tuple into
-"""
-function makeLongTuple(long_tuple::LongTuple, longtuple_size=5)
-    long_tuple
-end
 
 """
     makeNamedTuple(input_data, input_names)
@@ -355,6 +290,35 @@ function mergeNamedTupleSetValue(o, p, v)
 end
 
 
+
+
+"""
+    nonUnique(x::AbstractArray{T}) where T
+
+Finds and returns a vector of duplicate elements in the input array.
+
+# Arguments:
+- `x`: The input array.
+
+# Returns:
+A vector of duplicate elements.
+"""
+function nonUnique(x::AbstractArray{T}) where {T}
+    xs = sort(x)
+    duplicatedvector = T[]
+    for i ∈ eachindex(xs)[2:end]
+        if (
+            isequal(xs[i], xs[i-1]) &&
+            (length(duplicatedvector) == 0 || !isequal(duplicatedvector[end], xs[i]))
+        )
+            push!(duplicatedvector, xs[i])
+        end
+    end
+    return duplicatedvector
+end
+
+
+
 """
     removeEmptyTupleFields(tpl::NamedTuple)
 
@@ -408,6 +372,23 @@ Set a field in a NamedTuple.
 """
 setTupleField(tpl::NamedTuple, vals::Tuple{Symbol, Any}) = (; tpl..., first(vals) => last(vals))
 
+
+
+"""
+    tabularizeList(_list)
+
+Converts a list or tuple into a table using `TypedTables`.
+
+# Arguments:
+- `_list`: The input list or tuple.
+
+# Returns:
+A table representation of the input list.
+"""
+function tabularizeList(_list)
+    table = Table((; name=[_list...]))
+    return table
+end
 
 """
     tcPrint(d; _color=true, _type=true, _value=true, t_op=true)
@@ -497,3 +478,4 @@ function tcPrint(d; _color=true, _type=false, _value=true, _tspace="", space_pad
         end
     end
 end
+
