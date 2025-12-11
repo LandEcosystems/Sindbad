@@ -1,21 +1,22 @@
 
 export getInOutModel
 export getInOutModels
+export getSindbadModelOrder
+export getSindbadModels
 export getTypedModel
 export getUnitConversionForParameter
 export modelParameter
 export modelParameters
 
-
 """
-    getInOutModel(model::SindbadTEM.Types.LandEcosystem)
-    getInOutModel(model::SindbadTEM.Types.LandEcosystem, model_func::Symbol)
-    getInOutModel(model::SindbadTEM.Types.LandEcosystem, model_funcs::Tuple)
+    getInOutModel(model::LandEcosystem)
+    getInOutModel(model::LandEcosystem, model_func::Symbol)
+    getInOutModel(model::LandEcosystem, model_funcs::Tuple)
 
 Parses and retrieves the inputs, outputs, and parameters (I/O/P) of SINDBAD models for specified functions or all functions.
 
 # Arguments:
-- `model::SindbadTEM.Types.LandEcosystem`: A SINDBAD model instance. If no additional arguments are provided, parses all inputs, outputs, and parameters for all functions of the model.
+- `model::LandEcosystem`: A SINDBAD model instance. If no additional arguments are provided, parses all inputs, outputs, and parameters for all functions of the model.
 - `model_func::Symbol`: (Optional) A single symbol representing a specific model function to parse (e.g., `:precompute`, `:parameters`, `:compute`).
 - `model_funcs::Tuple`: (Optional) A tuple of symbols representing multiple model functions to parse (e.g., `(:precompute, :parameters)`).
 
@@ -56,11 +57,11 @@ io_data = getInOutModel(my_model, (:precompute, :parameters))
 function getInOutModel end
 
 
-function getInOutModel(T::Type{<:SindbadTEM.Types.LandEcosystem}; verbose=false)
+function getInOutModel(T::Type{<:LandEcosystem}; verbose=false)
     return getInOutModel(T(), verbose=verbose)
 end
 
-function getInOutModel(model::SindbadTEM.Types.LandEcosystem; verbose=true)
+function getInOutModel(model::LandEcosystem; verbose=true)
     if verbose
         println("   collecting I/O/P of: $(nameof(typeof(model))).jl")
     end
@@ -76,7 +77,7 @@ function getInOutModel(model::SindbadTEM.Types.LandEcosystem; verbose=true)
 end
 
 
-function getInOutModel(model::SindbadTEM.Types.LandEcosystem, model_funcs::Tuple)
+function getInOutModel(model::LandEcosystem, model_funcs::Tuple)
     mo_in_out=SindbadTEM.DataStructures.OrderedDict()
     println("   collecting I/O/P of: $(nameof(typeof(model))).jl")
     for func in model_funcs
@@ -367,6 +368,31 @@ function getParameterValue(model, parameter_name, model_timestep)
     return param * getUnitConversionForParameter(p_timescale, model_timestep)
 end
 
+
+"""
+    getSindbadModelOrder(model_name)
+
+helper function to return the default order of a sindbad model
+"""
+function getSindbadModelOrder(model_name; all_models=standard_sindbad_model)
+    mo = findall(x -> x == model_name, all_models)[1]
+    println("The order [default] of $(model_name) in models.jl of core SINDBAD is $(mo)")
+end
+
+"""
+    getSindbadModels()
+
+helper function to return a dictionary of sindbad model and approaches
+"""
+function getSindbadModels(; all_models=standard_sindbad_model)
+    approaches = []
+    for _md ∈ all_models
+        push!(approaches, Pair(_md, [nameof(_x) for _x in subtypes(getfield(SindbadTEM.Processes, _md))]))
+    end
+    return DataStructures.OrderedDict(approaches)
+end
+
+
 """
     getUnitConversionForParameter(p_timescale, model_timestep)
 
@@ -444,14 +470,14 @@ end
 
 """
     modelParameter(models, model::Symbol)
-    modelParameter(model::SindbadTEM.Types.LandEcosystem, show=true)
+    modelParameter(model::LandEcosystem, show=true)
 
 Return and optionally display the current parameters of a given SINDBAD model.
 
 # Arguments
 - `models`: A list/collection of SINDBAD models, required when `model` is a Symbol.
 - `model::Symbol`: A SINDBAD model name.
-- `model::SindbadTEM.Types.LandEcosystem`: A SINDBAD model instance of type LandEcosystem.
+- `model::LandEcosystem`: A SINDBAD model instance of type LandEcosystem.
 - `show::Bool`: A flag to print parameters to the screen (default: true).
 
 """
@@ -480,7 +506,7 @@ function modelParameter(models, model::Symbol)
     return p_dict
 end
 
-function modelParameter(model::SindbadTEM.Types.LandEcosystem, show=true)
+function modelParameter(model::LandEcosystem, show=true)
     model_name = Symbol(supertype(typeof(model)))
     approach_name = nameof(typeof(model))
     if show

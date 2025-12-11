@@ -62,7 +62,7 @@ module Processes
 
     # Import & export necessary modules/functions
     using ..SindbadTEM
-    import ..SindbadTEM.Types: purpose, LandEcosystem
+    import ..SindbadTEM: LandEcosystem, purpose, LongTuple
     using FieldMetadata: @metadata
     using Parameters: @with_kw
     @metadata timescale "" String
@@ -377,6 +377,9 @@ module Processes
         return land
     end
 
+    # include the utility functions for the model processes
+    include(joinpath(@__DIR__, "utilsProcesses.jl"))
+
     # Import all models: developed by @lalonso
     all_folders = readdir(joinpath(@__DIR__, "."))
     all_dir_models = filter(entry -> isdir(joinpath(@__DIR__, entry)), all_folders)
@@ -388,6 +391,8 @@ module Processes
 
     # now having this ordered list is independent from the step including the models into this `module`.
     include(joinpath(@__DIR__, "standardSindbadTEM.jl"))
-
+    
+    # include the run functions for the methods of the TEM processes
+    include(joinpath(@__DIR__, "runTEMProcesses.jl"))
 
 end

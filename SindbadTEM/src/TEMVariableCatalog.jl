@@ -3,13 +3,13 @@ export defaultVariableInfo
 export getUniqueVarNames
 export getVarFull
 export getVariableInfo
-export sindbad_variables
+export sindbad_tem_variables
 export whatIs
 
 orD = DataStructures.OrderedDict
 
 """
-`sindbad_variables`
+`sindbad_tem_variables`
 
 A dictionary of dictionaries that contains information about the variables in the SINDBAD models. The keys of the outer dictionary are the variable names and the inner dictionaries contain the following keys:
 
@@ -19,7 +19,7 @@ A dictionary of dictionaries that contains information about the variables in th
 - `land_field`: the field in the SINDBAD model where the variable is used
 - `description`: a description of the variable
 """
-sindbad_variables = orD{Symbol,orD{Symbol,String}}(
+sindbad_tem_variables = orD{Symbol,orD{Symbol,String}}(
     :cAllocationTreeFraction__cVeg_names_for_c_allocation_frac_tree => orD(
         :standard_name => "cVeg_names_for_c_allocation_frac_tree",
         :long_name => "veg_pools_corrected_for_tree_cover",
@@ -1484,10 +1484,10 @@ sindbad_variables = orD{Symbol,orD{Symbol,String}}(
 
 """
 function checkDisplayVariableDict(var_full; warn_msg=true)
-    sind_var_names = keys(sindbad_variables)
+    sind_var_names = keys(sindbad_tem_variables)
     if var_full in sind_var_names
         print("\nExisting catalog entry for $var_full from src/sindbadVariableCatalog.jl")
-        displayVariableDict(var_full, sindbad_variables[var_full])
+        displayVariableDict(var_full, sindbad_tem_variables[var_full])
     else
         new_d = defaultVariableInfo()
         new_d[:land_field] = split(string(var_full), "__")[1]
@@ -1676,7 +1676,7 @@ end
 """
     getVariableCatalogFromLand(land)
 
-a helper function to tentatively build a default variable catalog by parsing the fields and subfields of land. This is now a legacy function because it is not recommended way to generate a new catalog. The current catalog (sindbad_variables) has finalized entries, and new entries to the catalog should to be added there directly
+a helper function to tentatively build a default variable catalog by parsing the fields and subfields of land. This is now a legacy function because it is not recommended way to generate a new catalog. The current catalog (sindbad_tem_variables) has finalized entries, and new entries to the catalog should to be added there directly
 """
 function getVariableCatalogFromLand(land)
     default_varib = defaultVariableInfo()
@@ -1770,7 +1770,7 @@ end
 - `t_step`: time step of the variable, default is "day"
 """
 function getVariableInfo(vari_b::Symbol, t_step="day")
-    catalog = sindbad_variables
+    catalog = sindbad_tem_variables
     default_info = defaultVariableInfo(true)
     default_keys = Symbol.(keys(default_info))
     o_varib = copy(default_info)
@@ -1824,7 +1824,7 @@ end
 """
     getVarFull(var_pair)
 
-return the variable full name used as the key in the catalog of sindbad_variables from a pair consisting of the field and subfield of SINDBAD land. Convention is `field__subfield` of land
+return the variable full name used as the key in the catalog of sindbad_tem_variables from a pair consisting of the field and subfield of SINDBAD land. Convention is `field__subfield` of land
 """
 function getVarFull(var_pair)
     return Symbol(String(first(var_pair)) * "__" * String(last(var_pair)))
@@ -1863,7 +1863,7 @@ function whatIs(var_name::String)
     var_field = string(split(var_name, ".")[1])
     var_sfield = string(split(var_name, ".")[2])
     var_full = getFullVariableKey(var_field, var_sfield)
-    println("\nchecking $var_name as :$var_full in sindbad_variables catalog...")
+    println("\nchecking $var_name as :$var_full in sindbad_tem_variables catalog...")
     checkDisplayVariableDict(var_full)
     return nothing
 end
@@ -1879,14 +1879,14 @@ end
 
 function whatIs(var_field::String, var_sfield::String)
     var_full = getFullVariableKey(var_field, var_sfield)
-    println("\nchecking $var_field field and $var_sfield subfield as :$var_full in sindbad_variables catalog...")
+    println("\nchecking $var_field field and $var_sfield subfield as :$var_full in sindbad_tem_variables catalog...")
     checkDisplayVariableDict(var_full)
     return nothing
 end
 
 function whatIs(var_field::Symbol, var_sfield::Symbol)
     var_full = getFullVariableKey(string(var_field), string(var_sfield))
-    println("\nchecking :$var_field field and :$var_sfield subfield as :$var_full in sindbad_variables catalog...")
+    println("\nchecking :$var_field field and :$var_sfield subfield as :$var_full in sindbad_tem_variables catalog...")
     checkDisplayVariableDict(var_full)
     return nothing
 end

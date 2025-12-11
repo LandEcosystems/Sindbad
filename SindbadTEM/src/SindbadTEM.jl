@@ -25,7 +25,7 @@ This module defines the `LandEcosystem` supertype, which serves as the base for 
 
 # Included Files:
 1. **`Types/Types.jl`**:
-   - Collects all SINDBAD types (model, time, land, array, experiment, etc.) and exports `purpose` along with helper utilities. Re-exported via `SindbadTEM.Types`.
+   - Collects all SINDBAD types (model, time, land, array, experiment, etc.) and exports `purpose` along with helper utilities. Re-exported via `Sindbad.Types`.
 
 2. **`TEMUtils.jl`**:
    - Provides helper macros and functions for manipulating pools, NamedTuples, logging, and other TER utilities. Re-exported as `SindbadTEM.TEMUtils`.
@@ -73,20 +73,22 @@ catalog = getVariableCatalog()
 """
 module SindbadTEM
    using Reexport: @reexport
+   @reexport using UtilKit
+   import UtilKit: purpose
    @reexport using Reexport
    @reexport using Pkg
    @reexport using CodeTracking
    @reexport using DataStructures: DataStructures
-   @reexport using Dates
+   # @reexport using Dates
    # @reexport using Flatten: flatten, metaflatten, fieldnameflatten, parentnameflatten
-   @reexport using InteractiveUtils
    @reexport using StaticArraysCore: StaticArray, SVector, MArray, SizedArray
-   @reexport using TypedTables: Table
-   @reexport using Accessors: @set
+   @reexport using UtilKit.Accessors: @set
    @reexport using StatsBase
-   @reexport using NaNStatistics
-   @reexport using Crayons
-   using StyledStrings
+   # @reexport using NaNStatistics
+   @reexport using UtilKit.InteractiveUtils
+   @reexport using UtilKit.Crayons
+   @reexport using Base.Docs: doc as base_doc
+   @reexport using UtilKit.StyledStrings
 
    # create a tmp_ file for tracking the creation of new approaches. This is needed because precompiler is not consistently loading the newly created approaches. This file is appended every time a new model/approach is created which forces precompile in the next use of SindbadTEM.
    file_path = file_path = joinpath(@__DIR__, "tmp_precompile_placeholder.jl")
@@ -103,18 +105,16 @@ module SindbadTEM
       println("Created a blank file: $file_path to track precompilation of new processes and approaches")
    end
    
-   include("Types/Types.jl")
-   @reexport using .Types
-   include("sindbadVariableCatalog.jl")
-   include("TEMTools.jl")
-   include("TEMUtils.jl")   
+   include("TEMTypes.jl")
+   include("utilsSindbadTEM.jl")
+   include("TEMVariableCatalog.jl")
    include("Processes/Processes.jl")
-   include("generateCode.jl")
+   # include("generateCode.jl")
    @reexport using .Processes
-   include("Utils/Utils.jl")
-   @reexport using .Utils
-   include("Metrics/Metrics.jl")
-   @reexport using .Metrics
+   # include("Utils/Utils.jl")
+   # @reexport using .Utils
+   # include("Metrics/Metrics.jl")
+   # @reexport using .Metrics
 
    # append the docstring of the LandEcosystem type to the docstring of the SindbadTEM module so that all the methods of the LandEcosystem type are included after the models have been described
    @doc """
@@ -160,9 +160,8 @@ module SindbadTEM
    ---
 
    # Extended help
-   $(methodsOf(Types.LandEcosystem))
+   $(methodsOf(LandEcosystem, purpose_function=purpose))
    """
-   Types.LandEcosystem
+   LandEcosystem
    
-   include(joinpath(@__DIR__, "Types/docStringForTypes.jl"))
 end
