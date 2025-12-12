@@ -18,14 +18,14 @@ function aggregateData end
 
 function aggregateData(dat, cost_option, ::TimeSpace)
     @debug "aggregating data", size(dat)
-    dat = doTemporalAggregation(dat, cost_option.temporal_aggr, cost_option.temporal_aggr_type)
+    dat = doTimeSampling(dat, cost_option.temporal_aggr, cost_option.temporal_aggr_type)
     dat = doSpatialAggregation(dat, cost_option, cost_option.spatial_data_aggr)
     return dat
 end
 
 function aggregateData(dat, cost_option, ::SpaceTime)
     dat = doSpatialAggregation(dat, cost_option, cost_option.spatial_data_aggr)
-    dat = doTemporalAggregation(dat, cost_option.temporal_aggr, cost_option.temporal_aggr_type)
+    dat = doTimeSampling(dat, cost_option.temporal_aggr, cost_option.temporal_aggr_type)
     return dat
 end
 

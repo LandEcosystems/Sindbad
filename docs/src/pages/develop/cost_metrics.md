@@ -85,7 +85,7 @@ Requirements:
 Implement the metric calculation in `lib/SindbadMetrics/src/metrics.jl`:
 
 ```julia
-function metric(y::AbstractArray, yσ::AbstractArray, ŷ::AbstractArray, ::NewMetric)
+function metric(::NewMetric, ŷ::AbstractArray, y::AbstractArray, yσ::AbstractArray)
     # Your metric calculation here
     return metric_value
 end
@@ -94,9 +94,9 @@ end
 Requirements:
 - Function must be named `metric`
 - Must take four arguments:
+  - `ŷ`: Model simulation data/estimate
   - `y`: Observation data
   - `yσ`: Observational uncertainty data
-  - `ŷ`: Model simulation data/estimate
   - The metric type
 - Must return a scalar value
 
@@ -152,10 +152,10 @@ yσ = [0.1, 0.1, 0.1]  # uncertainties
 ŷ = [1.1, 2.1, 3.1]  # model output
 
 # Calculate MSE
-mse = metric(y, yσ, ŷ, MSE())
+mse = metric(MSE(), ŷ, y, yσ)
 
 # Calculate correlation
-correlation = metric(y, yσ, ŷ, Pcor())
+correlation = metric(Pcor(), ŷ, y, yσ)
 ```
 
 ### Using Multiple Metrics in ParameterOptimization

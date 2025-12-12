@@ -49,16 +49,16 @@ function plotPerformanceHistograms(out_opti)
             obs_σ_pix = getArrayView(obs_σ, lsi)
             (obs_pix_no_nan, obs_σ_pix_no_nan, opt_pix_no_nan) = getDataWithoutNaN(obs_pix, obs_σ_pix, opt_pix)
             (_, _, def_pix_no_nan) = getDataWithoutNaN(obs_pix, obs_σ_pix, def_pix)
-            [metric(obs_pix_no_nan, obs_σ_pix_no_nan, def_pix_no_nan, lossMetric), metric(obs_pix_no_nan, obs_σ_pix_no_nan, opt_pix_no_nan, lossMetric)]
+            [metric(lossMetric, def_pix_no_nan, obs_pix_no_nan, obs_σ_pix_no_nan), metric(lossMetric, opt_pix_no_nan, obs_pix_no_nan, obs_σ_pix_no_nan)]
         end
 
 
         b_range = range(-1, 1, length=50)
         p_title = "$(var_row.variable) ($(nameof(typeof(lossMetric))))"
         plots_histogram(first.(loss_space); title=p_title, size=(2000, 1000),bins=b_range, alpha=0.9, label="default", color="#FDB311")
-        plots_vline!([metric(obs_var_no_nan, obs_σ_no_nan, def_var_no_nan, lossMetric)], label="default_spatial", color="#FDB311", lw=3)
+        plots_vline!([metric(lossMetric, def_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="default_spatial", color="#FDB311", lw=3)
         plots_histogram!(last.(loss_space); size=(2000, 1000), bins=b_range, alpha=0.5, label="optimized", color="#18A15C")
-        plots_vline!([metric(obs_var_no_nan, obs_σ_no_nan, opt_var_no_nan, lossMetric)], label="optimized_spatial", color="#18A15C", lw=3)
+        plots_vline!([metric(lossMetric, opt_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="optimized_spatial", color="#18A15C", lw=3)
         plots_xlabel!("")
         plots_savefig(fig_prefix * "_$(v).png")
     end
@@ -119,8 +119,8 @@ function plotTimeSeriesWithObs(out_opti)
 
         xdata = [info.helpers.dates.range[tspan]...]
 
-        metr_def = metric(obs_var[valids], obs_σ[valids], def_var[valids], lossMetric)
-        metr_opt = metric(obs_var[valids], obs_σ[valids], opt_var[valids], lossMetric)
+        metr_def = metric(lossMetric, def_var[valids], obs_var[valids], obs_σ[valids])
+        metr_opt = metric(lossMetric, opt_var[valids], obs_var[valids], obs_σ[valids])
 
         plots_plot(xdata, obs_var; label="obs", seriestype=:scatter, mc=:black, ms=4, lw=0, ma=0.65, left_margin=1plots_cm)
         plots_plot!(xdata, def_var, lw=1.5, ls=:dash, left_margin=1plots_cm, legend=:outerbottom, legendcolumns=3, label="def ($(round(metr_def, digits=2)))", size=(2000, 1000), title="$(domain): $(vinfo["long_name"]) ($(vinfo["units"])) -> $(nameof(typeof(lossMetric)))", color=:steelblue2)
@@ -224,7 +224,7 @@ function plotTimeSeriesWithObs(out,obs_array,cost_options)
 
         xdata = [info.helpers.dates.range[tspan]...]
 
-        metr_def = metric(obs_var[valids], obs_σ[valids], def_var[valids], lossMetric)
+        metr_def = metric(lossMetric, def_var[valids], obs_var[valids], obs_σ[valids])
 
         plots_plot(xdata, obs_var; label="obs", seriestype=:scatter, mc=:black, ms=4, lw=0, ma=0.65, left_margin=1plots_cm)
         plots_plot!(xdata, def_var, lw=1.5, ls=:dash, left_margin=1plots_cm, legend=:outerbottom, legendcolumns=2, label="def ($(round(metr_def, digits=2)))", size=(2000, 1000), title="$(domain): $(vinfo["long_name"]) ($(vinfo["units"])) -> $(nameof(typeof(lossMetric)))", color=:steelblue2)

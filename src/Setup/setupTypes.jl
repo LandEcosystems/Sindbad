@@ -153,9 +153,9 @@ Retrieves the type instance for a given cost metric based on its name.
 - The type is retrieved from the `SindbadMetrics` module and instantiated.
 - Used for dispatching cost metric calculations in SINDBAD.
 """
-function getTypeInstanceForCostMetric(option_name::String)
+function getTypeInstanceForCostMetric(source_module::Module, option_name::String)
     opt_ss = toUpperCaseFirst(option_name)
-    struct_instance = getfield(Types, opt_ss)()
+    struct_instance = getfield(source_module, opt_ss)()
     return struct_instance
 end
 
@@ -205,7 +205,7 @@ Retrieves a type instance for a named option based on its string or symbol repre
 - If the input is a `Symbol`, it is converted to a `String` before processing.
 - The function capitalizes the first letter of each word in the option name and removes underscores to match the type naming convention.
 - This is used for type-based dispatch in SINDBAD's configuration and execution.
-- The type for temporal aggregation is set using `getTimeAggregatorInstance` in `Utils`. It uses a similar approach and prefixes `Time` to type.
+- The type for temporal aggregation is set using `getTimeSamplerInstance` in `Utils`. It uses a similar approach and prefixes `Time` to type.
 
 # Example:
 - A named option for 

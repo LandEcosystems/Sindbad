@@ -67,12 +67,11 @@ module Sindbad
   @reexport using SindbadTEM
   @reexport using SindbadTEM.StatsBase
   @reexport using NaNStatistics
-  @reexport using TimeAggregation
+  @reexport using TimeSampler
+  @reexport using ErrorMetrics
 
   include("Types/Types.jl")
   @reexport using .Types
-  include("Metrics/Metrics.jl")
-  @reexport using .Metrics
   include("Setup/Setup.jl")
   @reexport using .Setup
   include("DataLoaders/DataLoaders.jl")
@@ -87,16 +86,6 @@ module Sindbad
   @reexport using .MachineLearning
   include("Experiment/Experiment.jl")
   @reexport using .Experiment
-
-    # include doc strings for all types in Types
-  # ds_file = joinpath(@__DIR__, "Types/docStringForTypes.jl")
-  # loc_types = subtypes(SindbadTypes)
-  # open(ds_file, "a") do o_file
-  #   writeTypeDocString(o_file, SindbadTypes)
-  #   for T in loc_types
-  #       o_file = loopWriteTypeDocString(o_file, T)
-  #   end
-  # end
-  # include(ds_file)
-
+  # include("writeDocStringForTypes.jl")
+  # include("Types/docStringForTypes.jl")
 end # module Sindbad

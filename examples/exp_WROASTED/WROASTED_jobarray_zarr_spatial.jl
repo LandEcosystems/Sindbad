@@ -188,9 +188,9 @@ o_set = :set1
 
         xdata = [info.helpers.dates.range[tspan]...]
 
-        metr_ml = metric(obs_var[valids], obs_σ[valids], ml_var[valids], lossMetric)
-        metr_def = metric(obs_var[valids], obs_σ[valids], def_var[valids], lossMetric)
-        metr_opt = metric(obs_var[valids], obs_σ[valids], opt_var[valids], lossMetric)
+        metr_ml = metric(lossMetric, ml_var[valids], obs_var[valids], obs_σ[valids])
+        metr_def = metric(lossMetric, def_var[valids], obs_var[valids], obs_σ[valids])
+        metr_opt = metric(lossMetric, opt_var[valids], obs_var[valids], obs_σ[valids])
 
         plot(xdata, obs_var; label="obs", seriestype=:scatter, mc=:black, ms=4, lw=0, ma=0.65, left_margin=1Plots.cm)
         plot!(xdata, def_var, color=:steelblue2, lw=1.5, ls=:dash, left_margin=1Plots.cm, legend=:outerbottom, legendcolumns=4, label="def ($(round(metr_def, digits=2)))", size=(2000, 1000), title="$(vinfo["long_name"]) ($(vinfo["units"])) -> $(nameof(typeof(lossMetric))), $(forcing_set), $(o_set)")

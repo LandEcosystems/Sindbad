@@ -101,8 +101,10 @@ function getCostOptions(optim_info::NamedTuple, vars_info, tem_variables, number
                 sel_value = number_helpers.num_type(sel_value)
             elseif sel_value isa Bool
                 sel_value=getTypeInstanceForFlags(prop, sel_value, "Do")
-            elseif sel_value isa String && (prop ∉ (:aggr_func, :temporal_data_aggr))
-                sel_value = getTypeInstanceForCostMetric(sel_value)
+            elseif sel_value isa String && (prop == :cost_metric)
+                sel_value = getTypeInstanceForCostMetric(ErrorMetrics, sel_value)
+            elseif sel_value isa String && (prop ∈ (:aggr_order, :spatial_data_aggr))
+                sel_value = getTypeInstanceForCostMetric(Types, sel_value)
             end
             push!(prop_array, sel_value)
             if prop == :temporal_data_aggr
@@ -140,11 +142,11 @@ function getCostOptions(optim_info::NamedTuple, vars_info, tem_variables, number
     for (i, _aggr) in enumerate(time_aggrs)
         aggr_func = getAggrFunc(aggr_funcs[i])
         _aggr_name = string(_aggr)
-        skip_aggregation = false
+        skip_sampling = false
         if startswith(_aggr_name, dates_helpers.temporal_resolution)
-            skip_aggregation = true
+            skip_sampling = true
         end
-        aggInd = createTimeAggregator(dates_helpers.range, _aggr, aggr_func, skip_aggregation)
+        aggInd = createTimeSampler(dates_helpers.range, toUpperCaseFirst(_aggr, "Time"), aggr_func, skip_sampling)
         push!(agg_indices, aggInd)
     end
     push!(all_options, obs_ind)

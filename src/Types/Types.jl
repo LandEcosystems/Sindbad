@@ -14,7 +14,7 @@ This module serves as the backbone for type definitions in SINDBAD, ensuring mod
 1. **`TEMTypes.jl`**:
    - Defines types for models in SindbadTEM, representing various model/processes.
 
-2. **`TimeAggregators.jl`**:
+2. **`TimeSamplers.jl`**:
    - Defines types for handling time-related operations, managing temporal aggregation of data.
 
 3. **`SpinupTypes.jl`**:
@@ -71,7 +71,7 @@ using Sindbad.Types
 """
 module Types
     import Sindbad: purpose
-    using Sindbad: getTypeDocString, SindbadTypes, TimeAggregation
+    using Sindbad: getTypeDocString, SindbadTypes, TimeSampler
 
     # ------------------------- SindbadTypes ------------------------------------------------------------
     include("LandTypes.jl")
@@ -79,7 +79,6 @@ module Types
     include("InputTypes.jl")
     include("SimulationTypes.jl")
     include("ParameterOptimizationTypes.jl")
-    include("MetricsTypes.jl")
     include("MachineLearningTypes.jl")
 
 

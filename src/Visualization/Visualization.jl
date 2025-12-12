@@ -44,7 +44,7 @@ module Visualization
     using SindbadTEM
     using UtilKit
     using ..Types
-    using ..Metrics
+    using Sindbad.ErrorMetrics
     # using GLMakie
     # @reexport using GLMakie.Makie
     # using Colors

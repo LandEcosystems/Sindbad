@@ -89,7 +89,7 @@ function metricVector(model_output, observations, cost_options)
         (y, yσ, ŷ) = getDataWithoutNaN(y, yσ, ŷ, cost_option.valids)
         @debug "size y, yσ, ŷ", size(y), size(yσ), size(ŷ)
         # (y, yσ, ŷ) = getDataWithoutNaN(y, yσ, ŷ, cost_option.valids)
-        metr = metric(y, yσ, ŷ, lossMetric) * cost_option.cost_weight
+        metr = metric(lossMetric, ŷ, y, yσ) * cost_option.cost_weight
         if isnan(metr)
             metr = oftype(metr, 1e19)
         end
@@ -107,7 +107,7 @@ function metricVector(model_output::LandWrapper, observations, cost_options)
         (y, yσ, ŷ) = getData(model_output, observations, cost_option)
         @debug "size y, yσ, ŷ", size(y), size(yσ), size(ŷ), size(idxs)
         (y, yσ, ŷ) = getDataWithoutNaN(y, yσ, ŷ) ## cannot use the valids because LandWrapper produces vector
-        metr = metric(y, yσ, ŷ, lossMetric) * cost_option.cost_weight
+        metr = metric(lossMetric, ŷ, y, yσ) * cost_option.cost_weight
         if isnan(metr)
             metr = oftype(metr, 1e19)
         end

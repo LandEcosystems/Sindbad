@@ -75,13 +75,17 @@ module ParameterOptimization
    # # using OptimizationQuadDIRECT
    # using QuasiMonteCarlo
    using StableRNGs
+   using UtilKit
+   using ErrorMetrics
+   using TimeSampler
    using SindbadTEM
    using ..Types
-   using UtilKit
-   using ..Metrics
+   # using ..Metrics
    using ..Setup
    using ..Simulation
 
+   include("handleDataForCost.jl")
+   include("getCost.jl")
    include("optimizer.jl")
    include("cost.jl")
    include("prepOpti.jl")

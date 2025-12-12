@@ -318,11 +318,11 @@ function getSpinupSequenceWithTypes(seqq, helpers_dates)
     for seq in seqq
         for kk in keys(seq)
             if kk == "forcing"
-                skip_aggregation = false
+                skip_sampling = false
                 if startswith(kk, helpers_dates.temporal_resolution)
-                    skip_aggregation = true
+                    skip_sampling = true
                 end
-                aggregator = createTimeAggregator(helpers_dates.range, seq[kk], mean, skip_aggregation)
+                aggregator = createTimeSampler(helpers_dates.range, toUpperCaseFirst(seq[kk], "Time"), mean, skip_sampling)
                 seq["aggregator"] = aggregator
                 seq["aggregator_type"] = TimeNoDiff()
                 seq["aggregator_indices"] = [_ind for _ind in vcat(aggregator[1].indices...)]

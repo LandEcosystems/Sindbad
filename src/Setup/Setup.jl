@@ -62,7 +62,8 @@ module Setup
 
    using SindbadTEM
    @reexport using UtilKit: Table
-   using TimeAggregation
+   using TimeSampler
+   using ErrorMetrics
    using ..Types
    using ConstructionBase
    using Dates
@@ -73,7 +74,7 @@ module Setup
    @reexport using JLD2: @save, load
 
    include("defaultOptions.jl")
-   include("utilsSetup.jl")
+   include("SetupUtils.jl")
    include("generateCode.jl")
    include("getConfiguration.jl")
    include("setupSimulationInfo.jl")

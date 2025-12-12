@@ -82,13 +82,13 @@ module SindbadTEM
    # @reexport using Dates
    # @reexport using Flatten: flatten, metaflatten, fieldnameflatten, parentnameflatten
    @reexport using StaticArraysCore: StaticArray, SVector, MArray, SizedArray
-   @reexport using UtilKit.Accessors: @set
+   @reexport using Accessors: @set
    @reexport using StatsBase
    # @reexport using NaNStatistics
-   @reexport using UtilKit.InteractiveUtils
-   @reexport using UtilKit.Crayons
+   @reexport using InteractiveUtils
+   @reexport using Crayons
    @reexport using Base.Docs: doc as base_doc
-   @reexport using UtilKit.StyledStrings
+   @reexport using StyledStrings
 
    # create a tmp_ file for tracking the creation of new approaches. This is needed because precompiler is not consistently loading the newly created approaches. This file is appended every time a new model/approach is created which forces precompile in the next use of SindbadTEM.
    file_path = file_path = joinpath(@__DIR__, "tmp_precompile_placeholder.jl")
@@ -106,7 +106,7 @@ module SindbadTEM
    end
    
    include("TEMTypes.jl")
-   include("utilsSindbadTEM.jl")
+   include("TEMUtils.jl")
    include("TEMVariableCatalog.jl")
    include("Processes/Processes.jl")
    # include("generateCode.jl")

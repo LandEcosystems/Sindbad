@@ -16,11 +16,11 @@ This file establishes the `TEMTypes` abstract type and its subtypes, particularl
 
 The file also implements recursive purpose retrieval for model types.
 
-## TimeAggregators.jl
+## TimeSamplers.jl
 **Defines time-related types for temporal subsetting and aggregation.**
 
-This file defines `TimeAggregators` abstract type and provides a comprehensive set of time-related types for handling different temporal scales and aggregation methods:
-- `TimeAggregator`: Core structure for temporal aggregation
+This file defines `TimeSamplers` abstract type and provides a comprehensive set of time-related types for handling different temporal scales and aggregation methods:
+- `TimeSampler`: Core structure for temporal aggregation
 - Various time scales: `TimeHour`, `TimeDay`, `TimeMonth`, `TimeYear`
 - Specialized time slice views: `TimeAllYears`, `TimeFirstYear`, `TimeRandomYear`
 - Statistical time aggregations: `TimeMean`, `TimeDiff`, `TimeIAV` (Inter-Annual Variability)

@@ -36,12 +36,12 @@ runExperimentForward(experiment_config)
 ```
 """
 module Experiment
+    using UtilKit
+    using ErrorMetrics
     using ...SindbadTEM
     using ..Types
-    using UtilKit
     using ..Setup
     using ..DataLoaders
-    using ..Metrics
     using ..Simulation
     using ..ParameterOptimization
     using ..Visualization

@@ -129,3 +129,70 @@ purpose(::Type{ScaleDefault}) = "Scale parameters relative to default values"
 
 struct ScaleBounds <: ParameterScaling end
 purpose(::Type{ScaleBounds}) = "Scale parameters relative to their bounds"
+
+
+# ------------------------- data aggregation for metric calculation -------------------------
+
+export DataAggrOrder
+export SpaceTime
+export TimeSpace
+
+abstract type DataAggrOrder <: ParameterOptimizationTypes end
+purpose(::Type{DataAggrOrder}) = "Abstract type for data aggregation order in SINDBAD"
+
+struct SpaceTime <: DataAggrOrder end
+purpose(::Type{SpaceTime}) = "Aggregate data first over space, then over time"
+
+struct TimeSpace <: DataAggrOrder end
+purpose(::Type{TimeSpace}) = "Aggregate data first over time, then over space"
+
+export DoAggrObs
+export DoNotAggrObs
+
+export DoSpatialWeight
+export DoNotSpatialWeight
+
+struct DoAggrObs end
+purpose(::Type{DoAggrObs}) = "Apply aggregation to observations"
+
+struct DoNotAggrObs end
+purpose(::Type{DoNotAggrObs}) = "Do not apply aggregation to observations"
+
+struct DoSpatialWeight end
+purpose(::Type{DoSpatialWeight}) = "Apply spatial weighting to metrics"
+
+struct DoNotSpatialWeight end
+purpose(::Type{DoNotSpatialWeight}) = "Do not apply spatial weighting to metrics"
+
+export SpatialDataAggr
+export ConcatData
+
+abstract type SpatialDataAggr <: ParameterOptimizationTypes end
+purpose(::Type{SpatialDataAggr}) = "Abstract type for spatial data aggregation methods in SINDBAD"
+
+struct ConcatData end
+purpose(::Type{ConcatData}) = "Concatenate data arrays for aggregation"
+
+# ------------------------- spatial metric aggregation -------------------------
+
+export SpatialMetricAggr
+export MetricMaximum
+export MetricMinimum
+export MetricSum
+export MetricSpatial
+
+abstract type SpatialMetricAggr <: ParameterOptimizationTypes end
+purpose(::Type{SpatialMetricAggr}) = "Abstract type for spatial metric aggregation methods in SINDBAD"
+
+struct MetricMaximum <: SpatialMetricAggr end
+purpose(::Type{MetricMaximum}) = "Take maximum value across spatial dimensions"
+
+struct MetricMinimum <: SpatialMetricAggr end
+purpose(::Type{MetricMinimum}) = "Take minimum value across spatial dimensions"
+
+struct MetricSum <: SpatialMetricAggr end
+purpose(::Type{MetricSum}) = "Sum values across spatial dimensions"
+
+struct MetricSpatial <: SpatialMetricAggr end
+purpose(::Type{MetricSpatial}) = "Apply spatial aggregation to metrics"
+

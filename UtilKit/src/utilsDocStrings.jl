@@ -52,14 +52,13 @@ This function writes a docstring for a type to a file.
 """
 function writeTypeDocString(o_file, T; purpose_function=purpose)
     doc_string = base_doc(T)
-    println("Doc string: $doc_string")
     if startswith(string(doc_string), "No documentation found for public symbol")
        write(o_file, "@doc \"\"\"\n$(getTypeDocString(T, purpose_function=purpose_function))\n\"\"\"\n")
-       write(o_file, "$(nameof(T))\n\n")
-    #    write(o_file, "$(T)\n\n")
-    else
-        write(o_file, "$(nameof(T))\n\n")
-        println("Doc string already exists for $(T), $(doc_string)")
+    #    write(o_file, "$(nameof(T))\n\n")
+       write(o_file, "$(T)\n\n")
+    # else
+        # write(o_file, "$(T)\n\n")
+        # println("Doc string already exists for $(T), $(doc_string)")
     end
     return o_file
  end

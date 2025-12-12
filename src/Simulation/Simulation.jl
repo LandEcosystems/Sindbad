@@ -64,14 +64,14 @@ module Simulation
    using ComponentArrays
    using ProgressMeter
    using SindbadTEM
-   using TimeAggregation
+   using TimeSampler
    using ..Types
    using UtilKit
    using ..Setup
    using ..DataLoaders: YAXArrays
    using ThreadPools
 
-   include("utilsSimulation.jl")
+   include("SimulationUtils.jl")
    include("deriveSpinupForcing.jl")
    include("prepTEMOut.jl")
    include("prepTEM.jl")

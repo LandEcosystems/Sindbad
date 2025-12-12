@@ -378,7 +378,7 @@ module Processes
     end
 
     # include the utility functions for the model processes
-    include(joinpath(@__DIR__, "utilsProcesses.jl"))
+    include(joinpath(@__DIR__, "ProcessesUtils.jl"))
 
     # Import all models: developed by @lalonso
     all_folders = readdir(joinpath(@__DIR__, "."))
@@ -393,6 +393,6 @@ module Processes
     include(joinpath(@__DIR__, "standardSindbadTEM.jl"))
     
     # include the run functions for the methods of the TEM processes
-    include(joinpath(@__DIR__, "runTEMProcesses.jl"))
+    include(joinpath(@__DIR__, "runProcesses.jl"))
 
 end

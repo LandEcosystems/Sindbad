@@ -74,7 +74,7 @@ graph TD
     
     %% Core dependencies
     SindbadTEM --> TEMTypes[TEMTypes]
-    SindbadTEM --> TimeAggregators[TimeAggregators]
+    SindbadTEM --> TimeSamplers[TimeSamplers]
     SindbadTEM --> LandTypes[LandTypes]
     SindbadTEM --> ArrayTypes[ArrayTypes]
     

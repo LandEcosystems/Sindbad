@@ -67,7 +67,7 @@ end
 
 function cost(parameter_vector, default_values, selected_models, space_forcing, space_spinup_forcing, loc_forcing_t, output_array, space_output, space_land, tem_info, observations, parameter_updater, cost_options, multi_constraint_method, parameter_scaling_type, ::CostModelObsPriors)
     # prior has to be calculated before the parameters are backscaled and models are updated
-    cost_prior = metric(parameter_vector, parameter_vector, default_values, MSE())
+    cost_prior = metric(MSE(), parameter_vector, parameter_vector, default_values)
     cost_metric = cost(parameter_vector, default_values, selected_models, space_forcing, space_spinup_forcing, loc_forcing_t, output_array, space_output, space_land, tem_info, observations, parameter_updater, cost_options, multi_constraint_method, parameter_scaling_type, CostModelObs())
     cost_metric = cost_metric + cost_prior
     @debug cost_vector, cost_metric
