@@ -1,17 +1,17 @@
 """
-    getdim(a::TimeSamplerViewInstance{<:Any, <:Any, D})
+    getdim(a::TimeSampleViewInstance{<:Any, <:Any, D})
 
-get the dimension to aggregate for TimeSamplerViewInstance type
+get the dimension to aggregate for TimeSampleViewInstance type
 """
-getdim(a::TimeSamplerViewInstance{<:Any,<:Any,D}) where {D} = D
+getdim(a::TimeSampleViewInstance{<:Any,<:Any,D}) where {D} = D
 
 
 """
-    Base.size(a::TimeSamplerViewInstance, i)
+    Base.size(a::TimeSampleViewInstance, i)
 
-extend the size function for TimeSamplerViewInstance type
+extend the size function for TimeSampleViewInstance type
 """
-function Base.size(a::TimeSamplerViewInstance, i)
+function Base.size(a::TimeSampleViewInstance, i)
     if i === getdim(a)
         size(a.agg.indices, 1)
     else
@@ -19,14 +19,14 @@ function Base.size(a::TimeSamplerViewInstance, i)
     end
 end
 
-Base.size(a::TimeSamplerViewInstance) = ntuple(i -> size(a, i), ndims(a))
+Base.size(a::TimeSampleViewInstance) = ntuple(i -> size(a, i), ndims(a))
 
 """
-    Base.getindex(a::TimeSamplerViewInstance, I::Vararg{Int, N})
+    Base.getindex(a::TimeSampleViewInstance, I::Vararg{Int, N})
 
-extend the getindex function for TimeSamplerViewInstance type
+extend the getindex function for TimeSampleViewInstance type
 """
-function Base.getindex(a::TimeSamplerViewInstance, I::Vararg{Int,N}) where {N}
+function Base.getindex(a::TimeSampleViewInstance, I::Vararg{Int,N}) where {N}
     idim = getdim(a)
     indices = I
     indices = Base.setindex(indices, a.agg.indices[I[idim]], idim)
@@ -34,17 +34,17 @@ function Base.getindex(a::TimeSamplerViewInstance, I::Vararg{Int,N}) where {N}
 end
 
 """
-    Base.view(x::AbstractArray, v::TimeSampler; dim = 1)
+    Base.view(x::AbstractArray, v::TimeSample; dim = 1)
 
-extend the view function for TimeSamplerViewInstance type
+extend the view function for TimeSampleViewInstance type
 
 # Arguments:
 - `x`: input array to be viewed
 - `v`: time aggregator struct with indices and function
 - `dim`: the dimension along which the sampling/aggregation should be done
 """
-function Base.view(x::AbstractArray, v::TimeSampler; dim=1)
+function Base.view(x::AbstractArray, v::TimeSample; dim=1)
     subarray_t = Base.promote_op(getindex, typeof(x), eltype(v.indices))
     t = Base.promote_op(v.sampler_func, subarray_t)
-    TimeSamplerViewInstance{t,ndims(x),dim,typeof(x),typeof(v)}(x, v, Val{dim}())
+    TimeSampleViewInstance{t,ndims(x),dim,typeof(x),typeof(v)}(x, v, Val{dim}())
 end

@@ -4,7 +4,7 @@ export timeSampling
 """
     getTimeSampledArray(_dat::AbstractArray{T, 2})
 
-a helper function to instantiate an array from the TimeSamplerViewInstance for N-dimensional array
+a helper function to instantiate an array from the TimeSampleViewInstance for N-dimensional array
 """
 function getTimeSampledArray(_dat::AbstractArray{<:Any,N}) where N
     inds = ntuple(_->Colon(),N)
@@ -16,7 +16,7 @@ end
 
 
 """
-    timeSampling(dat::AbstractArray, time_sampler::TimeSampler, dim = 1)
+    timeSampling(dat::AbstractArray, time_sampler::TimeSample, dim = 1)
 
 a temporal sampling/aggregation function to aggregate the data using a given aggregator when the input data is an array
 
@@ -30,12 +30,12 @@ a temporal sampling/aggregation function to aggregate the data using a given agg
 """
 function timeSampling end
 
-function timeSampling(dat::AbstractArray, time_sampler::TimeSampler, dim=1)
+function timeSampling(dat::AbstractArray, time_sampler::TimeSample, dim=1)
     dat = view(dat, time_sampler, dim=dim)
     return getTimeSampledArray(dat)
 end
 
-function timeSampling(dat::SubArray, time_sampler::TimeSampler, dim=1)
+function timeSampling(dat::SubArray, time_sampler::TimeSample, dim=1)
     dat = view(dat, time_sampler, dim=dim)
     return getTimeSampledArray(dat)
 end

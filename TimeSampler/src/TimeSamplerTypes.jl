@@ -4,7 +4,7 @@ abstract type TimeSamplers end
 purpose(::Type{TimeSamplers}) = "Abstract type for implementing time subset, sampling, resampling, and aggregation types in SINDBAD"
 
 # ------------------------- time aggregator ------------------------------------------------------------
-export TimeSamplerMethod
+export TimeSampleMethod
 export TimeAllYears
 export TimeArray
 export TimeHour
@@ -30,13 +30,13 @@ export TimeShuffleYears
 export TimeSizedArray
 export TimeYear
 export TimeYearAnomaly
-export TimeSampler
-export TimeSamplerViewInstance
+export TimeSample
+export TimeSampleViewInstance
 
 
 # ------------------------- time aggregator --------------------------------
 """
-    TimeSampler{I, sampler_func}
+    TimeSample{I, sampler_func}
 
 define a type for temporal sampling/aggregation of an array
 
@@ -44,14 +44,14 @@ define a type for temporal sampling/aggregation of an array
 - `indices::I`: indices to be collected for sampling/aggregation
 - `sampler_func::sampler_func`: a function to use for sampling/aggregation, defaults to mean
 """
-struct TimeSampler{I,sampler_func} <: TimeSamplers
+struct TimeSample{I,sampler_func} <: TimeSamplers
     indices::I
     sampler_func::sampler_func
 end
-purpose(::Type{TimeSampler}) = "define a type for temporal sampling/aggregation of an array"
+purpose(::Type{TimeSample}) = "define a type for temporal sampling/aggregation of an array"
 
 """
-    TimeSamplerViewInstance{T, N, D, P, AV <: TimeSampler}
+    TimeSampleViewInstance{T, N, D, P, AV <: TimeSample}
 
 
 
@@ -60,89 +60,89 @@ purpose(::Type{TimeSampler}) = "define a type for temporal sampling/aggregation 
 - `agg::AV`: a view of the parent data
 - `dim::Val{D}`: a val instance of the type that stores the dimension to be aggregated on
 """
-struct TimeSamplerViewInstance{T,N,D,P,AV<:TimeSampler} <: AbstractArray{T,N}
+struct TimeSampleViewInstance{T,N,D,P,AV<:TimeSample} <: AbstractArray{T,N}
     parent::P
     agg::AV
     dim::Val{D}
 end
-purpose(::Type{TimeSamplerViewInstance}) = "view of a TimeSampler"
+purpose(::Type{TimeSampleViewInstance}) = "view of a TimeSample"
 
 
-abstract type TimeSamplerMethod <: TimeSamplers end
-purpose(::Type{TimeSamplerMethod}) = "Abstract type for time sampling/aggregation methods in SINDBAD"
+abstract type TimeSampleMethod <: TimeSamplers end
+purpose(::Type{TimeSampleMethod}) = "Abstract type for time sampling/aggregation methods in SINDBAD"
 
-struct TimeAllYears <: TimeSamplerMethod end
+struct TimeAllYears <: TimeSampleMethod end
 purpose(::Type{TimeAllYears}) = "aggregation/slicing to include all years"
 
-struct TimeArray <: TimeSamplerMethod end
+struct TimeArray <: TimeSampleMethod end
 purpose(::Type{TimeArray}) = "use array-based time sampling/aggregation"
 
-struct TimeHour <: TimeSamplerMethod end
+struct TimeHour <: TimeSampleMethod end
 purpose(::Type{TimeHour}) = "aggregation to hourly time steps"
 
-struct TimeHourAnomaly <: TimeSamplerMethod end
+struct TimeHourAnomaly <: TimeSampleMethod end
 purpose(::Type{TimeHourAnomaly}) = "aggregation to hourly anomalies"
 
-struct TimeHourDayMean <: TimeSamplerMethod end
+struct TimeHourDayMean <: TimeSampleMethod end
 purpose(::Type{TimeHourDayMean}) = "aggregation to mean of hourly data over days"
 
-struct TimeDay <: TimeSamplerMethod end
+struct TimeDay <: TimeSampleMethod end
 purpose(::Type{TimeDay}) = "aggregation to daily time steps"
 
-struct TimeDayAnomaly <: TimeSamplerMethod end
+struct TimeDayAnomaly <: TimeSampleMethod end
 purpose(::Type{TimeDayAnomaly}) = "aggregation to daily anomalies"
 
-struct TimeDayIAV <: TimeSamplerMethod end
+struct TimeDayIAV <: TimeSampleMethod end
 purpose(::Type{TimeDayIAV}) = "aggregation to daily IAV"
 
-struct TimeDayMSC <: TimeSamplerMethod end
+struct TimeDayMSC <: TimeSampleMethod end
 purpose(::Type{TimeDayMSC}) = "aggregation to daily MSC"
 
-struct TimeDayMSCAnomaly <: TimeSamplerMethod end
+struct TimeDayMSCAnomaly <: TimeSampleMethod end
 purpose(::Type{TimeDayMSCAnomaly}) = "aggregation to daily MSC anomalies"
 
-struct TimeDiff <: TimeSamplerMethod end
+struct TimeDiff <: TimeSampleMethod end
 purpose(::Type{TimeDiff}) = "aggregation to time differences, e.g. monthly anomalies"
 
-struct TimeFirstYear <: TimeSamplerMethod end
+struct TimeFirstYear <: TimeSampleMethod end
 purpose(::Type{TimeFirstYear}) = "aggregation/slicing of the first year"
 
-struct TimeIndexed <: TimeSamplerMethod end
+struct TimeIndexed <: TimeSampleMethod end
 purpose(::Type{TimeIndexed}) = "aggregation using time indices, e.g., TimeFirstYear"
 
-struct TimeMean <: TimeSamplerMethod end
+struct TimeMean <: TimeSampleMethod end
 purpose(::Type{TimeMean}) = "aggregation to mean over all time steps"
 
-struct TimeMonth <: TimeSamplerMethod end
+struct TimeMonth <: TimeSampleMethod end
 purpose(::Type{TimeMonth}) = "aggregation to monthly time steps"
 
-struct TimeMonthAnomaly <: TimeSamplerMethod end
+struct TimeMonthAnomaly <: TimeSampleMethod end
 purpose(::Type{TimeMonthAnomaly}) = "aggregation to monthly anomalies"
 
-struct TimeMonthIAV <: TimeSamplerMethod end
+struct TimeMonthIAV <: TimeSampleMethod end
 purpose(::Type{TimeMonthIAV}) = "aggregation to monthly IAV"
 
-struct TimeMonthMSC <: TimeSamplerMethod end
+struct TimeMonthMSC <: TimeSampleMethod end
 purpose(::Type{TimeMonthMSC}) = "aggregation to monthly MSC"
 
-struct TimeMonthMSCAnomaly <: TimeSamplerMethod end
+struct TimeMonthMSCAnomaly <: TimeSampleMethod end
 purpose(::Type{TimeMonthMSCAnomaly}) = "aggregation to monthly MSC anomalies"
 
-struct TimeNoDiff <: TimeSamplerMethod end
+struct TimeNoDiff <: TimeSampleMethod end
 purpose(::Type{TimeNoDiff}) = "aggregation without time differences"
 
-struct TimeRandomYear <: TimeSamplerMethod end
+struct TimeRandomYear <: TimeSampleMethod end
 purpose(::Type{TimeRandomYear}) = "aggregation/slicing of a random year"
 
-struct TimeShuffleYears <: TimeSamplerMethod end
+struct TimeShuffleYears <: TimeSampleMethod end
 purpose(::Type{TimeShuffleYears}) = "aggregation/slicing/selection of shuffled years"
 
-struct TimeSizedArray <: TimeSamplerMethod end
+struct TimeSizedArray <: TimeSampleMethod end
 purpose(::Type{TimeSizedArray}) = "aggregation to a sized array"
 
-struct TimeYear <: TimeSamplerMethod end
+struct TimeYear <: TimeSampleMethod end
 purpose(::Type{TimeYear}) = "aggregation to yearly time steps"
 
-struct TimeYearAnomaly <: TimeSamplerMethod end
+struct TimeYearAnomaly <: TimeSampleMethod end
 purpose(::Type{TimeYearAnomaly}) = "aggregation to yearly anomalies"
 
