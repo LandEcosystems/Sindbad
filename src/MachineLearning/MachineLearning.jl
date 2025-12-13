@@ -78,7 +78,7 @@ module MachineLearning
     using ..Simulation: coreTEM!
 
 
-    include("utilsML.jl")
+    include("utilsMachineLearning.jl")
     include("diffCaches.jl")
     include("activationFunctions.jl")
     include("mlModels.jl")

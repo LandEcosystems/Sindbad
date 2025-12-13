@@ -59,7 +59,7 @@ module Setup
    @reexport using JLD2: @save, load
 
    include("defaultOptions.jl")
-   include("SetupUtils.jl")
+   include("utilsSetup.jl")
    include("generateCode.jl")
    include("getConfiguration.jl")
    include("setupSimulationInfo.jl")

@@ -50,7 +50,7 @@ module Simulation
    using ..DataLoaders: YAXArrays
    using ThreadPools
 
-   include("SimulationUtils.jl")
+   include("utilsSimulation.jl")
    include("deriveSpinupForcing.jl")
    include("prepTEMOut.jl")
    include("prepTEM.jl")

@@ -10,7 +10,7 @@ experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
 begin_year = "2000"
 end_year = "2017"
 
-domain = "US-SRM"
+domain = "DE-Hai"
 # domain = "MY-PSO"
 path_input = "$(getSindbadDataDepot())/fn/$(domain).1979.2017.daily.nc"
 # path_input  = "/Net/Groups/BGI/scratch/skoirala/RnD/SINDBAD-RnD-SK/examples/data/fn/US-SRM.1979.2017.daily.nc"
