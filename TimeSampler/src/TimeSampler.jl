@@ -1,5 +1,5 @@
 """
-	TimeSampler
+TimeSampler
 
 A package for temporal sampling, aggregation, and resampling of time series data in SINDBAD.
 

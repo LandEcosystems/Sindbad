@@ -40,24 +40,24 @@ and visualization workflows.
 - `SindbadTEM`
 
 # Included Modules:
-1. **DataLoaders** (`src/DataLoaders/`):
-   - Handles file IO, preprocessing, and conversion into SINDBAD-native
-     data structures; exposes reusable loaders and utility helpers.
-2. **Setup** (`src/Setup/`):
-   - Builds experiment `info` objects, validates model selections, and
-     wires pools, spinup settings, and derived configuration metadata.
-3. **Simulation** (`src/Simulation/`):
-   - Orchestrates terrestrial ecosystem simulations, including spinup,
-     forward runs, diagnostics, and interaction with `SindbadTEM`.
-4. **ParameterOptimization** (`src/ParameterOptimization/`):
-   - Provides parameter-calibration utilities and objective hooks.
-   - Some optimizer backends are enabled via optional extensions (see Notes).
-5. **MachineLearning** (`src/MachineLearning/`):
-   - Adds ML-assisted surrogates, emulators, and training pipelines that
-     integrate with Sindbad outputs and optimization targets.
-6. **Visualization** (`src/Visualization/`):
-   - Supplies plotting and reporting helpers for experiment evaluation
-     (time series, spatial maps, diagnostic overlays, etc.).
+- **DataLoaders** (`src/DataLoaders/`):
+  - Handles file IO, preprocessing, and conversion into SINDBAD-native
+    data structures; exposes reusable loaders and utility helpers.
+- **Setup** (`src/Setup/`):
+  - Builds experiment `info` objects, validates model selections, and
+    wires pools, spinup settings, and derived configuration metadata.
+- **Simulation** (`src/Simulation/`):
+  - Orchestrates terrestrial ecosystem simulations, including spinup,
+    forward runs, diagnostics, and interaction with `SindbadTEM`.
+- **ParameterOptimization** (`src/ParameterOptimization/`):
+  - Provides parameter-calibration utilities and objective hooks.
+  - Some optimizer backends are enabled via optional extensions (see Notes).
+- **MachineLearning** (`src/MachineLearning/`):
+  - Adds ML-assisted surrogates, emulators, and training pipelines that
+    integrate with Sindbad outputs and optimization targets.
+- **Visualization** (`src/Visualization/`):
+  - Supplies plotting and reporting helpers for experiment evaluation
+    (time series, spatial maps, diagnostic overlays, etc.).
 
 # Notes:
 - Each submodule is included and reexported so end users can call

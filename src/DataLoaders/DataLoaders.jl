@@ -1,12 +1,12 @@
 """
     DataLoaders
 
-The `DataLoaders` module provides tools for handling and processing SINDBAD-related input data and processing. It supports reading, cleaning, masking, and managing data for SINDBAD experiments, with a focus on spatial and temporal dimensions.
+The `DataLoaders` module provides tools for ingesting and preprocessing SINDBAD input data. It supports reading, cleaning, masking, and managing forcing/observation data with an emphasis on spatial and temporal dimensions.
 
-# Purpose:
-This module is designed to streamline the ingestion and preprocessing of input data for SINDBAD experiments. 
+# Purpose
+Streamline the ingestion and preprocessing of input data for SINDBAD experiments.
 
-# Dependencies:
+# Dependencies
 ## Related (SINDBAD ecosystem)
 - `UtilKit`: Utility functions for handling NamedTuples, printing, and shared helpers.
 
@@ -23,20 +23,13 @@ This module is designed to streamline the ingestion and preprocessing of input d
 - `Sindbad.Types`
 - `SindbadTEM`
 
-# Included Files:
-1. **`utilsData.jl`**:
-   - Contains utility functions for data preprocessing, including cleaning, masking, and checking bounds.
+# Included Files
+- **`utilsData.jl`**: Utility functions for data preprocessing (cleaning, masking, bounds checks).
+- **`spatialSubset.jl`**: Spatial operations (extracting subsets based on spatial dimensions).
+- **`getForcing.jl`**: Extracting and processing forcing data (environmental drivers).
+- **`getObservation.jl`**: Reading and processing observational data for evaluation/validation.
 
-2. **`spatialSubset.jl`**:
-   - Implements spatial operations, such as extracting subsets of data based on spatial dimensions.
-
-3. **`getForcing.jl`**:
-   - Provides functions for extracting and processing forcing data, such as environmental drivers, for SINDBAD experiments.
-
-4. **`getObservation.jl`**:
-   - Implements utilities for reading and processing observational data, enabling model validation and performance evaluation.
-
-# Notes:
+# Notes
 - The module uses `NCDatasets`, `YAXArrays`, and `Zarr` directly; it does not re-export them.
 - Designed to handle large datasets efficiently, leveraging chunked and compressed data formats like NetCDF and Zarr.
 - Ensures compatibility with SINDBAD's experimental framework by integrating spatial and temporal data management tools.

@@ -3,10 +3,10 @@
 
 The `ParameterOptimization` module provides tools for optimizing SINDBAD models, including parameter estimation, model calibration, and cost function evaluation. It integrates various optimization algorithms and utilities to streamline the optimization workflow for SINDBAD experiments.
 
-# Purpose:
+# Purpose
 This module is designed to support optimization tasks in SINDBAD, such as calibrating model parameters to match observations or minimizing cost functions. It leverages multiple optimization libraries and provides a unified interface for running optimization routines.
 
-# Dependencies:
+# Dependencies
 ## Related (SINDBAD ecosystem)
 - `ErrorMetrics`: Metric implementations for cost evaluation.
 - `TimeSampler`: Temporal helpers used by some workflows.
@@ -28,26 +28,21 @@ Some optimizer backends are enabled via Julia extensions (see root `Project.toml
 
 Other packages listed under `[weakdeps]` may be used by experimental workflows but are not required for the base module to load.
 
-# Included Files:
-1. **`optimizer.jl`**:
-   - Implements the core optimization logic, including merging algorithm options and selecting optimization methods.
-
-2. **`cost.jl`**:
-   - Defines cost functions for evaluating the loss of SINDBAD models against observations.
-
-3. **`optimizeTEM.jl`**:
-   - Provides functions for optimizing SINDBAD TEM parameters for single locations or small spatial grids.
-   - Functionality to handle optimization using large-scale 3D data YAXArrays cubes, enabling parameter calibration across spatial dimensions.
-
-4. **`sensitivityAnalysis.jl`**:
-   - Provides functions for performing sensitivity analysis on SINDBAD models, including global sensitivity analysis and local sensitivity analysis.
+# Included Files
+- **`handleDataForCost.jl`**: Helpers for aligning forcing/observation/model outputs for cost evaluation.
+- **`getCost.jl`**: Cost extraction and convenience wrappers.
+- **`optimizer.jl`**: Core optimization logic (algorithm selection + option normalization).
+- **`cost.jl`**: Cost functions for evaluating model–observation mismatch.
+- **`prepOpti.jl`**: Prepares inputs and bookkeeping for optimization runs.
+- **`optimizeTEM.jl`**: Optimization routines for single sites and spatial workflows.
+- **`sensitivityAnalysis.jl`**: Sensitivity analysis utilities.
 
 !!! note
     - The package integrates multiple optimization libraries, allowing users to choose the most suitable algorithm for their problem.
     - Designed to be modular and extensible, enabling users to customize optimization workflows for specific use cases.
     - Supports both gradient-based and derivative-free optimization methods, ensuring flexibility for different types of cost functions.
 
-# Examples:
+# Examples
 1. **Running an experiment**:
 ```julia
 using Sindbad.Simulation

@@ -1,12 +1,12 @@
 """
     Experiment
 
-The `Experiment` package provides tools for designing, running, and analyzing experiments in the SINDBAD MDI framework. It integrates SINDBAD packages and utilities to streamline the experimental workflow, from data preparation to model execution and output analysis.
+The `Experiment` module provides tools for designing, running, and analyzing experiments in the SINDBAD framework. It integrates SINDBAD modules and utilities to streamline the experimental workflow, from data preparation to model execution and output analysis.
 
-# Purpose:
-This package acts as a high-level interface for conducting experiments using the SINDBAD framework. It leverages the functionality of core SINDBAD packages and provides additional utilities for running experiments and managing outputs.
+# Purpose
+High-level interface for conducting experiments using the SINDBAD framework (workflow orchestration + output handling).
 
-# Dependencies:
+# Dependencies
 ## Related (SINDBAD ecosystem)
 - `UtilKit`: Shared utilities.
 - `ErrorMetrics`: Metric implementations used in cost/diagnostics.
@@ -19,17 +19,14 @@ This package acts as a high-level interface for conducting experiments using the
 - `Sindbad.Visualization`
 - `SindbadTEM`
 
-# Included Files:
-1. **`runExperiment.jl`**:
-   - Contains functions for executing experiments, including setting up models, running simulations, and managing workflows.
+# Included Files
+- **`runExperiment.jl`**: Experiment execution and orchestration.
+- **`saveOutput.jl`**: Utilities for saving experiment outputs in supported formats.
 
-2. **`saveOutput.jl`**:
-   - Provides utilities for saving experiment outputs in various formats, ensuring compatibility with downstream analysis tools.
-
-# Notes:
+# Notes
 - Designed to be extensible, enabling users to customize and expand the experimental workflow that combines different SINDBAD modules as needed.
 
-# Examples:
+# Examples
 1. **Running an experiment**:
 ```julia
 using Sindbad

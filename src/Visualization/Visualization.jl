@@ -5,13 +5,13 @@ Visualization utilities for SINDBAD experiments. This module focuses on
 plotting model outputs, diagnostics, and experiment metadata—currently
 via `Plots.jl`, with hooks prepared for future interactive Makie support.
 
-# Purpose:
+# Purpose
 - Provide ready-to-use plotting helpers that understand SINDBAD's
   `info`, outputs, and metric structures.
 - Speed up exploratory analysis by wrapping common visual layouts
   (time series, site comparisons, diagnostic summaries).
 
-# Dependencies:
+# Dependencies
 ## Related (SINDBAD ecosystem)
 - `ErrorMetrics`: Metric helpers used in plot annotations and summaries.
 - `UtilKit`: Shared helper utilities.
@@ -24,15 +24,11 @@ via `Plots.jl`, with hooks prepared for future interactive Makie support.
 ## Internal (within `Sindbad`)
 - `SindbadTEM`
 
-# Included Files:
-1. **`plotOutputUsingPlots.jl`**:
-   - Implements plotting helpers for land fluxes, pools, and diagnostics
-     using `Plots.jl`.
-2. **`plotFromSindbadInfo.jl`**:
-   - Visualizes experiment metadata (model ordering, approaches, inputs)
-     directly from the `info` NamedTuple.
+# Included Files
+- **`plotOutputUsingPlots.jl`**: Plotting helpers for land fluxes, pools, and diagnostics using `Plots.jl`.
+- **`plotFromSindbadInfo.jl`**: Visualize experiment metadata (model ordering, approaches, inputs) from the `info` NamedTuple.
 
-# Notes:
+# Notes
 - Additional plot recipes are being added progressively; current focus is
   on covering the default experiment workflow.
 - The API is reexported via `Sindbad.Visualization`, so users simply load

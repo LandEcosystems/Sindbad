@@ -42,7 +42,7 @@ Some ML training/AD backends are listed as weak dependencies in the root `Projec
 - `loadCovariates.jl`: Functions for loading and handling covariate data.
 
 # Notes
-- The package is modular and extensible, allowing users to add newMachine Learningmodels, optimizers, activation functions, and training methods.
+- The module is modular and extensible, allowing users to add new ML models, optimizers, activation functions, and training methods.
 - It is tightly integrated with the SINDBAD ecosystem, ensuring consistent data handling and reproducibility across hybrid and process-based modeling workflows.
 """
 module MachineLearning

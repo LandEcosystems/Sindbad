@@ -5,17 +5,18 @@ export getTimeSamplerInstance
 """
     createTimeSampler(date_vector, t_step, sampler_func = mean, skip_sampling = false)
 
-a function to create a temporal sampling/aggregation struct for a given time step 
+Create one or more temporal sampling/aggregation objects (`TimeSample`) for a given target time step.
 
-# Arguments:
-- `date_vector`: a vector of datetime objects that determine the index of the array to be aggregated
-- `t_step`: a string/Symbol/Type defining the sampling/aggregation time target with different types as follows:
-  - `::Union{String, Symbol}`: a string/Symbol defining the sampling/aggregation time target from the settings
-- `sampler_func`: a function to use for sampling/aggregation, defaults to mean
-- `skip_sampling`: a flag indicating if the sampling/aggregation target is the same as the input data and the sampling/aggregation can be skipped, defaults to false
+# Arguments
+- `date_vector`: A vector of `Dates.TimeType` values (e.g. `Date` or `DateTime`) that define the time axis to be aggregated.
+- `t_step`: The target sampling/aggregation specification. Common forms:
+  - `::Union{String, Symbol}`: A name that resolves to a time-sampler type in `TimeSampler` (e.g. `"TimeDay"` / `:TimeDay`).
+  - `::TimeSampleMethod`: A concrete method instance (e.g. `TimeDay()`), used via multiple dispatch.
+- `sampler_func`: Function to apply per group (defaults to `mean`).
+- `skip_sampling`: If `true`, return `nothing` for samplers that would be a no-op (defaults to `false`).
 
-# Returns:
-- `::Vector{TimeSample}`: a vector of time-sampling/aggregation objects (`TimeSample`), or `nothing` entries when `skip_sampling=true`
+# Returns
+- `Vector{Union{Nothing, TimeSample}}`: Time-sampling/aggregation objects, with `nothing` entries when `skip_sampling=true`.
 
 """
 function createTimeSampler end
@@ -179,14 +180,14 @@ end
 Creates and returns a time aggregator instance based on the provided sampling/aggregation.
 
 # Arguments
-- `aggr::Symbol`: Symbol specifying the type of time sampling/aggregation to be performed
-- `aggr::String`: String specifying the type of time sampling/aggregation to be performed
+- `aggr::Symbol`: Symbol specifying the time sampling/aggregation method type name (e.g. `:TimeDay`)
+- `aggr::String`: String specifying the time sampling/aggregation method type name (e.g. `"TimeDay"`)
 
 # Returns
-An instance of the corresponding time aggregator type.
+An instance of the corresponding `TimeSampleMethod` subtype.
 
-# Notes:
-- A similar approach `getTypeInstanceForNamedOptions` is used in `Setup` for creating types of other named option
+# Notes
+- A similar approach (`getTypeInstanceForNamedOptions`) is used in `Setup` for creating other named options.
 """
 function getTimeSamplerInstance end
 
@@ -204,7 +205,7 @@ end
 """
     getTypeOfTimeIndexArray(_type=:array)
 
-a helper functio to easily switch the array type for indices of the TimeSampler object
+Helper to switch the index-container type used in `TimeSample` objects.
 """
 function getTypeOfTimeIndexArray(_type=:array)
     time_type = TimeArray()
@@ -219,7 +220,7 @@ end
 """
     getIndexForSelectedYear(years, sel_year)
 
-a helper function to get the indices of the first year from the date vector
+Helper to get indices for a selected year within `years`.
 """
 function getIndexForSelectedYear(years, sel_year)
     return getTimeArray(findall(==(sel_year), years), getTypeOfTimeIndexArray())
@@ -229,7 +230,7 @@ end
 """
     getIndicesForTimeGroups(groups)
 
-a helper function to get the indices of the date group of the time series
+Helper to compute contiguous index ranges for run-length-encoded groups.
 """
 function getIndicesForTimeGroups(groups)
     _, rl = rle(groups)
@@ -242,13 +243,12 @@ end
 """
     getTimeArray(ar, ::TimeSizedArray || ::TimeArray)
 
-a helper function to get the array of indices
+Helper to wrap the provided indices in the configured container type.
 
-# Arguments:
-- `ar`: an array of time
-- array type: a type defining the type of array to be returned
-    - `::TimeSizedArray`: indices as static array
-    - `::TimeArray`: indices as normal array
+# Arguments
+- `ar`: Index array/ranges.
+- `::TimeSizedArray`: Return indices as a `SizedArray` (static shape metadata).
+- `::TimeArray`: Return indices as a normal Julia array/range.
 """
 function getTimeArray(ar, ::TimeSizedArray)
     return SizedArray{Tuple{size(ar)...},eltype(ar)}(ar)
