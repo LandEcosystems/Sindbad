@@ -24,7 +24,7 @@ This module is designed to produce the SINDBAD `info` object, which contains all
 
 # Included Files
 - **`defaultOptions.jl`**: Default configuration knobs for optimization, sensitivity, and machine-learning routines referenced during setup.
-- **`SetupUtils.jl`**: Shared setup helpers (validation, convenience utilities).
+- **`utilsSetup.jl`**: Shared setup helpers (validation, convenience utilities).
 - **`generateCode.jl`**: Code-generation helpers used by development workflows.
 - **`getConfiguration.jl`**: Read JSON/CSV configuration and normalize into internal settings representation.
 - **`setupSimulationInfo.jl`**: Build the simulation `info` NamedTuple that downstream modules consume.

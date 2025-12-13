@@ -27,7 +27,7 @@ This module brings together all components required for hybrid (process-based + 
 Some ML training/AD backends are listed as weak dependencies in the root `Project.toml` (e.g. `Flux`, `Zygote`, `ForwardDiff`, `Optimisers`, `PreallocationTools`, etc.). Portions of the ML stack may be gated behind these packages and/or not included by default (e.g. `neuralNetwork.jl` is currently not included in the module).
 
 # Included Files
-- `utilsML.jl`: Utility functions for machine-learning workflows.
+- `utilsMachineLearning.jl`: Utility functions for machine-learning workflows.
 - `diffCaches.jl`: Caching utilities for differentiation.
 - `activationFunctions.jl`: Implements various activation functions, including custom and Flux-provided activations.
 - `mlModels.jl`: Constructors and utilities for hybrid/ML model components.

@@ -24,7 +24,7 @@ Streamline the ingestion and preprocessing of input data for SINDBAD experiments
 - `SindbadTEM`
 
 # Included Files
-- **`utilsData.jl`**: Utility functions for data preprocessing (cleaning, masking, bounds checks).
+- **`utilsDataLoaders.jl`**: Utility functions for data preprocessing (cleaning, masking, bounds checks).
 - **`spatialSubset.jl`**: Spatial operations (extracting subsets based on spatial dimensions).
 - **`getForcing.jl`**: Extracting and processing forcing data (environmental drivers).
 - **`getObservation.jl`**: Reading and processing observational data for evaluation/validation.

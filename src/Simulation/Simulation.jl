@@ -23,7 +23,7 @@ This module integrates various components and utilities required to execute the 
 - `SindbadTEM`
 
 # Included Files
-- **`SimulationUtils.jl`**: Core helpers for forcing slices, output handling, progress/logging, and simulation orchestration.
+- **`utilsSimulation.jl`**: Core helpers for forcing slices, output handling, progress/logging, and simulation orchestration.
 - **`deriveSpinupForcing.jl`**: Derive spinup forcing data for steady-state initialization.
 - **`prepTEMOut.jl`**: Prepare output containers/structures for efficient writing.
 - **`prepTEM.jl`**: Prepare model-ready inputs and configuration for runs.
