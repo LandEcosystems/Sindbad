@@ -14,7 +14,7 @@ This page provides an overview of all SINDBAD packages and their main modules an
 | | [Processes](models.md) | Model implementations | Ecosystem model processes and approaches |
 | | [Metrics](metrics.md) | Performance metrics | Cost functions, evaluation metrics, and validation tools |
 | | [Types](types.md) | SINDBAD Types | Definition of all SINDBAD types and purposes |
-| | [Utils](utils.md) | Utility functions | Helper functions and common utilities for all packages |
+| | [UtilKit](utils.md) | Utility functions | Helper functions and common utilities for all packages |
 
 
 ::: tip `Exported` and `Internal` Sections
@@ -39,7 +39,7 @@ These remain accessible but require qualification with the module name (e.g., `M
   - **Models**: Module that implements various ecosystem model components and approaches.
   - **Metrics**: Implements performance metrics and cost functions.
   - **Types**: Module that defines various types for dispatching on methods ranging from setup to cost computation.
-  - **Utils**: Provides helper functions and common utilities used across packages.
+  - **UtilKit**: Provides helper functions and common utilities used across packages.
 
 ### MDI Package
 #### Modeling Modules
@@ -62,7 +62,7 @@ Package Dependency
 ::: info Package Usage
 
 - Most application packages can be used independently for specific tasks
-- The core `Sindbad` and ```Utils``` are required
+- The core `Sindbad` and `UtilKit` are required
 
 ::: 
 
@@ -79,38 +79,38 @@ graph TD
     SindbadTEM --> ArrayTypes[ArrayTypes]
     
     %% Lib packages
-    Utils[Utils] --> Sindbad
+    UtilKit[UtilKit] --> Sindbad
     DataLoaders[DataLoaders] --> Sindbad
-    DataLoaders --> Utils
+    DataLoaders --> UtilKit
     
     Setup[Setup] --> Sindbad
-    Setup --> Utils
+    Setup --> UtilKit
     Setup --> DataLoaders
     
     SindbadMetrics[SindbadMetrics] --> Sindbad
-    SindbadMetrics --> Utils
+    SindbadMetrics --> UtilKit
     
     Simulation[Simulation] --> SindbadTEM
-    Simulation --> SindbadTEM.Utils
+    Simulation --> UtilKit
     Simulation --> Sindbad.DataLoaders
     Simulation --> Sindbad.Setup
     Simulation --> SindbadTEM.Metrics
     
     Sindbad.ParameterOptimization[Sindbad.ParameterOptimization] --> Sindbad
-    Sindbad.ParameterOptimization --> Utils
+    Sindbad.ParameterOptimization --> UtilKit
     Sindbad.ParameterOptimization --> SindbadMetrics
     Sindbad.ParameterOptimization --> Setup
     Sindbad.ParameterOptimization --> SindbadTEM
     
     MachineLearning[MachineLearning] --> Sindbad
-    MachineLearning --> Utils
+    MachineLearning --> UtilKit
     MachineLearning --> SindbadMetrics
     
     Visualization[Visualization] --> Sindbad
-    Visualization --> Utils
+    Visualization --> UtilKit
     
     Sindbad.Simulation[Sindbad.Simulation] --> Sindbad
-    Sindbad.Simulation --> Utils
+    Sindbad.Simulation --> UtilKit
     Sindbad.Simulation --> DataLoaders
     Sindbad.Simulation --> Setup
     Sindbad.Simulation --> SindbadTEM

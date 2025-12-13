@@ -12,11 +12,17 @@ via `Plots.jl`, with hooks prepared for future interactive Makie support.
   (time series, site comparisons, diagnostic summaries).
 
 # Dependencies:
-- `SindbadTEM`, `SindbadTEM.Utils`, `SindbadTEM.Metrics`: Access to core
-  types, helper utilities, and metric metadata.
+## Related (SINDBAD ecosystem)
+- `ErrorMetrics`: Metric helpers used in plot annotations and summaries.
+- `UtilKit`: Shared helper utilities.
+
+## External (third-party)
 - `Plots`: Default backend for static visualizations.
 - *(Optional / planned)* `GLMakie`, `Colors`: Interactive plotting stack
   to be enabled once cluster compatibility issues are resolved.
+
+## Internal (within `Sindbad`)
+- `SindbadTEM`
 
 # Included Files:
 1. **`plotOutputUsingPlots.jl`**:

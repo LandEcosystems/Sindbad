@@ -7,14 +7,20 @@ The `Simulation` module provides the core functionality for running the SINDBAD 
 This module integrates various components and utilities required to execute the SINDBAD TEM, including precomputations, spinup, and time loop simulations. It supports parallel execution and efficient handling of large datasets.
 
 # Dependencies:
-- `ComponentArrays`: Used for managing complex, hierarchical data structures like land variables and model states.
-- `NLsolve`: Used for solving nonlinear equations, particularly in spinup processes (e.g., fixed-point solvers).
-- `ProgressMeter`: Displays progress bars for long-running simulations, improving user feedback.
-- `SindbadTEM`: Provides the core SINDBAD models and types.
-- `DataLoaders`: Provides the SINDBAD data handling functions.
-- `SindbadTEM.Utils`: Provides utility functions for handling NamedTuple, spatial operations, and other helper tasks for spatial and temporal operations.
-- `Setup`: Provides the SINDBAD setup functions.
-- `ThreadPools`: Enables efficient thread-based parallelization for running simulations across multiple locations.
+## Related (SINDBAD ecosystem)
+- `TimeSampler`: Temporal helpers used in time-loop workflows.
+- `UtilKit`: Shared utilities used during simulation and output handling.
+
+## External (third-party)
+- `ComponentArrays`: Hierarchical state/parameter containers.
+- `ProgressMeter`: Progress bars for long-running simulations.
+- `ThreadPools`: Threaded parallelism helpers.
+
+## Internal (within `Sindbad`)
+- `Sindbad.DataLoaders`
+- `Sindbad.Setup`
+- `Sindbad.Types`
+- `SindbadTEM`
 
 # Included Files:
 1. **`utilsSimulation.jl`**:
@@ -59,6 +65,8 @@ This module integrates various components and utilities required to execute the 
 # Notes:
 - The package is designed to be modular and extensible, allowing users to customize and extend its functionality for specific use cases.
 - It integrates tightly with the SINDBAD framework, leveraging shared types and utilities from `Setup`.
+- Some spinup solvers are enabled via an optional extension:
+  - `NLsolve` → `SindbadNLsolveExt` (see `ext/SindbadNLsolveExt/`).
 """
 module Simulation
    using ComponentArrays

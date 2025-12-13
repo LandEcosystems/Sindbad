@@ -8,17 +8,23 @@ The `Setup` module provides tools for setting up and configuring SINDBAD experim
 This module is designed to produce the SINDBAD `info` object, which contains all the necessary configurations and metadata for running SINDBAD experiments. It facilitates reading configurations, building model structures, and preparing outputs.
 
 # Dependencies:
-- `SindbadTEM`: Provides the core SINDBAD models and types.
-- `SindbadTEM.Utils`: Supplies utility functions for handling data and other helper tasks during the setup process.
-- `ConstructionBase`: Provides a base type for constructing types, enabling the creation of custom types for SINDBAD experiments.
-- `CSV`: Provides tools for reading and writing CSV files, commonly used for input and output data in SINDBAD experiments.
-- `Infiltrator`: Enables interactive debugging during the setup process, improving development and troubleshooting.
-- `JSON`: Provides tools for parsing and generating JSON files, commonly used for configuration files.
-- `JLD2`: Facilitates saving and loading SINDBAD configurations and outputs in a binary format for efficient storage and retrieval.
+## Related (SINDBAD ecosystem)
+- `ErrorMetrics`: Metric type construction for cost options.
+- `TimeSampler`: Temporal setup helpers.
+- `UtilKit`: Shared utilities (e.g. `Table`).
+
+## External (third-party)
+- `CSV`, `JLD2`, `JSON`: Configuration and persistence tooling.
+- `ConstructionBase`, `Dates`, `NaNStatistics`: Core utilities used during setup.
+- `Infiltrator`: Optional interactive debugging (reexported for convenience).
+
+## Internal (within `Sindbad`)
+- `Sindbad.Types`
+- `SindbadTEM`
 
 # Included Files:
 1. **`defaultOptions.jl`**:
-   - Defines default configuration knobs for optimization, sensitivity, andMachine Learningroutines referenced during setup.
+   - Defines default configuration knobs for optimization, sensitivity, and machine-learning routines referenced during setup.
 
 2. **`getConfiguration.jl`**:
    - Reads JSON/CSV configuration files and normalizes them into the internal settings representation.

@@ -7,8 +7,9 @@ The `Types` module consolidates and organizes all the types used in the SINDBAD 
 This module serves as the backbone for type definitions in SINDBAD, ensuring modularity and extensibility. It provides a unified hierarchy for SINDBAD-specific types and includes utilities for introspection, type manipulation, and documentation.
 
 # Dependencies:
-- `InteractiveUtils`: Enables interactive exploration and debugging during development.
-- `Base.Docs`: Provides documentation utilities for type introspection.
+## External (third-party)
+- `InteractiveUtils`: Interactive exploration and debugging helpers.
+- `Base.Docs`: Documentation utilities for type introspection.
 
 # Included Files:
 1. **`TEMTypes.jl`**:

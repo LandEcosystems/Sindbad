@@ -7,12 +7,17 @@ The `Experiment` package provides tools for designing, running, and analyzing ex
 This package acts as a high-level interface for conducting experiments using the SINDBAD framework. It leverages the functionality of core SINDBAD packages and provides additional utilities for running experiments and managing outputs.
 
 # Dependencies:
-- `SindbadTEM`: Provides the core SINDBAD models and types.
-- `Setup`: Manages setup configurations, parameter handling, and shared types for SINDBAD experiments.
-- `DataLoaders`: Provides the SINDBAD data handling functions.
-- `SindbadTEM.Utils`: Provides utility functions for handling NamedTuple, spatial operations, and other helper tasks for spatial and temporal operations.
-- `Setup`: Provides the SINDBAD setup functions.
-- `ParameterOptimization`: Provides optimization algorithms for parameter estimation and model calibration.
+## Related (SINDBAD ecosystem)
+- `UtilKit`: Shared utilities.
+- `ErrorMetrics`: Metric implementations used in cost/diagnostics.
+
+## Internal (within `Sindbad`)
+- `Sindbad.DataLoaders`
+- `Sindbad.ParameterOptimization`
+- `Sindbad.Setup`
+- `Sindbad.Simulation`
+- `Sindbad.Visualization`
+- `SindbadTEM`
 
 # Included Files:
 1. **`runExperiment.jl`**:
@@ -27,12 +32,12 @@ This package acts as a high-level interface for conducting experiments using the
 # Examples:
 1. **Running an experiment**:
 ```julia
-using Experiment
+using Sindbad
 # Set up experiment parameters
 experiment_config = ...
 
 # Run the experiment
-runExperimentForward(experiment_config)
+Sindbad.Experiment.runExperimentForward(experiment_config)
 ```
 """
 module Experiment

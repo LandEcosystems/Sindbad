@@ -1,37 +1,42 @@
 """
     MachineLearning
 
-The `MachineLearning` module provides the core functionality for integrating machine learning (ML) and hybrid modeling capabilities into the SINDBAD framework. It enables the use of neural networks and otherMachine Learningmodels alongside process-based models for parameter learning, and potentially hybrid modeling, and advanced optimization.
+The `MachineLearning` module provides the core functionality for integrating machine learning (ML) and hybrid modeling capabilities into the SINDBAD framework.
 
 # Purpose
 This module brings together all components required for hybrid (process-based + ML) modeling in SINDBAD, including data preparation, model construction, training routines, gradient computation, and optimizer management. It supports flexible configuration, cross-validation, and seamless integration with SINDBAD's process-based modeling workflows.
 
 # Dependencies
-- `Distributed`: Parallel and distributed computing utilities (`nworkers`, `pmap`, `workers`, `nprocs`, `CachingPool`).
-- `SindbadTEM`, `Sindbad.Setup`, `Sindbad.Simulation`: Core SINDBAD modules for process-based modeling and setup.
-- `Sindbad.DataLoaders`: Provides `YAXArrays`, `Zarr`, `AxisKeys`, cube utilities, and helper types like `AllNaN`.
-- `SindbadTEM.Metrics`: Metrics for model performance/loss evaluation.
-- `Enzyme`, `Zygote`, `ForwardDiff`, `FiniteDiff`, `FiniteDifferences`, `PolyesterForwardDiff`: Automatic and numerical differentiation libraries for gradient-based learning.
-- `Flux`: Neural network layers and training utilities forMachine Learningmodels.
-- `Optimisers`: Optimizers for training neural networks.
-- `Statistics`: Statistical utilities.
-- `ProgressMeter`: Progress bars forMachine Learningtraining and evaluation (`@showprogress`, `Progress`, `next!`, `progress_pmap`, `progress_map`).
-- `PreallocationTools`: Tools for efficient memory allocation.
+## Related (SINDBAD ecosystem)
+- `UtilKit`: Shared helpers used indirectly via internal modules.
+
+## External (third-party)
 - `Base.Iterators`: Iterators for batching and repetition (`repeated`, `partition`).
-- `Random`: Random number utilities.
-- `JLD2`: For saving and loading model checkpoints and fold indices.
+- `Distributed`: Parallel and distributed computing utilities (`nworkers`, `pmap`, `workers`, `nprocs`, `CachingPool`).
+- `JLD2`: Saving/loading model artifacts (e.g. fold indices, checkpoints).
+- `ProgressMeter`: Progress utilities (imported symbols only).
+
+## Internal (within `Sindbad`)
+- `Sindbad.DataLoaders`
+- `Sindbad.Setup`
+- `Sindbad.Simulation`
+- `Sindbad.Types`
+- `SindbadTEM`
+
+## Optional dependencies (weakdeps / experimental)
+Some ML training/AD backends are listed as weak dependencies in the root `Project.toml` (e.g. `Flux`, `Zygote`, `ForwardDiff`, `Optimisers`, `PreallocationTools`, etc.). Portions of the ML stack may be gated behind these packages and/or not included by default (e.g. `neuralNetwork.jl` is currently not included in the module).
 
 # Included Files
-- `utilsML.jl`: Utility functions forMachine Learningworkflows.
+- `utilsML.jl`: Utility functions for machine-learning workflows.
 - `diffCaches.jl`: Caching utilities for differentiation.
 - `activationFunctions.jl`: Implements various activation functions, including custom and Flux-provided activations.
-- `mlModels.jl`: Constructors and utilities for building neural network models and otherMachine Learningarchitectures.
-- `mlOptimizers.jl`: Functions for creating and configuring optimizers forMachine Learningtraining.
+- `mlModels.jl`: Constructors and utilities for hybrid/ML model components.
+- `mlOptimizers.jl`: Functions for creating and configuring optimizers for ML training (backend-dependent).
 - `loss.jl`: Loss functions and utilities for evaluating model performance and computing gradients.
-- `prepHybrid.jl`: Prepares all data structures, loss functions, andMachine Learningcomponents required for hybrid modeling, including data splits and feature extraction.
+- `prepHybrid.jl`: Prepares data structures and loss definitions for hybrid modeling (including data splits and feature extraction).
 - `mlGradient.jl`: Routines for computing gradients using different libraries and methods, supporting both automatic and finite difference differentiation.
-- `mlTrain.jl`: Training routines forMachine Learningand hybrid models, including batching, checkpointing, and evaluation.
-- `neuralNetwork.jl`: Neural network utilities and architectures.
+- `mlTrain.jl`: Training routines for ML and hybrid models, including batching, checkpointing, and evaluation.
+- `neuralNetwork.jl`: Neural network utilities and architectures (currently not included by default).
 - `siteLosses.jl`: Site-specific loss calculation utilities.
 - `oneHots.jl`: One-hot encoding utilities.
 - `loadCovariates.jl`: Functions for loading and handling covariate data.

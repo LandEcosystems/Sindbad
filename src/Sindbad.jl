@@ -16,13 +16,28 @@ and visualization workflows.
   through one package.
 
 # Dependencies:
-- `SindbadTEM`: Core terrestrial ecosystem models, types, and utilities.
-- `ConstructionBase`: Shared constructors needed by downstream modules.
+## Related (SINDBAD ecosystem)
+- `ErrorMetrics`: Model–observation metrics used across cost/diagnostics.
+- `TimeSampler`: Temporal sampling/aggregation helpers.
+- `UtilKit`: Shared utilities used across modules.
+
+## External (third-party)
 - `CSV`: Input/output of tabular forcing and calibration datasets.
+- `ConstructionBase`: Shared constructors needed by downstream modules.
 - `JSON`: Experiment metadata serialization (`parsefile`, `json`, `print`).
 - `JLD2`: Persisting SINDBAD state, diagnostics, and trained artifacts.
-- `YAXArrays` + `YAXArrays.Datasets`: Labeled n-dimensional arrays and
-  dataset writers for model output.
+- `YAXArrays` + `YAXArrays.Datasets`: Labeled n-dimensional arrays and dataset writers for model output.
+
+## Internal (within `Sindbad`)
+- `Sindbad.DataLoaders`
+- `Sindbad.Experiment`
+- `Sindbad.MachineLearning`
+- `Sindbad.ParameterOptimization`
+- `Sindbad.Setup`
+- `Sindbad.Simulation`
+- `Sindbad.Types`
+- `Sindbad.Visualization`
+- `SindbadTEM`
 
 # Included Modules:
 1. **DataLoaders** (`src/DataLoaders/`):
@@ -35,8 +50,8 @@ and visualization workflows.
    - Orchestrates terrestrial ecosystem simulations, including spinup,
      forward runs, diagnostics, and interaction with `SindbadTEM`.
 4. **ParameterOptimization** (`src/ParameterOptimization/`):
-   - Provides parameter-calibration utilities, optimizer bridges
-     (NLopt, Optim, CMA-ES variants), and experiment-wide objective hooks.
+   - Provides parameter-calibration utilities and objective hooks.
+   - Some optimizer backends are enabled via optional extensions (see Notes).
 5. **MachineLearning** (`src/MachineLearning/`):
    - Adds ML-assisted surrogates, emulators, and training pipelines that
      integrate with Sindbad outputs and optimization targets.
@@ -50,15 +65,16 @@ and visualization workflows.
   `Sindbad.Simulation`, and the rest without extra imports.
 - Shared dependencies are loaded here to guarantee consistent versions
   across all components.
+- Some functionality is enabled via Julia extensions (`Project.toml` `[weakdeps]` + `[extensions]` and `ext/`):
+  - `NLsolve` → `SindbadNLsolveExt`
+  - `Optimization` → `SindbadOptimizationExt`
+  - `CMAEvolutionStrategy` → `SindbadCMAEvolutionStrategyExt`
 
 # Examples:
 ```julia
 using Sindbad
 
-info = Sindbad.Setup.build_info("experiment_config.json")
-forcing = Sindbad.DataLoaders.load_forcing(info)
-results = Sindbad.Simulation.run(info, forcing)
-Sindbad.Visualization.plot_output(results)
+out = Sindbad.Experiment.runExperimentForward("experiment_config.json")
 ```
 """
 module Sindbad

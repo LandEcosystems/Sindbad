@@ -14,7 +14,7 @@ A package for temporal sampling, aggregation, and resampling of time series data
 
 # Main Types
 
-- `TimeSampler`: Core struct containing indices and a sampling function for temporal aggregation
+- `TimeSample`: Core struct containing indices and a sampling function for temporal aggregation
 - `TimeSampleViewInstance`: A view of an array with temporal sampling applied
 - `TimeSampleMethod`: Abstract type for different time sampling methods
 
@@ -59,7 +59,7 @@ The package supports various time sampling methods:
 
 # Main Functions
 
-- `createTimeSampler`: Create a `TimeSampler` struct from a date vector and time step specification
+- `createTimeSampler`: Create one or more `TimeSample` aggregators from a date vector and time step specification
 - `doTimeSampling`: Apply temporal sampling/aggregation to data using a vector of time samplers
 - `timeSampling`: Apply a single time sampler to an array
 - `getTimeSamplerInstance`: Get a time sampler method instance from a string or symbol
@@ -89,7 +89,7 @@ daily_sampler = createTimeSampler(dates, TimeDay())
 
 # See Also
 
-- `TimeSampler` for the core type
+- `TimeSample` for the core type
 - `createTimeSampler` for creating samplers
 - `doTimeSampling` for applying samplers to data
 """

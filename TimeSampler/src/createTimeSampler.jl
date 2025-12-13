@@ -15,7 +15,7 @@ a function to create a temporal sampling/aggregation struct for a given time ste
 - `skip_sampling`: a flag indicating if the sampling/aggregation target is the same as the input data and the sampling/aggregation can be skipped, defaults to false
 
 # Returns:
-- `::Vector{TimeSampler}`: a vector of TimeSampler structs
+- `::Vector{TimeSample}`: a vector of time-sampling/aggregation objects (`TimeSample`), or `nothing` entries when `skip_sampling=true`
 
 """
 function createTimeSampler end

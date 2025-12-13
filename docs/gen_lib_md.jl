@@ -1,13 +1,13 @@
 using Sindbad
 using SindbadTEM
-using SindbadTEM.Utils
+using UtilKit
 using SindbadTEM.Metrics
 using Sindbad.Simulation
 using Sindbad.Setup
 using Sindbad.DataLoaders
 using Sindbad.MachineLearning
 
-packages_list = (:Sindbad, :Utils, :SindbadTEM, :Setup, :DataLoaders, :ParameterOptimization, :Simulation, :MachineLearning, :Metrics)
+packages_list = (:Sindbad, :UtilKit, :SindbadTEM, :Setup, :DataLoaders, :ParameterOptimization, :Simulation, :MachineLearning, :Metrics)
 mkpath("./src/pages/code_gen")
 lib_path = joinpath(@__DIR__, "../lib")
 

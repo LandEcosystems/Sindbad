@@ -7,20 +7,26 @@ The `ParameterOptimization` module provides tools for optimizing SINDBAD models,
 This module is designed to support optimization tasks in SINDBAD, such as calibrating model parameters to match observations or minimizing cost functions. It leverages multiple optimization libraries and provides a unified interface for running optimization routines.
 
 # Dependencies:
-- `CMAEvolutionStrategy`: Covariance Matrix Adaptation Evolution Strategy backend.
-- `Evolutionary`: Additional evolutionary/metaheuristic optimizers.
-- `ForwardDiff`: Automatic differentiation for gradient-based workflows.
-- `MultistartOptimization`: Multi-start orchestration utilities.
-- `NLopt`: Large suite of derivative-free and gradient-based optimizers.
-- `Optim`: Quasi-Newton and trust-region algorithms (BFGS, LBFGS, etc.).
-- `Optimization` + `OptimizationOptimJL`: SciML interface plus the Optim bridge.
-- `OptimizationGCMAES` / `OptimizationCMAEvolutionStrategy`: Extra CMA-ES variants exposed through `Optimization`.
-- `QuasiMonteCarlo`: Low-discrepancy sequence sampling (initial populations, Sobol sets, etc.).
-- `StableRNGs`: Reproducible random number generation for stochastic optimizers.
-- `GlobalSensitivity`: Sobol/variance-based sensitivity tooling for pre/post analysis.
-- `SindbadTEM` and `SindbadTEM.Utils`: Core TEM types and helper utilities.
-- `SindbadTEM.Metrics`: Metric/cost definitions referenced during optimization.
-- `Sindbad.Setup` / `Sindbad.Simulation`: Provide the experiment `info` and runtime hooks the optimizers call.
+## Related (SINDBAD ecosystem)
+- `ErrorMetrics`: Metric implementations for cost evaluation.
+- `TimeSampler`: Temporal helpers used by some workflows.
+- `UtilKit`: Shared helpers and table utilities.
+
+## External (third-party)
+- `StableRNGs`: Reproducible random number generation for stochastic workflows.
+
+## Internal (within `Sindbad`)
+- `Sindbad.Setup`
+- `Sindbad.Simulation`
+- `Sindbad.Types`
+- `SindbadTEM`
+
+## Optional dependencies (extensions / weakdeps)
+Some optimizer backends are enabled via Julia extensions (see root `Project.toml` and `ext/`):
+- `CMAEvolutionStrategy` → `SindbadCMAEvolutionStrategyExt`
+- `Optimization` → `SindbadOptimizationExt`
+
+Other packages listed under `[weakdeps]` may be used by experimental workflows but are not required for the base module to load.
 
 # Included Files:
 1. **`optimizer.jl`**:
