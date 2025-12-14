@@ -1,7 +1,7 @@
 name = "Sindbad"
 uuid = "36c3e672-7dee-4606-99b5-7e5d8d85a313"
-version = "0.1.0"
 authors = ["SINDBAD Contributors <sindbad@bgc-jena.mpg.de>"]
+version = "0.1.0"
 
 [deps]
 AxisKeys = "94b1ba4f-4ee9-5380-92f1-94cde586c3c5"
@@ -14,6 +14,8 @@ Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 ErrorMetrics = "c324fbf6-076a-4da5-8ad2-21081a6b285c"
 FIGlet = "3064a664-84fe-4d92-92c7-ed492f3d8fae"
 FillArrays = "1a297f60-69ca-5386-bcde-b61e274b549b"
+FiniteDiff = "6a86dc24-6348-571c-b903-95158fe2bd41"
+Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
 Infiltrator = "5903a43b-9cc3-4c30-8d17-598619ec4e9b"
 JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
@@ -36,11 +38,10 @@ Zarr = "0a941bbe-ad1d-11e8-39d9-ab76183a1d99"
 
 [weakdeps]
 CMAEvolutionStrategy = "8d3b24bd-414e-49e0-94fb-163cc3a3e411"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
 Evolutionary = "86b6b26d-c046-49b6-aa0b-5f0f74682bd6"
-FiniteDiff = "6a86dc24-6348-571c-b903-95158fe2bd41"
 FiniteDifferences = "26cc04aa-876d-5657-8c51-4c34ba976000"
-Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
 ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 GlobalSensitivity = "af5da776-676b-467e-8baf-acd8249e4f0f"
 NLopt = "76087f3c-5699-56af-9a33-bf431cd00edd"
@@ -60,5 +61,11 @@ UtilKit = {path = "UtilKit"}
 
 [extensions]
 SindbadCMAEvolutionStrategyExt = "CMAEvolutionStrategy"
+SindbadDataFramesExt = "DataFrames"
 SindbadNLsolveExt = "NLsolve"
 SindbadOptimizationExt = "Optimization"
+
+[compat]
+FiniteDiff = "2.29.0"
+Flux = "0.16.7"
+Random = "1.11.0"

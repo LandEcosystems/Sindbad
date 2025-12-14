@@ -53,29 +53,30 @@ module MachineLearning
         nprocs,
         CachingPool
     # using Enzyme
-    # using FiniteDiff
+    using FiniteDiff
     # using FiniteDifferences
-    # using Flux
+    using Flux
     # using ForwardDiff
     using Base.Iterators: repeated, partition
     using JLD2
     # using Optimisers
     # using PolyesterForwardDiff
     # using PreallocationTools
-    import ProgressMeter: @showprogress, Progress, next!, progress_pmap, progress_map
-    # using Random
+    using ProgressMeter: @showprogress, Progress, next!, progress_pmap, progress_map
+    using Random
     # using Statistics
     # using Zygote
     
     using SindbadTEM
     # using YAXArrays
     # using Zarr
-    # using AxisKeys
+    using AxisKeys
     using ..Types
     using ..DataLoaders: AllNaN
-    using ..DataLoaders: yaxCubeToKeyedArray
-    using ..Setup: updateModels
-    using ..Simulation: coreTEM!
+    using ..DataLoaders: yaxCubeToKeyedArray, Cube, At
+    using ..Setup: updateModels, getParameterIndices
+    using ..Simulation: coreTEM!, prepTEM, prepCostOptions
+    using ..ParameterOptimization: metricVector, combineMetric
 
 
     include("utilsMachineLearning.jl")
@@ -87,7 +88,7 @@ module MachineLearning
     include("prepHybrid.jl")
     include("mlGradient.jl")
     include("mlTrain.jl")
-    # include("neuralNetwork.jl")
+    include("neuralNetwork.jl")
     include("siteLosses.jl")
     include("oneHots.jl")
     include("loadCovariates.jl")
