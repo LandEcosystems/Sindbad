@@ -14,7 +14,7 @@ module SindbadFiniteDiffExt
 
     using FiniteDiff
     
-    include("ParameterOptimizationCost.jl")
+    include("MachineLearningGradientSite.jl")
 
 end
 

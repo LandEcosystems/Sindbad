@@ -15,8 +15,6 @@ module SindbadForwardDiffExt
     using ForwardDiff
     
     include("MachineLearningGradientSite.jl")
-    include("MachineLearningGetCacheFromOutput.jl")
-    include("MachineLearningGetOutputFromCache.jl")
 
 end
 

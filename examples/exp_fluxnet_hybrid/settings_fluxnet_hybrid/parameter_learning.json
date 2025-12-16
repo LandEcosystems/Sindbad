@@ -28,7 +28,7 @@
     "options": {
       "chunk_size": 2
     },
-    "package": "FiniteDiff"
+    "package": "ForwardDiff"
   },
   "ml_optimizer": {
     "method": "Adam",
