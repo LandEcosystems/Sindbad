@@ -143,7 +143,7 @@ Current methods include:
 In `src/Types/ParameterOptimizationTypes.jl`, add a new struct that subtypes `ParameterOptimizationMethod`:
 
 ```julia
-import UtilKit: purpose
+import UtilsKit: purpose
 
 # Define the new optimization type
 struct YourNewOptimizationMethod <: ParameterOptimizationMethod end

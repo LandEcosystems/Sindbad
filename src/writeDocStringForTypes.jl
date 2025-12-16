@@ -1,8 +1,8 @@
 using Sindbad: SindbadTypes
 using Sindbad: subtypes
-using UtilKit: writeTypeDocString
-using UtilKit: loopWriteTypeDocString
-using UtilKit: purpose
+using UtilsKit: writeTypeDocString
+using UtilsKit: loopWriteTypeDocString
+using UtilsKit: purpose
 
 # include doc strings for all types in Types
     ds_file = joinpath(@__DIR__, "Types/docStringForTypes.jl")

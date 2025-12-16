@@ -11,13 +11,13 @@ This module defines the `LandEcosystem` supertype, which serves as the base for 
 # Dependencies
 Key dependencies used/re-exported by the module include:
 - `Reexport`: Re-export helpers (`@reexport`).
-- `UtilKit`: Shared utilities and `purpose` integration.
+- `UtilsKit`: Shared utilities and `purpose` integration.
 - `CodeTracking`: Development/debug helpers.
 - `DataStructures`: Collection types used across TEM utilities.
 - `StaticArraysCore`: Fixed-size and sized array types for performance.
 - `Accessors`: Nested update helpers (`@set`).
 - `StatsBase`: Statistical helpers used across processes/utilities.
-- `InteractiveUtils`, `Crayons`, `StyledStrings`: Interactive/dev UX helpers.
+- `InteractiveUtils`, `Crayons`: Interactive/dev UX helpers.
 
 # Included Files
 - **`TEMTypes.jl`**: Core TEM types (including `LandEcosystem`) and shared type utilities.
@@ -54,8 +54,8 @@ catalog = getVariableCatalog()
 """
 module SindbadTEM
    using Reexport: @reexport
-   @reexport using UtilKit
-   import UtilKit: purpose
+   @reexport using UtilsKit
+   import UtilsKit: purpose
    @reexport using Reexport
    @reexport using Pkg
    @reexport using CodeTracking
@@ -69,7 +69,6 @@ module SindbadTEM
    @reexport using InteractiveUtils
    @reexport using Crayons
    @reexport using Base.Docs: doc as base_doc
-   @reexport using StyledStrings
 
    # create a tmp_ file for tracking the creation of new approaches. This is needed because precompiler is not consistently loading the newly created approaches. This file is appended every time a new model/approach is created which forces precompile in the next use of SindbadTEM.
    file_path = file_path = joinpath(@__DIR__, "tmp_precompile_placeholder.jl")

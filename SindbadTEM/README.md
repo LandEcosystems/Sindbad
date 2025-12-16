@@ -118,7 +118,7 @@ Tooling for:
 - `DataStructures`: Advanced data structures (OrderedDict, Deque)
 - `StaticArraysCore`: Fixed-size arrays for performance-critical operations
 - `StatsBase`: Statistical functions
-- `UtilKit`: Utility functions (note: UtilKit will move to a separate repository)
+- `UtilsKit`: Utility functions (note: UtilsKit will move to a separate repository)
 
 ## Documentation
 

@@ -56,7 +56,7 @@ Internal packages (SINDBAD core):
 Related packages (SINDBAD ecosystem):
 - **`ErrorMetrics`**: Model–observation metrics
 - **`TimeSampler`**: Time aggregation / sampling utilities
-- **`UtilKit`**: Shared utility toolkit
+- **`UtilsKit`**: Shared utility toolkit
 
 ## Installation
 
@@ -71,7 +71,7 @@ Pkg.add("Sindbad")
 
 `Sindbad` depends on three categories of packages:
 
-- **Related (SINDBAD ecosystem)**: `ErrorMetrics`, `TimeSampler`, `UtilKit` (installed automatically).
+- **Related (SINDBAD ecosystem)**: `ErrorMetrics`, `TimeSampler`, `UtilsKit` (installed automatically).
 - **Internal (SINDBAD core)**: `Sindbad.DataLoaders`, `Sindbad.Experiment`, `Sindbad.MachineLearning`, `Sindbad.ParameterOptimization`, `Sindbad.Setup`, `Sindbad.Simulation`, `Sindbad.Types`, `Sindbad.Visualization`, `SindbadTEM`.
 - **External (third-party)**: e.g. `CSV`, `JLD2`, `JSON`, `NCDatasets`, `Plots`, `ProgressMeter`, `YAXArrays`, `Zarr`, etc. (installed automatically).
 

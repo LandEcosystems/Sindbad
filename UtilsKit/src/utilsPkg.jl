@@ -2,6 +2,43 @@ export addExtensionToFunction
 export addExtensionToPackage
 export addPackage
 
+using Pkg
+using Logging
+
+"""
+    ensurePackageInRegistry(pkgname::String) -> Nothing
+
+Fail fast if `pkgname` cannot be found in any reachable registry.
+
+This is a preflight check to avoid creating extension files / activating environments when the package
+name is misspelled or not registered.
+"""
+function ensurePackageInRegistry(pkgname::String)
+    regs = try
+        Pkg.Registry.reachable_registries()
+    catch err
+        throw(error("Could not query registries to validate package name $(repr(pkgname)). Error: $(err)"))
+    end
+    for r in regs
+        # Fast path: RegistryInstance may have `name_to_uuids::Dict{String,Vector{UUID}}`,
+        # but on some setups this can be incomplete even when the package exists.
+        ntu = getfield(r, :name_to_uuids)
+        if haskey(ntu, pkgname)
+            return nothing
+        end
+
+        # Fallback (authoritative): scan the registry `pkgs::Dict{UUID,PkgEntry}` table by name.
+        # This is O(N) in number of packages in the registry, but it avoids false negatives.
+        for entry in values(getfield(r, :pkgs))
+            if getfield(entry, :name) == pkgname
+                return nothing
+            end
+        end
+    end
+    reg_names = join((getfield(r, :name) for r in regs), ", ")
+    error("Package $(repr(pkgname)) not found in reachable registries ($(reg_names)). Check spelling or add the registry that contains it.")
+end
+
 
 # ---------------------------------------------------------------------------
 # addExtensionToFunction
@@ -49,6 +86,10 @@ function addExtensionToFunction(function_to_extend::Function, external_package::
     isnothing(root_path) && error("Cannot locate package root for $(root_pkg). Ensure it is a package module with a valid `pathof`.")
     package_root = joinpath(dirname(root_path), "..")
 
+    # First step: ensure the weak dependency is addable/added. If this fails, we stop here and do NOT
+    # create any files/directories under `ext/`.
+    ensureExtensionMapping(package_root, external_package, ext_module_name)
+
     ext_dir = ensureExtDir(package_root)
     ext_path = extension_location === :File ? ext_dir :
                extension_location === :Folder ? ensureExtensionFolder(ext_dir, ext_module_name) :
@@ -71,7 +112,7 @@ function addExtensionToFunction(function_to_extend::Function, external_package::
     code_exists = isfile(code_path)
 
     # Method signature strings (dedup default-arg expansions + repo-relative paths)
-    template_methods = getMethodSignatures(function_to_extend; path=:relative)
+    template_methods = getMethodSignatures(function_to_extend; path=:relative_root)
     # Arg name + last-arg type inference (best-effort)
     template_arg_names, template_last_arg_type = _inferCommonArgs(function_to_extend)
 
@@ -104,7 +145,6 @@ function addExtensionToFunction(function_to_extend::Function, external_package::
         ))
     end
 
-    ensureExtensionMapping(package_root, external_package, ext_module_name)
     logAction("addExtensionToFunction", "Done. Extension module name: $(ext_module_name)")
     return ext_module_name
 end
@@ -132,6 +172,11 @@ function addExtensionToPackage(local_package::Module, external_package::String; 
     root_path = pathof(root_pkg)
     isnothing(root_path) && error("Cannot locate package root for $(root_pkg). Ensure it is a package module with a valid `pathof`.")
     package_root = joinpath(dirname(root_path), "..")
+
+    # First step: ensure the weak dependency is addable/added. If this fails, we stop here and do NOT
+    # create any files/directories under `ext/`.
+    ensureExtensionMapping(package_root, external_package, ext_module_name)
+
     ext_dir = ensureExtDir(package_root)
     ext_path = extension_location === :File ? ext_dir :
                extension_location === :Folder ? ensureExtensionFolder(ext_dir, ext_module_name) :
@@ -144,7 +189,6 @@ function addExtensionToPackage(local_package::Module, external_package::String; 
     inner = length(rel) == 1 ? String(rel[1]) : nothing
 
     createExtensionEntry(root_pkg_name, inner, external_package, ext_path, ext_module_name, nothing)
-    ensureExtensionMapping(package_root, external_package, ext_module_name)
     logAction("addExtensionToPackage", "Done. Extension module name: $(ext_module_name)")
     return ext_module_name
 end
@@ -387,6 +431,41 @@ function ensureExtensionMapping(package_root::String, external_package::String, 
     project = TOML.parsefile(project_file)
 
     actions = String[]
+
+    # Keep track of the previously active project so we can restore it even if Pkg errors.
+    prev_project = try
+        Base.active_project()
+    catch
+        nothing
+    end
+
+    # First step: attempt the Pkg operation(s). If this fails (e.g. package not found), we want the
+    # natural Pkg error and we should not proceed to create extension files.
+    in_weakdeps = haskey(project, "weakdeps") && haskey(project["weakdeps"], external_package)
+    in_deps = haskey(project, "deps") && haskey(project["deps"], external_package)
+
+    try
+        Pkg.activate(package_root)
+        if in_deps && !in_weakdeps
+            Pkg.remove(external_package)
+            push!(actions, "removed \"$external_package\" from [deps] via Pkg (will re-add as weakdep)")
+        end
+        if !in_weakdeps || in_deps
+            Pkg.add(external_package; target=:weakdeps)
+            push!(actions, "added/ensured \"$external_package\" in [weakdeps] via Pkg")
+        end
+    finally
+        if !isnothing(prev_project)
+            try
+                Pkg.activate(dirname(prev_project))
+            catch
+            end
+        end
+    end
+
+    # Refresh project after Pkg operations (Pkg may have rewritten Project.toml).
+    project = TOML.parsefile(project_file)
+
     if !haskey(project, "extensions")
         project["extensions"] = Dict{String,Any}()
         push!(actions, "created [extensions] table")
@@ -398,23 +477,8 @@ function ensureExtensionMapping(package_root::String, external_package::String, 
         push!(actions, "removed reversed mapping \"$external_package\" = \"$ext_module_name\"")
     end
 
-    if haskey(project, "weakdeps") && haskey(project["weakdeps"], external_package)
-        project["extensions"][ext_module_name] = external_package
-        push!(actions, "set [extensions] \"$ext_module_name\" = \"$external_package\" (weakdep already present)")
-    elseif haskey(project, "deps") && haskey(project["deps"], external_package)
-        Pkg.activate(package_root)
-        Pkg.remove(external_package)
-        Pkg.add(external_package; target=:weakdeps)
-        project = TOML.parsefile(project_file)
-        project["extensions"][ext_module_name] = external_package
-        push!(actions, "moved \"$external_package\" from [deps] → [weakdeps] via Pkg and set [extensions]")
-    else
-        Pkg.activate(package_root)
-        Pkg.add(external_package; target=:weakdeps)
-        project = TOML.parsefile(project_file)
-        project["extensions"][ext_module_name] = external_package
-        push!(actions, "added \"$external_package\" to [weakdeps] via Pkg and set [extensions]")
-    end
+    project["extensions"][ext_module_name] = external_package
+    push!(actions, "set [extensions] \"$ext_module_name\" = \"$external_package\"")
 
     open(project_file, "w") do io
         TOML.print(io, project)

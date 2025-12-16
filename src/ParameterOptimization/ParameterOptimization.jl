@@ -10,7 +10,7 @@ This module is designed to support optimization tasks in SINDBAD, such as calibr
 ## Related (SINDBAD ecosystem)
 - `ErrorMetrics`: Metric implementations for cost evaluation.
 - `TimeSampler`: Temporal helpers used by some workflows.
-- `UtilKit`: Shared helpers and table utilities.
+- `UtilsKit`: Shared helpers and table utilities.
 
 ## External (third-party)
 - `StableRNGs`: Reproducible random number generation for stochastic workflows.
@@ -76,7 +76,7 @@ module ParameterOptimization
    # # using OptimizationQuadDIRECT
    # using QuasiMonteCarlo
    using StableRNGs
-   using UtilKit
+   using UtilsKit
    using ErrorMetrics
    using TimeSampler
    using SindbadTEM

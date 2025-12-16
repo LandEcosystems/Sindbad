@@ -8,7 +8,7 @@ High-level interface for conducting experiments using the SINDBAD framework (wor
 
 # Dependencies
 ## Related (SINDBAD ecosystem)
-- `UtilKit`: Shared utilities.
+- `UtilsKit`: Shared utilities.
 - `ErrorMetrics`: Metric implementations used in cost/diagnostics.
 
 ## Internal (within `Sindbad`)
@@ -38,7 +38,7 @@ Sindbad.Experiment.runExperimentForward(experiment_config)
 ```
 """
 module Experiment
-    using UtilKit
+    using UtilsKit
     using ErrorMetrics
     using ...SindbadTEM
     using ..Types

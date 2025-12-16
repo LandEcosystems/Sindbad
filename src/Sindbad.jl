@@ -19,7 +19,7 @@ and visualization workflows.
 ## Related (SINDBAD ecosystem)
 - `ErrorMetrics`: Model–observation metrics used across cost/diagnostics.
 - `TimeSampler`: Temporal sampling/aggregation helpers.
-- `UtilKit`: Shared utilities used across modules.
+- `UtilsKit`: Shared utilities used across modules.
 
 ## External (third-party)
 - `CSV`: Input/output of tabular forcing and calibration datasets.
@@ -104,4 +104,16 @@ module Sindbad
   @reexport using .Experiment
   # include("writeDocStringForTypes.jl")
   # include("Types/docStringForTypes.jl")
+
+  export addExtensionToSindbad
+  """
+  addExtensionToSindbad(function_to_extend::Function, external_package::String) -> String
+
+  Convenience wrapper for this repo: asserts the function belongs to `Sindbad` and always uses folder layout.
+  """
+  function addExtensionToSindbad(function_to_extend::Function, external_package::String)
+    root_pkg = Base.moduleroot(parentmodule(function_to_extend))
+    nameof(root_pkg) == :Sindbad || error("Expected a Sindbad function; got root package $(root_pkg).")
+    return addExtensionToFunction(function_to_extend, external_package; extension_location=:Folder)
+  end
 end # module Sindbad

@@ -1,5 +1,3 @@
-export getDeltaPool
-export getSpinupInfo
 export spinup
 export spinupTEM
 export timeLoopTEMSpinup
@@ -109,59 +107,6 @@ function (TWS_spin::Spinup_TWS)(pout, p)
     return nothing
 end
 
-
-"""
-    getDeltaPool(pool_dat::AbstractArray, spinup_info, t)
-
-helper function to run the spinup models and return the delta in a given pool over the simulation. Used in solvers from DifferentialEquations.jl.
-
-
-# Arguments:
-- `pool_dat`: new values of the storage pools
-- `spinup_info`: NT with all the necessary information to run the spinup models
-"""
-function getDeltaPool(pool_dat::AbstractArray, spinup_info, _)
-    land = spinup_info.land
-    tem_info = spinup_info.tem_info
-    spinup_models = spinup_info.spinup_models
-    spinup_forcing = spinup_info.spinup_forcing
-    loc_forcing_t = spinup_info.loc_forcing_t
-    n_timesteps = spinup_info.n_timesteps
-    land = setTupleSubfield(land, :pools, (spinup_info.pool, pool_dat))
-
-    land = timeLoopTEMSpinup(spinup_models, spinup_forcing, loc_forcing_t, deepcopy(land), tem_info, n_timesteps)
-    tmp = getfield(land.pools, spinup_info.pool)
-    Δpool = tmp - pool_dat
-    return Δpool
-end
-
-"""
-    getSpinupInfo(spinup_models, spinup_forcing, loc_forcing_t, land, spinup_pool_name, tem_info, tem_spinup)
-
-helper function to create a NamedTuple with all the variables needed to run the spinup models in getDeltaPool. Used in solvers from DifferentialEquations.jl.
-
-
-# Arguments:
-- `spinup_models`: a tuple of a subset of all models in the given model structure that is selected for spinup
-- `spinup_forcing`: a selected/sliced/computed forcing time series for running the spinup sequence for a location
-- `loc_forcing_t`: a forcing NT for a single location and a single time step
-- `land`: SINDBAD NT input to the spinup of TEM during which subfield(s) of pools are overwritten
-- `spinup_pool_name`: name of the land.pool storage component intended for spinup
-- `tem_info`: helper NT with necessary objects for model run and type consistencies
-"""
-function getSpinupInfo(spinup_models, spinup_forcing, loc_forcing_t, land, spinup_pool_name, tem_info, n_timesteps)
-    spinup_info = (;)
-    spinup_info = setTupleField(spinup_info, (:pool, spinup_pool_name))
-    spinup_info = setTupleField(spinup_info, (:land, land))
-    spinup_info = setTupleField(spinup_info, (:spinup_forcing, spinup_forcing))
-    spinup_info = setTupleField(spinup_info, (:spinup_models, spinup_models))
-    spinup_info = setTupleField(spinup_info, (:tem_info, tem_info))
-    spinup_info = setTupleField(spinup_info, (:loc_forcing_t, loc_forcing_t))
-    spinup_info = setTupleField(spinup_info, (:n_timesteps, n_timesteps))
-    return spinup_info
-end
-
-
 """
     spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, spinup_mode::SpinupMode)
 
@@ -212,7 +157,24 @@ land = spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_ti
 land = spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, SSPSSRootfind())
 ```
 """
-function spinup end
+function spinup(::Any, ::Any, ::Any, land, ::Any, ::Any, x::SpinupMode)
+    @warn "
+    Spinup mode `$(nameof(typeof(x)))` not implemented. 
+    
+    To implement a new spinup mode:
+    
+    - First add a new type as a subtype of `SpinupMode` in `src/Types/SimulationTypes.jl`. 
+    
+    - Then, add a corresponding method.
+      - if it can be implemented as an internal Sindbad method without additional dependencies, implement the method in `src/Simulation/spinupTEM.jl`.     
+      - if it requires additional dependencies, implement the method in `ext/<extension_name>/SimulationSpinup.jl` extension.
+
+    
+    As a fallback, this function will return the land as is.
+
+    "
+    return land
+end
 
 function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, ::SelSpinupModels)
     land = timeLoopTEMSpinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps)
@@ -221,50 +183,6 @@ end
 
 function spinup(all_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, ::AllForwardModels)
     land = timeLoopTEMSpinup(all_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps)
-    return land
-end
-
-function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, ::NlsolveFixedpointTrustregionTWS)
-    TWS_spin = Spinup_TWS(spinup_models, spinup_forcing, tem_info, land, loc_forcing_t, n_timesteps)
-    r = fixedpoint(TWS_spin, Vector(deepcopy(land.pools.TWS)); method=:trust_region)
-    TWS = r.zero
-    TWS = oftype(land.pools.TWS, TWS)
-    @pack_nt TWS ⇒ land.pools
-    land = SindbadTEM.adjustPackPoolComponents(land, tem_info.model_helpers, land.models.w_model)
-    return land
-end
-
-function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, ::NlsolveFixedpointTrustregionCEcoTWS)
-    cEco_TWS_spin = Spinup_cEco_TWS(spinup_models, spinup_forcing, tem_info, deepcopy(land), loc_forcing_t, n_timesteps, Vector(deepcopy(land.pools.TWS)))
-    p_init = log.(Vector(deepcopy(land.pools.cEco)))
-    # r = fixedpoint(cEco_TWS_spin, p_init; method=:trust_region)
-    # cEco = exp.(r.zero)
-    cEco = land.pools.cEco
-    try
-        r = fixedpoint(cEco_TWS_spin, p_init; method=:trust_region)
-        cEco = exp.(r.zero)
-    catch
-        cEco = land.pools.cEco
-    end
-    cEco = oftype(land.pools.cEco, cEco)
-    @pack_nt cEco ⇒ land.pools
-    TWS_prev = cEco_TWS_spin.TWS
-    TWS = oftype(land.pools.TWS, TWS_prev)
-    @pack_nt TWS ⇒ land.pools
-    land = SindbadTEM.adjustPackPoolComponents(land, tem_info.model_helpers, land.models.c_model)
-    land = SindbadTEM.adjustPackPoolComponents(land, tem_info.model_helpers, land.models.w_model)
-    return land
-end
-
-
-function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, ::NlsolveFixedpointTrustregionCEco)
-    cEco_spin = Spinup_cEco(spinup_models, spinup_forcing, tem_info, deepcopy(land), loc_forcing_t, n_timesteps)
-    p_init = log.(Vector(deepcopy(land.pools.cEco)))
-    r = fixedpoint(cEco_spin, p_init; method=:trust_region)
-    cEco = exp.(r.zero)
-    cEco = oftype(land.pools.cEco, cEco)
-    @pack_nt cEco ⇒ land.pools
-    land = SindbadTEM.adjustPackPoolComponents(land, tem_info.model_helpers, land.models.c_model)
     return land
 end
 
@@ -384,78 +302,6 @@ function spinup(_, _, _, land, helpers, _, ::EtaScaleA0HCWD)
     @pack_nt cEco ⇒ land.pools
     land = SindbadTEM.adjustPackPoolComponents(land, helpers, land.models.c_model)
     @pack_nt cEco_prev ⇒ land.states
-    return land
-end
-
-function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, ::ODEAutoTsit5Rodas5)
-    for sel_pool ∈ tem_spinup.differential_eqn.pools
-        p_info = getSpinupInfo(spinup_models, spinup_forcing, loc_forcing_t, land, Symbol(sel_pool), tem_info, n_timesteps)
-        tspan = (0.0, tem_info.numbers.num_type(tem_spinup.differential_eqn.time_jump))
-        init_pool = deepcopy(getfield(p_info.land[:pools], p_info.pool))
-        ode_prob = ODEProblem(getDeltaPool, init_pool, tspan, p_info)
-        maxIter = tem_spinup.differential_eqn.time_jump
-        # maxIter = max(ceil(tem_spinup.differential_eqn.time_jump) / 100, 100)
-        ode_sol = solve(ode_prob, AutoVern7(Rodas5()); maxiters=maxIter)
-        # ode_sol = solve(ode_prob, Tsit5(), reltol=tem_spinup.differential_eqn.relative_tolerance, abstol=tem_spinup.differential_eqn.absolute_tolerance, maxiters=maxIter)
-        land = setTupleSubfield(land, :pools, (p_info.pool, ode_sol.u[end]))
-    end
-    return land
-end
-
-function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, ::ODEDP5)
-    for sel_pool ∈ tem_spinup.differential_eqn.pools
-        p_info = getSpinupInfo(spinup_models, spinup_forcing, loc_forcing_t, land, Symbol(sel_pool), tem_info, n_timesteps)
-        tspan = (0.0, tem_info.numbers.num_type(tem_spinup.differential_eqn.time_jump))
-        init_pool = deepcopy(getfield(p_info.land[:pools], p_info.pool))
-        ode_prob = ODEProblem(getDeltaPool, init_pool, tspan, p_info)
-        maxIter = tem_spinup.differential_eqn.time_jump
-        maxIter = max(ceil(tem_spinup.differential_eqn.time_jump) / 100, 100)
-        ode_sol = solve(ode_prob, DP5(); maxiters=maxIter)
-        # ode_sol = solve(ode_prob, Tsit5(), reltol=tem_spinup.differential_eqn.relative_tolerance, abstol=tem_spinup.differential_eqn.absolute_tolerance, maxiters=maxIter)
-        land = setTupleSubfield(land, :pools, (p_info.pool, ode_sol.u[end]))
-    end
-    return land
-end
-
-
-function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, ::ODETsit5)
-    for sel_pool ∈ tem_spinup.differential_eqn.pools
-        p_info = getSpinupInfo(spinup_models, spinup_forcing, loc_forcing_t, land, Symbol(sel_pool), tem_info, n_timesteps)
-        tspan = (0.0, tem_info.numbers.num_type(tem_spinup.differential_eqn.time_jump))
-        init_pool = deepcopy(getfield(p_info.land[:pools], p_info.pool))
-        ode_prob = ODEProblem(getDeltaPool, init_pool, tspan, p_info)
-        # maxIter = tem_spinup.differential_eqn.time_jump
-        maxIter = max(ceil(tem_spinup.differential_eqn.time_jump) / 100, 100)
-        ode_sol = solve(ode_prob, Tsit5(); maxiters=maxIter)
-        # ode_sol = solve(ode_prob, Tsit5(), reltol=tem_spinup.differential_eqn.relative_tolerance, abstol=tem_spinup.differential_eqn.absolute_tolerance, maxiters=maxIter)
-        land = setTupleSubfield(land, :pools, (p_info.pool, ode_sol.u[end]))
-    end
-    return land
-end
-
-
-function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, ::SSPDynamicSSTsit5)
-    for sel_pool ∈ tem_spinup.differential_eqn.pools
-        p_info = getSpinupInfo(spinup_models, spinup_forcing, loc_forcing_t, land, Symbol(sel_pool), tem_info, n_timesteps)
-        tspan = (0.0, tem_spinup.differential_eqn.time_jump)
-        init_pool = deepcopy(getfield(p_info.land[:pools], p_info.pool))
-        ssp_prob = SteadyStateProblem(getDeltaPool, init_pool, p_info)
-        ssp_sol = solve(ssp_prob, DynamicSS(Tsit5()))
-        land = setTupleSubfield(land, :pools, (p_info.pool, ssp_sol.u))
-    end
-    return land
-end
-
-
-function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps, ::SSPSSRootfind)
-    for sel_pool ∈ tem_spinup.differential_eqn.pools
-        p_info = getSpinupInfo(spinup_models, spinup_forcing, loc_forcing_t, land, Symbol(sel_pool), tem_info, n_timesteps)
-        tspan = (0.0, tem_spinup.differential_eqn.time_jump)
-        init_pool = deepcopy(getfield(p_info.land[:pools], p_info.pool))
-        ssp_prob = SteadyStateProblem(getDeltaPool, init_pool, p_info)
-        ssp_sol = solve(ssp_prob, SSRootfind())
-        land = setTupleSubfield(land, :pools, (p_info.pool, ssp_sol.u))
-    end
     return land
 end
 

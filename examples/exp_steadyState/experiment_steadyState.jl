@@ -2,6 +2,7 @@ using Revise
 using Sindbad
 using Sindbad.DataLoaders
 using Plots
+using NLsolve
 # using Accessors
 toggleStackTraceNT()
 default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
@@ -59,9 +60,9 @@ end
 experiment_json = "../exp_steadyState/settings_steadyState/experiment.json"
 out_sp_exp = nothing
 model_array_type = "static_array"
-tjs = (1, 100, 1_000, 10_000)
+tjs = (1,)# 100, 1_000, 10_000)
 # tjs = (1000,)
-tjs = (10_000,)
+# tjs = (10_000,)
 nLoop_pre_spin = 10
 # for model_array_type ∈ ("static_array",)
 # for model_array_type ∈ ("array",) #, "static_array")

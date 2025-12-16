@@ -35,7 +35,7 @@ land.TWS   # Total Water Storage
 For every approach structure/implementation, the `land` should be examined for potential violations of the variable grouping using:
 
 ```julia
-using UtilKit: tcPrint
+using UtilsKit: tcPrint
 tcPrint(land)
 ```
 

@@ -1,11 +1,11 @@
 """
-    UtilKit
+    UtilsKit
 
 A comprehensive utility package providing foundational functions for data manipulation, collections management, display formatting, and type introspection in the SINDBAD framework.
 
 # Overview
 
-`UtilKit` serves as a core utility library that provides reusable functions for common programming tasks. It is designed to be type-stable, performant, and consistent across SINDBAD packages.
+`UtilsKit` serves as a core utility library that provides reusable functions for common programming tasks. It is designed to be type-stable, performant, and consistent across SINDBAD packages.
 
 # Main Features
 
@@ -32,7 +32,7 @@ A comprehensive utility package providing foundational functions for data manipu
 - Fractional and cumulative sum operations
 
 ## Display and Formatting
-- Colored terminal output with `Crayons` and `StyledStrings`
+- Colored terminal output with `Crayons`
 - ASCII art banners with `FIGlet`
 - Logging level management
 - Type information display with color coding
@@ -57,13 +57,12 @@ A comprehensive utility package providing foundational functions for data manipu
 - `FIGlet`: ASCII art text generation
 - `InteractiveUtils`: Interactive utilities for Julia REPL
 - `Logging`: Logging framework
-- `StyledStrings`: Styled text for terminal output
 - `TypedTables`: Typed table data structures
 
 # Usage Example
 
 ```julia
-using UtilKit
+using UtilsKit
 
 # Convert dictionary to NamedTuple
 dict = Dict(:a => 1, :b => 2)
@@ -94,9 +93,8 @@ str = toUpperCaseFirst("hello_world", "Time")  # Returns :TimeHelloWorld
 - [`booleanizeArray`](@ref) for array booleanization
 - [`getTypeDocString`](@ref) for type documentation generation
 """
-module UtilKit
+module UtilsKit
    using Crayons
-   using StyledStrings
    using DataStructures
    using Logging
    using FIGlet
@@ -119,4 +117,4 @@ module UtilKit
    include("utilsMethods.jl")
    include("utilsPkg.jl")
    
-end # module UtilKit
+end # module UtilsKit

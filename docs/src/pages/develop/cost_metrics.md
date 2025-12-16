@@ -208,9 +208,9 @@ Each metric type in SINDBAD should have a `purpose` function that describes its 
 
 ### How to Define Purpose
 
-1. Make sure that the base `purpose` function from UtilKit is already imported:
+1. Make sure that the base `purpose` function from UtilsKit is already imported:
 ```julia
-import UtilKit: purpose
+import UtilsKit: purpose
 ```
 
 2. Then, `purpose` can be easily extended for your metric type:

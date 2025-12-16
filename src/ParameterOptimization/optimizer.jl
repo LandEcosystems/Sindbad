@@ -52,11 +52,21 @@ optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds
 - Each algorithm has its own implementation details, such as handling bounds, configuring options, and solving the optimization problem.
 - The results are processed to extract the optimized parameter vector (`optim_para`), which is returned to the user.
 """
-function optimizer end
+function optimizer(::Any, ::Any, ::Any, ::Any, ::Any, x::ParameterOptimizationMethod)
+    @warn "
+    Optimizer `$(nameof(typeof(x)))` not implemented. 
+    
+    To implement a new optimizer:
+    
+    - First add a new type as a subtype of `ParameterOptimizationMethod` in `src/Types/ParameterOptimizationTypes.jl`. 
+    
+    - Then, add a corresponding method:
+      - if it can be implemented as an internal Sindbad method without additional dependencies, implement the method in `src/ParameterOptimization/optimizer.jl`.     
+      - if it requires additional dependencies, implement the method in `ext/<extension_name>/ParameterOptimizationOptimizer.jl` extension.
 
+    As a fallback, this function will return the default values as the optimized parameters.
 
-
-function optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, ::ParameterOptimizationMethod)
+    "
     return default_values
 end
 # function optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, ::BayesOptKMaternARD5)

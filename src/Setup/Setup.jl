@@ -11,7 +11,7 @@ This module is designed to produce the SINDBAD `info` object, which contains all
 ## Related (SINDBAD ecosystem)
 - `ErrorMetrics`: Metric type construction for cost options.
 - `TimeSampler`: Temporal setup helpers.
-- `UtilKit`: Shared utilities (e.g. `Table`).
+- `UtilsKit`: Shared utilities (e.g. `Table`).
 
 ## External (third-party)
 - `CSV`, `JLD2`, `JSON`: Configuration and persistence tooling.
@@ -46,7 +46,7 @@ This module is designed to produce the SINDBAD `info` object, which contains all
 module Setup
 
    using SindbadTEM
-   @reexport using UtilKit: Table
+   @reexport using UtilsKit: Table
    using TimeSampler
    using ErrorMetrics
    using ..Types

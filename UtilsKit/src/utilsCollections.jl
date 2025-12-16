@@ -28,7 +28,8 @@ function collectColorForTypes(d; _color=true)
     all_types = []
     all_types = getTypes!(d, all_types)
     c_types = Dict{DataType,Int}()
-    _default_colors = [v for (k,v) in StyledStrings.ANSI_4BIT_COLORS]
+    # Julia 1.10/1.11 compatible: use simple 4-bit ANSI color codes 0–15 as defaults.
+    _default_colors = collect(0:15)
     for (i,t) ∈ enumerate(all_types)
         if _color == true
             c = i<17 ? _default_colors[i] : rand(16:255)
@@ -408,7 +409,7 @@ Print a formatted representation of a data structure with type annotations and c
 """
 function tcPrint(d; _color=true, _type=false, _value=true, _tspace="", space_pad="")
     colors_types = collectColorForTypes(d; _color=_color)
-    # aio = StyledStrings.AnnotatedIOBuffer()
+    # aio = AnnotatedIOBuffer()
     lc = nothing
     ttf = _tspace * space_pad
     for k ∈ sort(collect(keys(d)))

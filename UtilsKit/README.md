@@ -1,4 +1,4 @@
-# UtilKit.jl
+# UtilsKit.jl
 
 [![][docs-stable-img]][docs-stable-url] [![][docs-dev-img]][docs-dev-url] [![][ci-img]][ci-url] [![][codecov-img]][codecov-url] [![Julia][julia-img]][julia-url] [![License: EUPL-1.2](https://img.shields.io/badge/License-EUPL--1.2-blue)](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12)
 
@@ -33,13 +33,13 @@ A comprehensive utility package providing foundational functions for data manipu
 
 ```julia
 using Pkg
-Pkg.add("UtilKit")
+Pkg.add("UtilsKit")
 ```
 
 ## Quick Start
 
 ```julia
-using UtilKit
+using UtilsKit
 
 # Convert dictionary to NamedTuple
 dict = Dict(:a => 1, :b => 2, :c => Dict(:d => 3))
@@ -56,7 +56,7 @@ bool_arr = booleanizeArray(arr)
 str = toUpperCaseFirst("hello_world", "Time")  # Returns :TimeHelloWorld
 
 # Generate type documentation
-using UtilKit
+using UtilsKit
 doc_str = getTypeDocString(SomeType)
 ```
 
