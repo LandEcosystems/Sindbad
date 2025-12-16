@@ -8,7 +8,7 @@ This file is included from the extension module and can use `Optimization`.
 import Sindbad.ParameterOptimization: optimizer
 
 # get all the types needed to dispatch the function. These types should defined in a corresponding file in Sindbad so that they can be used for dispatching and setup, if that were needed.
-# using Sindbad: A, b, c
+using Sindbad: OptimizationBBOxnes, OptimizationBBOadaptive, OptimizationBFGS, OptimizationFminboxGradientDescentFD, OptimizationFminboxGradientDescent, OptimizationGCMAESDef, OptimizationGCMAESFD, OptimizationMultistartOptimization, OptimizationNelderMead, OptimizationQuadDirect
 
 # Example methods (for reference):
 # - src/ParameterOptimization/optimizer.jl:55  optimizer(::Any, ::Any, ::Any, ::Any, ::Any, ::ParameterOptimizationMethod) @ Sindbad.ParameterOptimization

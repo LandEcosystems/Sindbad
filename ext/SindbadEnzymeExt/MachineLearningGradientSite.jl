@@ -1,0 +1,26 @@
+"""
+Extension methods for `Sindbad.MachineLearning.gradientSite`.
+
+This file is included from the extension module and can use `Enzyme`.
+"""
+
+# Bring the target function into scope for adding methods. This should be done using `import` and not `using`.
+import Sindbad.MachineLearning: gradientSite
+
+# get all the types needed to dispatch the function. These types should defined in a corresponding file in Sindbad so that they can be used for dispatching and setup, if that were needed.
+using Sindbad: EnzymeGrad
+
+# Example methods (for reference):
+# - src/MachineLearning/mlGradient.jl:163  gradientSite(::FiniteDiffGrad, ::AbstractArray, ::NamedTuple, ::F) @ Sindbad.MachineLearning
+# - src/MachineLearning/mlGradient.jl:147  gradientSite(::PolyesterForwardDiffGrad, ::Any, ::NamedTuple, ::F) @ Sindbad.MachineLearning
+# - src/MachineLearning/mlGradient.jl:135  gradientSite(::PolyesterForwardDiffGrad, ::Any, ::Int64, ::F, ::Vararg{Any}) @ Sindbad.MachineLearning
+# - src/MachineLearning/mlGradient.jl:172  gradientSite(::ZygoteGrad, ::AbstractArray, ::NamedTuple, ::F) @ Sindbad.MachineLearning
+
+# ------------------------------------------------------------------
+function gradientSite(::EnzymeGrad, x_vals::AbstractArray, gradient_options::NamedTuple,loss_f::F) where {F}
+    # does not work with `Enzyme.gradient!` but is kept here as placeholder for future development
+    # Ensure x_vals is a mutable array (Vector)
+    x_vals = collect(copy(x_vals))  # Convert to a mutable array if necessary
+    # x_vals = copy(x_vals)
+    return Enzyme.gradient(Forward, loss_f, x_vals)
+end
