@@ -1,20 +1,20 @@
 """
     SindbadOptimizationExt
 
-Julia extension module that enables Optimization.jl-based optimizer backends for `Sindbad.ParameterOptimization`.
+Julia extension module that enables Optimization backends for `Sindbad.ParameterOptimization`.
 
-# Notes
-- This module is loaded automatically by Julia's package extension mechanism when `Optimization` is available (see root `Project.toml` `[weakdeps]` + `[extensions]`).
-- End users typically should not `using SindbadOptimizationExt` directly; instead `using Sindbad` / `using Sindbad.ParameterOptimization` is sufficient once the weak dependency is installed.
+# Notes:
+- This module is loaded automatically by Julia's package extension mechanism when Optimization is available (see root `Project.toml` `[weakdeps]` + `[extensions]`).
+- End users typically should not `using SindbadOptimizationExt` directly; instead `using Sindbad` is sufficient once the weak dependency is installed.
+- The extension code is included in the `ext/` directory and is automatically loaded when the extension package is installed.
+
+Modify the code in the "ParameterOptimizationOptimizer.jl" file to extend the package.
 """
 module SindbadOptimizationExt
 
-import Sindbad: OptimizationBFGS, OptimizationBBOxnes, OptimizationBBOadaptive, OptimizationFminboxGradientDescentFD, OptimizationFminboxGradientDescent, OptimizationGCMAESDef, OptimizationGCMAESFD, OptimizationMultistartOptimization, OptimizationNelderMead, OptimizationQuadDirect
-
-import Sindbad
-
-using Optimization
-
-include("ParameterOptimizationOptimizer.jl")
+    using Optimization
+    
+    include("ParameterOptimizationOptimizer.jl")
 
 end
+
