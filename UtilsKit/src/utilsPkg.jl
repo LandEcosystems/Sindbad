@@ -1,6 +1,7 @@
 export addExtensionToFunction
 export addExtensionToPackage
 export addPackage
+export removeExtensionFromPackage
 
 using Pkg
 using Logging
