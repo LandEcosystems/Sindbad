@@ -104,6 +104,10 @@ module UtilKit
    using TypedTables: Table
    using InteractiveUtils
    using Base.Docs: doc as base_doc
+   using Logging
+   using Pkg
+   using TOML
+
 
    include("utilsNumber.jl")
    include("utilsString.jl")
@@ -113,5 +117,6 @@ module UtilKit
    include("utilsDisp.jl")
    include("utilsDocstrings.jl")
    include("utilsMethods.jl")
+   include("utilsPkg.jl")
    
 end # module UtilKit

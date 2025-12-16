@@ -1,62 +1,12 @@
-export addPackage
 export doNothing
 export getMethodTypes
 export getDefinitions
+export getMethodSignatures
 export methodsOf
+export printMethodSignatures
 export purpose
 export showMethodsOf
 export valToSymbol
-
-
-"""
-    addPackage(where_to_add, the_package_to_add)
-
-Adds a specified Julia package to the environment of a given module or project.
-
-# Arguments:
-- `where_to_add`: The module or project where the package should be added.
-- `the_package_to_add`: The name of the package to add.
-
-# Behavior:
-- Activates the environment of the specified module or project.
-- Checks if the package is already installed in the environment.
-- If the package is not installed:
-  - Adds the package to the environment.
-  - Removes the `Manifest.toml` file and reinstantiates the environment to ensure consistency.
-  - Provides instructions for importing the package in the module.
-- Restores the original environment after the operation.
-
-# Notes:
-- This function assumes that the `where_to_add` module or project is structured with a standard Julia project layout.
-- It requires the `Pkg` module for package management, which is re-exported from core Sindbad.
-
-# Example:
-```julia
-addPackage(MyModule, "DataFrames")
-```
-"""
-function addPackage(where_to_add, the_package_to_add)
-
-    from_where = dirname(Base.active_project())
-    dir_where_to_add = joinpath(dirname(pathof(where_to_add)), "../")
-    cd(dir_where_to_add)
-    Pkg.activate(dir_where_to_add)
-    is_installed = any(dep.name == the_package_to_add for dep in values(Pkg.dependencies()))
-
-    if is_installed
-        @info "$the_package_to_add is already installed in $where_to_add. Nothing to do. Return to base environment at $from_where"
-    else
-
-        Pkg.add(the_package_to_add)
-        rm("Manifest.toml")
-        Pkg.instantiate()
-        @info "Added $(the_package_to_add) to $(where_to_add). Add the following to the imports in $(pathof(where_to_add)) with\n\nusing $(the_package_to_add)\n\n. You may need to restart the REPL/environment at $(from_where)."
-    end
-    cd(from_where)
-    Pkg.activate(from_where)
-    Pkg.resolve()
-end
-
 
 
 """
@@ -72,6 +22,104 @@ The same input data.
 """
 function doNothing(_data)
     return _data
+end
+
+
+
+# ---------------------------------------------------------------------------
+# getMethodSignatures / printMethodSignatures
+# ---------------------------------------------------------------------------
+
+"""
+    getMethodSignatures(f::Function; path::Symbol = :relative_pwd) -> Vector{String}
+
+Return method signature strings for `f`, including file/line information.
+`path` controls how file paths are shown:
+- `:relative_pwd` (default): paths relative to the current working directory (`pwd()`).
+- `:relative_root`: paths relative to the root of the defining package.
+- `:absolute`: absolute paths.
+
+Default-arg wrapper methods are collapsed: for each unique `(file,line,module)` only the largest-arity method is kept.
+"""
+function getMethodSignatures(f::Function; path::Symbol = :relative_pwd)
+    path in (:relative_pwd, :relative_root, :absolute) ||
+        error("Invalid `path=$(path)`. Expected :relative_pwd, :relative_root, or :absolute.")
+    root_pkg = Base.moduleroot(parentmodule(f))
+    root_path = pathof(root_pkg)
+    package_root = isnothing(root_path) ? nothing : normpath(joinpath(dirname(root_path), ".."))
+    pwd_root = try
+        pwd()
+    catch
+        nothing
+    end
+
+    selected = Dict{Tuple{Any,Int,Module},Method}()
+    for m in methods(f)
+        key = (m.file, m.line, m.module)
+        nargs = length(Base.unwrap_unionall(m.sig).parameters) - 1
+        if haskey(selected, key)
+            prev = selected[key]
+            prev_nargs = length(Base.unwrap_unionall(prev.sig).parameters) - 1
+            if nargs > prev_nargs
+                selected[key] = m
+            end
+        else
+            selected[key] = m
+        end
+    end
+
+    sigs = String[]
+    for m in values(selected)
+        sig = Base.unwrap_unionall(m.sig)
+        types = sig.parameters[2:end]
+        sig_str = string(nameof(f)) * "(" * join(("::" * string(t) for t in types), ", ") * ")"
+
+        file_str = try
+            String(m.file)
+        catch
+            ""
+        end
+        loc = ""
+        if !isempty(file_str)
+            abs_file = try
+                abspath(Base.expanduser(file_str))
+            catch
+                file_str
+            end
+            shown = if path == :absolute
+                abs_file
+            elseif path == :relative_root
+                if isnothing(package_root)
+                    abs_file
+                else
+                    try
+                        relpath(abs_file, package_root)
+                    catch
+                        abs_file
+                    end
+                end
+            else # :relative_pwd
+                if isnothing(pwd_root)
+                    abs_file
+                else
+                    try
+                        relpath(abs_file, pwd_root)
+                    catch
+                        abs_file
+                    end
+                end
+            end
+            loc = "$(shown):$(m.line)"
+        end
+        # Put the location first so terminals/editors are more likely to detect a clickable `path:line` link.
+        # (Some linkifiers get confused when `::Type` annotations appear before the `path:line` segment.)
+        if isempty(loc)
+            push!(sigs, "$(sig_str) @ $(m.module)")
+        else
+            push!(sigs, "$(loc)  $(sig_str) @ $(m.module)")
+        end
+    end
+    return sigs
 end
 
 
@@ -193,6 +241,31 @@ function methodsOf(M::Module; the_type=Type, internal_only=true, purpose_functio
         ds = methodsOf(M_type; ds=ds, is_subtype=is_subtype, bullet=" - ", purpose_function=purpose_function)
     end
     return ds
+end
+
+
+"""
+    printMethodSignatures(f::Function; path::Symbol = :relative_pwd, io::IO = stdout, path_color::Symbol = :cyan) -> Nothing
+
+Print method signatures as a bulleted list.
+
+- The leading `path:line` segment (when present) is colored (defaults to `:cyan`).
+- Uses [`getMethodSignatures`](@ref) under the hood.
+"""
+function printMethodSignatures(f::Function; path::Symbol = :relative_pwd, io::IO = stdout, path_color::Symbol = :cyan)
+    for s in getMethodSignatures(f; path=path)
+        parts = split(s, "  ", limit=2)
+        if length(parts) == 2
+            loc, rest = parts[1], parts[2]
+            print(io, "- ")
+            printstyled(io, loc; color=path_color, bold=true)
+            println(io)
+            println(io, "  ", rest)
+        else
+            println(io, "- ", s)
+        end
+    end
+    return nothing
 end
 
 
