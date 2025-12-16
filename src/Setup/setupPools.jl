@@ -273,7 +273,10 @@ function createInitStates(info_pools::NamedTuple, tem_helpers::NamedTuple)
     for element ∈ propertynames(info_pools)
         props = getfield(info_pools, element)
         var_to_create = getfield(props, :create)
-        additional_state_vars = getfield(props, :state_variables)
+        additional_state_vars = (;)
+        if hasproperty(props, :state_variables)
+            additional_state_vars = getfield(props, :state_variables)
+        end
         initial_values = getfield(props, :initial_values)
         model_array_type = getfield(Types, toUpperCaseFirst(string(getfield(props, :arraytype)), "ModelArray"))()
         for tocr ∈ var_to_create
