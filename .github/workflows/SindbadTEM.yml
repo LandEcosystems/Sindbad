@@ -60,7 +60,7 @@ jobs:
           using Pkg
           pkg"registry up"
           Pkg.update()
-          pkg"dev ./SindbadTEM" # Develop the package in the SindbadTEM directory
+          Pkg.develop([PackageSpec(path="./UtilsKit"), PackageSpec(path="./SindbadTEM"),])
           Pkg.test("SindbadTEM"; coverage=true) # Test the package named "SindbadTEM"
       - uses: julia-actions/julia-processcoverage@v1
         with:

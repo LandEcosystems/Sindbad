@@ -113,7 +113,7 @@ module UtilsKit
    include("utilsLongTuple.jl")
    include("utilsArray.jl")
    include("utilsDisp.jl")
-   include("utilsDocstrings.jl")
+   include("utilsDocStrings.jl")
    include("utilsMethods.jl")
    include("utilsPkg.jl")
    

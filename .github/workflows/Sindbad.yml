@@ -58,7 +58,7 @@ jobs:
         shell: julia --project=. {0}
         run: |
           using Pkg
-          Pkg.develop(path="SindbadTEM")  # Develop SindbadTEM
+          Pkg.develop([PackageSpec(path="./TimeSampler"), PackageSpec(path="./ErrorMetrics"), PackageSpec(path="./UtilsKit"), PackageSpec(path="./SindbadTEM"),])
           Pkg.instantiate()  # Install all dependencies
           Pkg.test("Sindbad"; coverage=true)
       - uses: julia-actions/julia-processcoverage@v1

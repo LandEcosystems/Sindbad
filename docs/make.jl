@@ -15,7 +15,7 @@ makedocs(; sitename="Sindbad",
     authors="Sindbad Development Team",
     clean=true,
     format=DocumenterVitepress.MarkdownVitepress(
-        repo = "github.com/EarthyScience/SINDBAD",
+        repo = "https://github.com/LandEcosystems/Sindbad",
     ),
     remotes=nothing,
     draft=false,
@@ -34,7 +34,7 @@ if !isdir(joinpath(final_site_dir, "/pages/concept/sindbad_info"))
 end
 
 DocumenterVitepress.deploydocs(; 
-    repo = "github.com/EarthyScience/SINDBAD", # this must be the full URL!
+    repo = "github.com/LandEcosystems/Sindbad", # this must be the full URL!
     target = joinpath(@__DIR__, "build"), # this is where Vitepress stores its output
     branch = "gh-pages",
     devbranch = "main",
