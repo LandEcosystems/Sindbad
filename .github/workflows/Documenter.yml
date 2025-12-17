@@ -30,7 +30,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
           cd docs;
-          julia --color=yes make.jl
+          JULIA_PKG_USE_CLI_GIT=true julia --color=yes make.jl
       - name: Upload site as artifact
         uses: actions/upload-artifact@v4
         with:

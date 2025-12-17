@@ -54,9 +54,9 @@ Internal packages (SINDBAD core):
 - **`SindbadTEM`**: Core terrestrial ecosystem models, types, and utilities
 
 Related packages (SINDBAD ecosystem):
-- **`ErrorMetrics`**: Model–observation metrics
-- **`TimeSampler`**: Time aggregation / sampling utilities
-- **`UtilsKit`**: Shared utility toolkit
+- **`ErrorMetrics`**: Model–observation metrics (maintained in a separate repository)
+- **`TimeSampler`**: Time aggregation / sampling utilities (maintained in a separate repository)
+- **`UtilsKit`**: Shared utility toolkit (maintained in a separate repository)
 
 ## Installation
 
@@ -84,6 +84,12 @@ using Pkg
 Pkg.activate("path/to/SINDBAD")
 Pkg.instantiate()
 using Sindbad
+```
+
+If you are using SSH-based package sources for SINDBAD ecosystem packages, you may need to tell Julia to use the system `git` client:
+
+```bash
+export JULIA_PKG_USE_CLI_GIT=true
 ```
 
 If you want to develop `Sindbad` from a separate environment, you can also use:
