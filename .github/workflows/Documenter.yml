@@ -7,6 +7,12 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Add permissions for GitHub Actions to push to gh-pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -28,8 +34,9 @@ jobs:
       - name: Build and deploy docs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: >
-          cd docs;
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+        run: |
+          cd docs
           julia --color=yes make.jl
       - name: Upload site as artifact
         uses: actions/upload-artifact@v4
