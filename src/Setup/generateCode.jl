@@ -209,9 +209,9 @@ function generateSindbadApproach(model_name::Symbol, model_purpose::String, appr
         appr_name = Symbol(string(model_name) *"_"* string(appr_name))
     end
     model_type_exists = model_name in nameof.(subtypes(LandEcosystem)) 
-    model_path = joinpath(split(pathof(Sindbad),"/SindbadTEM.jl")[1], "Models", "$(model_name)", "$(model_name).jl")
+    model_path = joinpath(split(pathof(SindbadTEM),"/SindbadTEM.jl")[1], "Processes", "$(model_name)", "$(model_name).jl")
     model_path_exists = isfile(model_path)
-    appr_path = joinpath(split(pathof(Sindbad),"/SindbadTEM.jl")[1], "Models", "$(model_name)", "$(appr_name).jl")
+    appr_path = joinpath(split(pathof(SindbadTEM),"/SindbadTEM.jl")[1], "Processes", "$(model_name)", "$(appr_name).jl")
     appr_path_exists = isfile(appr_path)
 
     model_path_exists = over_write_model ? false : model_path_exists
@@ -271,7 +271,7 @@ function generateSindbadApproach(model_name::Symbol, model_purpose::String, appr
     if appr_exists
         @info "Not generating approach."
     else
-        appr_path = joinpath(split(pathof(Sindbad),"/SindbadTEM.jl")[1], "Models", "$(model_name)", "$(appr_name).jl")
+        appr_path = joinpath(split(pathof(SindbadTEM),"/SindbadTEM.jl")[1], "Processes", "$(model_name)", "$(appr_name).jl")
         @info "Generating a new approach: $(appr_name) for existing model: $(model_name) at:\n$(appr_path)"
         confirm_ = Base.prompt("Continue: y | n")
         if startswith(confirm_, "y")
@@ -291,7 +291,7 @@ function generateSindbadApproach(model_name::Symbol, model_purpose::String, appr
     ## append the tmp_precompile_placeholder file so that Sindbad is forced to precompile in the next run_helpers
     if was_model_created || was_approach_created
         # Specify the file path
-        file_path = joinpath(@__DIR__, "tmp_precompile_placeholder.jl")
+        file_path = joinpath(split(pathof(SindbadTEM),"/SindbadTEM.jl")[1], "tmp_precompile_placeholder.jl")
 
         # The line you want to add
         date = strip(read(`date +%d.%m.%Y`, String));

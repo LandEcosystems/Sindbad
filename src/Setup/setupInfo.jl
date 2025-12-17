@@ -82,7 +82,9 @@ function parseSaveCode(info)
         end
         mod_string = "\n# Fallback define function for LandEcosystem\n"
         write(o_file, mod_string)
-        write(o_file, fallback_code_define)
+        if !isnothing(fallback_code_define)
+            write(o_file, fallback_code_define)
+        end
     end
 
     # Write precompute and compute functions
@@ -127,8 +129,12 @@ function parseSaveCode(info)
         end
         mod_string = "\n# Fallback precompute and compute functions for LandEcosystem\n"
         write(o_file, mod_string)
-        write(o_file, fallback_code_precompute)
-        write(o_file, fallback_code_compute)
+        if !isnothing(fallback_code_precompute)
+            write(o_file, fallback_code_precompute)
+        end
+        if !isnothing(fallback_code_compute)
+            write(o_file, fallback_code_compute)
+        end
     end
 
     # Write structs

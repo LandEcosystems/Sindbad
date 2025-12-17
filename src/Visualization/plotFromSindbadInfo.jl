@@ -199,6 +199,20 @@ function plotIOModelStructure(info, which_function=:compute, which_field=[:input
 
     plots_ylims!(ax, (-1, length(unique_variables_names) + 1))
     plots_xlims!(ax, (-1, length(model_names) + 1))
+    # Guard: if there is nothing to plot, Plots' layout can end up with 0mm plot area and assert on save.
+    # This happens for some `which_function` values (e.g. :precompute) depending on selected models.
+    if isempty(model_names) || isempty(unique_variables)
+        field_tag = isa(which_field, AbstractString) ? which_field : string(which_field)
+        title_str = "IO Visualization: $field_tag of $(which_function) of Models in $(info.experiment.basics.id)"
+        showInfo(plotIOModelStructure, @__FILE__, @__LINE__,
+                 "No IO variables/models found for $(which_function) ($(field_tag)); writing placeholder plot.", n_f=4)
+        ax = plots_scatter([0.0], [0.0], markersize=0, label="", legend=false, grid=false,
+                           size=(900, 400), title=title_str, xlims=(-1, 1), ylims=(-1, 1), widen=false)
+        plots_annotate!(ax, (0.0, 0.0, plots_text("No variables to plot", :gray30, :center, 12)))
+        plots_savefig(joinpath(info.output.dirs.figure, "$(field_tag)_variables_$(info.experiment.basics.id)_$(which_function).pdf"))
+        return ax
+    end
+
     plots_savefig(joinpath(info.output.dirs.figure, "$(which_field)_variables_$(info.experiment.basics.id)_$(which_function).pdf"))
     return ax
 end

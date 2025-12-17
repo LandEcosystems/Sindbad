@@ -44,9 +44,9 @@ module DataLoaders
    using FillArrays
    using Dates
    using DimensionalData
-   using NCDatasets: NCDataset
-   import NCDatasets
-   import YAXArrayBase
+   using NCDatasets
+   using NetCDF
+   using YAXArrayBase
    using YAXArrays: YAXArrays, Cube, YAXArray
    using YAXArrays.DAT: InDims
    using Zarr

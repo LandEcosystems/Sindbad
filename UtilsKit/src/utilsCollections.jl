@@ -437,13 +437,12 @@ function tcPrint(d; _color=true, _type=false, _value=true, _tspace="", space_pad
                 end
                 print(Crayon(; foreground=colors_types[typeof(d[k])]),
                     to_print)
-            elseif typeof(d[k]) <: SVector
-                to_print = "$(ttf) $(k) = SVector{$(length(d[k]))}($(d[k]))$(tp),\n"
+            elseif typeof(d[k]) <: AbstractVector
+                to_print = "$(ttf) $(k) = $(d[k])$(tp),\n"
                 if !_value
                     to_print = "$(ttf) $(k)$(tp),\n"
                 end
-                print(Crayon(; foreground=colors_types[typeof(d[k])]),
-                to_print)
+                print(Crayon(; foreground=colors_types[typeof(d[k])]), to_print)
             elseif typeof(d[k]) <: Matrix
                 print(Crayon(; foreground=colors_types[typeof(d[k])]), "$(ttf) $(k) = [\n")
                 tt_row = repeat(ttf[1], length(ttf) + 1)

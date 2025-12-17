@@ -9,10 +9,10 @@ default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 function plot_and_save(land, out_sp_exp, out_sp_exp_nl, out_sp_nl, xtname, plot_elem, plot_var, tj, model_array_type, out_path)
     plot_elem = string(plot_elem)
     if plot_var == :cEco
-        plt = plot(; legend=:outerbottom, legendcolumns=4, size=(1800, 1200), yscale=:log10, left_margin=1Plots.cm, title="$(plot_var), jump: $tj")
+        plt = plot(; legend=:outerbottom, legendcolumns=4, size=(1800, 1200), yscale=:log10, left_margin=1plots_cm, title="$(plot_var), jump: $tj")
         ylims!(0.00000001, 1e9)
     else
-        plt = plot(; legend=:outerbottom, legendcolumns=4, size=(1800, 1200), left_margin=1Plots.cm,  title="$(plot_var), jump: $tj")
+        plt = plot(; legend=:outerbottom, legendcolumns=4, size=(1800, 1200), left_margin=1plots_cm,  title="$(plot_var), jump: $tj")
         ylims!(10, 2000)
     end
     plot!(getfield(land.pools, plot_var);

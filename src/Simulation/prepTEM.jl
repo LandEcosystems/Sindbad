@@ -398,7 +398,8 @@ function helpPrepTEM(selected_models, info, forcing::NamedTuple, output::NamedTu
 end
 
 
-function helpPrepTEM(selected_models, info, forcing::NamedTuple, observations::NamedTuple, output::NamedTuple, ::PreAllocArrayFD)
+
+function helpPrepTEM(selected_models, info, forcing::NamedTuple, output::NamedTuple, ::PreAllocArrayFD)
 
     showInfo(helpPrepTEM, @__FILE__, @__LINE__, "preparing spatial and tem helpers", n_f=6)
     space_ind = getSpatialInfo(forcing, info.helpers.run.filter_nan_pixels)
@@ -422,12 +423,6 @@ function helpPrepTEM(selected_models, info, forcing::NamedTuple, observations::N
     space_forcing = map([space_ind...]) do lsi
         getLocData(forcing_nt_array, lsi)
     end
-    
-    observations_nt_array = makeNamedTuple(observations.data, observations.variables)
-    space_observation = map([space_ind...]) do lsi
-        getLocData(observations_nt_array, lsi)
-    end
-    observations_nt_array = nothing
 
     space_spinup_forcing = map(space_forcing) do loc_forcing
         getAllSpinupForcing(loc_forcing, info.spinup.sequence, tem_info);
@@ -441,8 +436,20 @@ function helpPrepTEM(selected_models, info, forcing::NamedTuple, observations::N
 
     forcing_nt_array = nothing
 
-    run_helpers = (; space_selected_models, space_forcing, space_observation, space_ind, space_spinup_forcing, loc_forcing_t, space_output, loc_land, output_vars=output.variables, tem_info)
+    run_helpers = (; space_selected_models, space_forcing, space_ind, space_spinup_forcing, loc_forcing_t, space_output, loc_land, output_vars=output.variables, tem_info)
 
+    return run_helpers
+end
+
+
+function helpPrepTEM(selected_models, info, forcing::NamedTuple, observations::NamedTuple, output::NamedTuple, ::PreAllocArrayFD)
+    run_helpers = helpPrepTEM(selected_models, info, forcing, output, PreAllocArrayFD())
+    observations_nt_array = makeNamedTuple(observations.data, observations.variables)
+
+    space_observation = map([run_helpers.space_ind...]) do lsi
+        getLocData(observations_nt_array, lsi)
+    end
+    run_helpers = (; run_helpers..., space_observation=space_observation)
     return run_helpers
 end
 

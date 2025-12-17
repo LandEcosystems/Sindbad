@@ -132,6 +132,23 @@ grads = gradientSite(ForwardDiffGrad(), x_vals, (chunk_size=4,), loss_f)
 """
 function gradientSite end
 
+function gradientSite(grads_lib::MachineLearningGradType, ::Any, ::Any, ::Any)
+    @warn "
+    Gradient library `$(nameof(typeof(grads_lib)))` not implemented. 
+    
+    To implement a new gradient library:
+    
+    - First add a new type as a subtype of `MachineLearningGradType` in `src/Types/MachineLearningTypes.jl`. 
+    
+    - Then, add a corresponding method.
+      - if it can be implemented as an internal Sindbad method without additional dependencies, implement the method in `src/MachineLearning/mlGradient.jl`.     
+      - if it requires additional dependencies, implement the method in `ext/<extension_name>/MachineLearningGradientSite.jl` extension.
+
+    As a fallback, this function will return 10.0f0.
+    "
+    return 10.0f0
+end
+
 function gradientSite(grads_lib::PolyesterForwardDiffGrad, x_vals, chunk_size::Int, loss_f::F, args...) where {F}
     loss_tmp(x) = loss_f(x, grads_lib, args...)
     ∇x = similar(x_vals) # pre-allocate
@@ -153,32 +170,6 @@ function gradientSite(::PolyesterForwardDiffGrad, x_vals, gradient_options::Name
         PolyesterForwardDiff.threaded_gradient!(loss_f, ∇x, x_vals, ForwardDiff.Chunk(chunk_size));
     end
     return ∇x
-end
-
-function gradientSite(::ForwardDiffGrad, x_vals::AbstractArray, gradient_options::NamedTuple, loss_f::F) where {F}
-    # cfg = ForwardDiff.GradientConfig(loss_f, x_vals, Chunk{gradient_options.chunk_size}());
-    return ForwardDiff.gradient(loss_f, x_vals)
-end
-
-function gradientSite(::FiniteDiffGrad, x_vals::AbstractArray, gradient_options::NamedTuple,loss_f::F) where {F}
-    return FiniteDiff.finite_difference_gradient(loss_f, x_vals)
-end
-
-function gradientSite(::FiniteDifferencesGrad, x_vals::AbstractArray, gradient_options::NamedTuple,loss_f::F) where {F}
-    gr_fds = FiniteDifferences.grad(FiniteDifferences.central_fdm(5, 1), loss_f, x_vals)
-    return gr_fds[1]
-end
-
-function gradientSite(::ZygoteGrad, x_vals::AbstractArray, gradient_options::NamedTuple,loss_f::F) where {F}
-    return Zygote.gradient(loss_f, x_vals)
-end
-
-function gradientSite(::EnzymeGrad, x_vals::AbstractArray, gradient_options::NamedTuple,loss_f::F) where {F}
-    # does not work with `Enzyme.gradient!` but is kept here as placeholder for future development
-    # Ensure x_vals is a mutable array (Vector)
-    x_vals = collect(copy(x_vals))  # Convert to a mutable array if necessary
-    # x_vals = copy(x_vals)
-    return Enzyme.gradient(Forward, loss_f, x_vals)
 end
 
 """

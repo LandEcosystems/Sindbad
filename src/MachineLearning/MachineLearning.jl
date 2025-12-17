@@ -52,11 +52,7 @@ module MachineLearning
         workers,
         nprocs,
         CachingPool
-    # using Enzyme
-    using FiniteDiff
-    # using FiniteDifferences
     using Flux
-    # using ForwardDiff
     using Base.Iterators: repeated, partition
     using JLD2
     # using Optimisers
@@ -64,12 +60,8 @@ module MachineLearning
     # using PreallocationTools
     using ProgressMeter: @showprogress, Progress, next!, progress_pmap, progress_map
     using Random
-    # using Statistics
-    # using Zygote
     
     using SindbadTEM
-    # using YAXArrays
-    # using Zarr
     using AxisKeys
     using ..Types
     using ..DataLoaders: AllNaN

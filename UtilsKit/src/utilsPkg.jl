@@ -1,6 +1,7 @@
 export addExtensionToFunction
 export addExtensionToPackage
 export addPackage
+export removeExtensionFromPackage
 
 using Pkg
 using Logging
@@ -427,6 +428,7 @@ Ensure `Project.toml` includes `external_package` in `[weakdeps]` and maps
 `ext_module_name = "external_package"` in `[extensions]`. May call `Pkg.add(...; target=:weakdeps)`.
 """
 function ensureExtensionMapping(package_root::String, external_package::String, ext_module_name::String)
+    package_root = normpath(abspath(package_root))
     project_file = joinpath(package_root, "Project.toml")
     project = TOML.parsefile(project_file)
 
@@ -444,12 +446,28 @@ function ensureExtensionMapping(package_root::String, external_package::String, 
     in_weakdeps = haskey(project, "weakdeps") && haskey(project["weakdeps"], external_package)
     in_deps = haskey(project, "deps") && haskey(project["deps"], external_package)
 
+    # If the package is already a hard dependency, prefer moving it to [weakdeps] by editing Project.toml
+    # directly (this avoids edge cases in some Pkg versions when rm'ing while juggling active envs).
+    if in_deps && !in_weakdeps
+        if !haskey(project, "weakdeps")
+            project["weakdeps"] = Dict{String,Any}()
+            push!(actions, "created [weakdeps] table")
+        end
+        uuid_str = project["deps"][external_package]
+        project["weakdeps"][external_package] = uuid_str
+        delete!(project["deps"], external_package)
+        push!(actions, "moved \"$external_package\" from [deps] -> [weakdeps] in Project.toml")
+        open(project_file, "w") do io
+            TOML.print(io, project)
+        end
+        # Refresh after edit
+        project = TOML.parsefile(project_file)
+        in_weakdeps = true
+        in_deps = false
+    end
+
     try
         Pkg.activate(package_root)
-        if in_deps && !in_weakdeps
-            Pkg.remove(external_package)
-            push!(actions, "removed \"$external_package\" from [deps] via Pkg (will re-add as weakdep)")
-        end
         if !in_weakdeps || in_deps
             Pkg.add(external_package; target=:weakdeps)
             push!(actions, "added/ensured \"$external_package\" in [weakdeps] via Pkg")
@@ -457,7 +475,8 @@ function ensureExtensionMapping(package_root::String, external_package::String, 
     finally
         if !isnothing(prev_project)
             try
-                Pkg.activate(dirname(prev_project))
+                # `Base.active_project()` returns a Project.toml path; activating it directly is the most robust.
+                Pkg.activate(prev_project)
             catch
             end
         end
