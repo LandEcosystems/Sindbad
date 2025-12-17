@@ -1,6 +1,5 @@
 using Revise
-using SindbadSetup
-@time using SindbadExperiment
+@time using Sindbad
 using Plots
 toggleStackTraceNT()
 domain = "africa";
@@ -26,7 +25,7 @@ info = getExperimentInfo(experiment_json; replace_info=replace_info_spatial); # 
 forcing = getForcing(info);
 observations = getObservation(info, forcing.helpers);
 obs_array = [Array(_o) for _o in observations.data]; # TODO: necessary now for performance because view of keyedarray is slow
-parameter_table = info.optimization.parameter_table;
+    parameter_table = info.optimization.parameter_table;
 
 GC.gc()
 info = dropFields(info, (:settings,));
@@ -143,7 +142,7 @@ losses = map(costOpt) do var_row
         obs_σ_pix = getArrayView(obs_σ, lsi)
         (obs_pix_no_nan, obs_σ_pix_no_nan, opt_pix_no_nan) = getDataWithoutNaN(obs_pix, obs_σ_pix, opt_pix)
         (_, _, def_pix_no_nan) = getDataWithoutNaN(obs_pix, obs_σ_pix, def_pix)
-        [metric(obs_pix_no_nan, obs_σ_pix_no_nan, def_pix_no_nan, lossMetric), metric(obs_pix_no_nan, obs_σ_pix_no_nan, opt_pix_no_nan, lossMetric)]
+        [metric(lossMetric, def_pix_no_nan, obs_pix_no_nan, obs_σ_pix_no_nan), metric(lossMetric, opt_pix_no_nan, obs_pix_no_nan, obs_σ_pix_no_nan)]
     end
 
 
@@ -151,14 +150,14 @@ losses = map(costOpt) do var_row
     b_range = range(-1, 1, length=50)
     p_title = "$(var_row.variable) ($(nameof(typeof(lossMetric))))"
     histogram(first.(loss_space); title=p_title, size=(2000, 1000),bins=b_range, alpha=0.9, label="default", color="#FDB311")
-    vline!([metric(obs_var_no_nan, obs_σ_no_nan, def_var_no_nan, lossMetric)], label="default_spatial", color="#FDB311", lw=3)
+    vline!([metric(lossMetric, def_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="default_spatial", color="#FDB311", lw=3)
     histogram!(last.(loss_space); size=(2000, 1000), bins=b_range, alpha=0.5, label="optimized", color="#18A15C")
-    vline!([metric(obs_var_no_nan, obs_σ_no_nan, opt_var_no_nan, lossMetric)], label="optimized_spatial", color="#18A15C", lw=3)
+    vline!([metric(lossMetric, opt_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="optimized_spatial", color="#18A15C", lw=3)
     xlabel!("")
     savefig(joinpath(info.output.dirs.figure, "obs_vs_pred_$(v_key).png"))
     # loss_space
     # @show "plot obs", v, lossMetric
 
-    # @show "plot obs", v, metric(obs_var, obs_σ, def_var, lossMetric), metric(obs_var, obs_σ, opt_var, lossMetric)
+    # @show "plot obs", v, metric(lossMetric, opt_var, obs_var, obs_σ), metric(lossMetric, opt_var, obs_var, obs_σ)
     # @show size(obs_var), size(def_var)
 end

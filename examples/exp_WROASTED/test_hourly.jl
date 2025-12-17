@@ -1,6 +1,6 @@
 using Revise
+using SindbadTEM
 using Sindbad
-using SindbadExperiment
 using Plots
 toggleStackTraceNT()
 experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
@@ -73,12 +73,12 @@ for (o, v) in enumerate(output_vars)
     println("plot debug::", v)
     xdata = [info.helpers.dates.range...]
     if size(def_var, 2) == 1
-        plot(xdata, def_var[:, 1]; label="def ($(round(SindbadTEM.mean(def_var[:, 1]), digits=2)))", size=(2000, 1000), title="$(vinfo["long_name"]) ($(vinfo["units"]))", left_margin=1Plots.cm)
+        plot(xdata, def_var[:, 1]; label="def ($(round(SindbadTEM.mean(def_var[:, 1]), digits=2)))", size=(2000, 1000), title="$(vinfo["long_name"]) ($(vinfo["units"]))", left_margin=1plots_cm)
         ylabel!("$(vinfo["standard_name"])", font=(20, :green))
         savefig(fig_prefix * "_$(v).png")
     else
         foreach(axes(def_var, 2)) do ll
-            plot(xdata, def_var[:, ll]; label="def ($(round(SindbadTEM.mean(def_var[:, ll]), digits=2)))", size=(2000, 1000), title="$(vinfo["long_name"]), layer $(ll),  ($(vinfo["units"]))", left_margin=1Plots.cm)
+            plot(xdata, def_var[:, ll]; label="def ($(round(SindbadTEM.mean(def_var[:, ll]), digits=2)))", size=(2000, 1000), title="$(vinfo["long_name"]), layer $(ll),  ($(vinfo["units"]))", left_margin=1plots_cm)
             ylabel!("$(vinfo["standard_name"])", font=(20, :green))
             savefig(fig_prefix * "_$(v)_$(ll).png")
         end

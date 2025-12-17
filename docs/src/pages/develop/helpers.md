@@ -110,7 +110,7 @@ whatIs(:fluxes, :gpp)
 
 ::: tip
 
-When Sindbad is imported, `sindbad_variables` with all the variables in the catalog is available automatically.
+When Sindbad is imported, `sindbad_tem_variables` with all the variables in the catalog is available automatically.
 
 `whatIs` is particularly useful for:
 - Quickly looking up variable information during development
@@ -178,7 +178,7 @@ Retrieves the default configuration options for optimization or sensitivity anal
 
 **Arguments**
 - `::MethodType`: The method type for which default options are requested. Supported types:
-  - `OptimizationMethod`: General optimization methods
+  - `ParameterOptimizationMethod`: General optimization methods
   - `GSAMethod`: General global sensitivity analysis methods
   - `GSAMorris`: Morris method for global sensitivity analysis
   - `GSASobol`: Sobol method for global sensitivity analysis
@@ -234,14 +234,14 @@ models = getSindbadModels()
 ::: tip
 
 `getSindbadModels` is particularly useful for:
-- Discovering available models in `standard_sindbad_models` in the SINDBAD framework
+- Discovering available models in `standard_sindbad_model` in the SINDBAD framework
 
 :::
 
-### `getSindbadDefinitions`
+### `getDefinitions`
 
 ```julia
-getSindbadDefinitions(sindbad_module, what_to_get; internal_only=true)
+getDefinitions(sindbad_module, what_to_get; internal_only=true)
 ```
 
 Returns all defined (and optionally internal) objects in the SINDBAD framework.
@@ -257,18 +257,18 @@ An array of all defined things in the SINDBAD framework that match the specified
 **Usage**
 ```julia
 # Get all defined types in the SINDBAD framework
-defined_types = getSindbadDefinitions(Sindbad, Type)
+defined_types = getDefinitions(SindbadTEM, Type)
 
 # Get all functions in a specific module
-functions = getSindbadDefinitions(Sindbad.Models, Function)
+functions = getDefinitions(SindbadTEM.Processes, Function)
 
 # Get all definitions including external ones
-all_definitions = getSindbadDefinitions(Sindbad, Any, internal_only=false)
+all_definitions = getDefinitions(SindbadTEM, Any, internal_only=false)
 ```
 
 ::: tip
 
-`getSindbadDefinitions` is particularly useful for:
+`getDefinitions` is particularly useful for:
 - Discovering available types and functions in SINDBAD modules
 - Understanding the structure of SINDBAD's codebase
 - Accessing internal implementations for debugging or development
@@ -324,9 +324,9 @@ Adds a specified Julia package to the environment of a given module or project.
 
 **Usage**
 
-Add the DataFrames package to `SindbadData` module
+Add the DataFrames package to `DataLoaders` module
 ```julia
-addPackage(SindbadData, "DataFrames")
+addPackage(DataLoaders, "DataFrames")
 ```
 
 **Notes**

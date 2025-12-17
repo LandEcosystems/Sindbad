@@ -48,7 +48,7 @@ Model parameters control process responses and are often uncertain. SINDBAD supp
    - Based on modeling principles
    - Incorporates physical constraints
 
-2. **Optimization**
+2. **ParameterOptimization**
    - Mathematical optimization techniques
    - Cost function minimization
 
@@ -89,9 +89,9 @@ Experiments can select models from:
 ::: tip Viewing Available Models
 
 ```julia
-using Sindbad
-standard_sindbad_models
-all_available_sindbad_models
+using Sindbad.Simulation
+standard_sindbad_model
+all_available_sindbad_model
 ```
 
 :::

@@ -1,11 +1,14 @@
 using Revise
-using SindbadExperiment
-using SindbadML
-using SindbadML.JLD2
-using SindbadML.Random
-using SindbadML.Flux
+using Sindbad
+using Sindbad.MachineLearning
+using Sindbad.MachineLearning.JLD2
+using Sindbad.MachineLearning.Random
+using Sindbad.MachineLearning.Flux
+using ForwardDiff
+using PreallocationTools
+using PolyesterForwardDiff
 using ProgressMeter
-
+using FiniteDiff
 path_experiment_json = "../exp_fluxnet_hybrid/settings_fluxnet_hybrid/experiment_hybrid.json"
 path_input = "$(getSindbadDataDepot())/FLUXNET_v2023_12_1D.zarr"
 path_observation = path_input

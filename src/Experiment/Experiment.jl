@@ -1,0 +1,54 @@
+"""
+    Experiment
+
+The `Experiment` module provides tools for designing, running, and analyzing experiments in the SINDBAD framework. It integrates SINDBAD modules and utilities to streamline the experimental workflow, from data preparation to model execution and output analysis.
+
+# Purpose
+High-level interface for conducting experiments using the SINDBAD framework (workflow orchestration + output handling).
+
+# Dependencies
+## Related (SINDBAD ecosystem)
+- `UtilsKit`: Shared utilities.
+- `ErrorMetrics`: Metric implementations used in cost/diagnostics.
+
+## Internal (within `Sindbad`)
+- `Sindbad.DataLoaders`
+- `Sindbad.ParameterOptimization`
+- `Sindbad.Setup`
+- `Sindbad.Simulation`
+- `Sindbad.Visualization`
+- `SindbadTEM`
+
+# Included Files
+- **`runExperiment.jl`**: Experiment execution and orchestration.
+- **`saveOutput.jl`**: Utilities for saving experiment outputs in supported formats.
+
+# Notes
+- Designed to be extensible, enabling users to customize and expand the experimental workflow that combines different SINDBAD modules as needed.
+
+# Examples
+1. **Running an experiment**:
+```julia
+using Sindbad
+# Set up experiment parameters
+experiment_config = ...
+
+# Run the experiment
+Sindbad.Experiment.runExperimentForward(experiment_config)
+```
+"""
+module Experiment
+    using UtilsKit
+    using ErrorMetrics
+    using ...SindbadTEM
+    using ..Types
+    using ..Setup
+    using ..DataLoaders
+    using ..Simulation
+    using ..ParameterOptimization
+    using ..Visualization
+
+    include("runExperiment.jl")
+    include("saveOutput.jl")
+
+end # module Experiment

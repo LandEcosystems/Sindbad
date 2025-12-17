@@ -8,7 +8,7 @@ A SINDBAD experiment consists of several configuration files that define:
 - Basic experiment settings
 - Model structure and parameters
 - Forcing data configuration
-- Optimization settings
+- ParameterOptimization settings
 - Execution rules and flags
 
 ## Configuration Files
@@ -112,7 +112,7 @@ Defines the input data sources and their properties:
 }
 ```
 
-### 4. Optimization Configuration (`optimization.json`)
+### 4. ParameterOptimization Configuration (`optimization.json`)
 
 Defines optimization parameters and observational constraints:
 
@@ -158,9 +158,9 @@ Defines optimization parameters and observational constraints:
 - **Units and Conversions**: Unit specifications and conversions
 - **Spatial and Temporal Dimensions**: Data structure and organization
 
-### 4. Optimization Settings
+### 4. ParameterOptimization Settings
 
-- **Algorithm**: Optimization method (e.g., CMA-ES)
+- **Algorithm**: ParameterOptimization method (e.g., CMA-ES)
 - **Parameters**: Parameters to be optimized
 - **Constraints**: Observational constraints and metrics
 - **Cost Function**: How to evaluate model performance
@@ -188,7 +188,7 @@ Defines optimization parameters and observational constraints:
    - Use appropriate units and conversions based on what is in the data and what is needed in SINDBAD
    - Handle missing data in constraints appropriately
 
-4. **Optimization**
+4. **ParameterOptimization**
    - Choose suitable optimization algorithm
    - Define relevant observational constraints
    - Set appropriate cost metrics and weights
@@ -202,7 +202,7 @@ Defines optimization parameters and observational constraints:
 
 1. **Setup**
 ```julia
-using SindbadExperiment
+using Sindbad.Simulation
 experiment_json = "path/to/experiment.json"
 ```
 
@@ -236,7 +236,7 @@ SINDBAD provides several functions for running experiments with different config
 :::tip
 To list all available experiment methods and their purposes, use:
 ```julia
-using Sindbad
+using Sindbad.Simulation
 showMethodsOf(RunFlag)
 ```
 This will display a formatted list of all experiment methods and their descriptions.

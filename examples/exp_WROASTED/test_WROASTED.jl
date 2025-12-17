@@ -1,5 +1,7 @@
 using Revise
-using SindbadExperiment
+using Sindbad
+using CMAEvolutionStrategy
+# Simulation
 # using CairoMakie
 
 using Plots
@@ -8,9 +10,10 @@ experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
 begin_year = "2000"
 end_year = "2017"
 
-domain = "US-SRM"
+domain = "DE-Hai"
 # domain = "MY-PSO"
 path_input = "$(getSindbadDataDepot())/fn/$(domain).1979.2017.daily.nc"
+# path_input  = "/Net/Groups/BGI/scratch/skoirala/RnD/SINDBAD-RnD-SK/examples/data/fn/US-SRM.1979.2017.daily.nc"
 forcing_config = "forcing_erai.json"
 
 path_observation = path_input
@@ -84,10 +87,10 @@ foreach(costOpt) do var_row
     xdata = [info.helpers.dates.range[tspan]...]
     obs_var_n, obs_σ_n, def_var_n = getDataWithoutNaN(obs_var, obs_σ, def_var)
     obs_var_n, obs_σ_n, opt_var_n = getDataWithoutNaN(obs_var, obs_σ, opt_var)
-    metr_def = metric(obs_var_n, obs_σ_n, def_var_n, lossMetric)
-    metr_opt = metric(obs_var_n, obs_σ_n, opt_var_n, lossMetric)
-    plot(xdata, obs_var; label="obs", seriestype=:scatter, mc=:black, ms=4, lw=0, ma=0.65, left_margin=1Plots.cm)
-    plot!(xdata, def_var, color=:steelblue2, lw=1.5, ls=:dash, left_margin=1Plots.cm, legend=:outerbottom, legendcolumns=3, label="def ($(round(metr_def, digits=2)))", size=(2000, 1000), title="$(vinfo["long_name"]) ($(vinfo["units"])) -> $(nameof(typeof(lossMetric)))")
+    metr_def = metric(lossMetric, def_var_n, obs_var_n, obs_σ_n)
+    metr_opt = metric(lossMetric, opt_var_n, obs_var_n, obs_σ_n)
+    plot(xdata, obs_var; label="obs", seriestype=:scatter, mc=:black, ms=4, lw=0, ma=0.65, left_margin=1plots_cm)
+    plot!(xdata, def_var, color=:steelblue2, lw=1.5, ls=:dash, left_margin=1plots_cm, legend=:outerbottom, legendcolumns=3, label="def ($(round(metr_def, digits=2)))", size=(2000, 1000), title="$(vinfo["long_name"]) ($(vinfo["units"])) -> $(nameof(typeof(lossMetric)))")
     plot!(xdata, opt_var; color=:seagreen3, label="opt ($(round(metr_opt, digits=2)))", lw=1.5, ls=:dash)
     savefig(joinpath(info.output.dirs.figure, "wroasted_$(domain)_$(v).png"))
 end

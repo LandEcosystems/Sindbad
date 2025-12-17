@@ -15,7 +15,7 @@
     "options": {
       "batch_size": 32,
       "n_epochs": 1,
-      "loss_function": "loss_model_obs_ML",
+      "loss_function": "loss_model_obs_machine_learning",
       "split_ratio": [0.2, 0.1],
       "n_folds": 10
     },
@@ -28,7 +28,7 @@
     "options": {
       "chunk_size": 2
     },
-    "package": "FiniteDiff"
+    "package": "ForwardDiff"
   },
   "ml_optimizer": {
     "method": "Adam",

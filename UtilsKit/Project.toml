@@ -1,0 +1,28 @@
+name = "UtilsKit"
+uuid = "202e6067-a2be-48c9-bc21-3d3d20912f89"
+license = "EUPL-1.2"
+authors = ["SINDBAD Contributors <sindbad@bgc-jena.mpg.de>"]
+description = "A comprehensive utility package providing foundational functions for data manipulation, collections management, display formatting, and type introspection"
+readme = "README.md"
+repository = "https://github.com/EarthyScience/SINDBAD"
+version = "0.1.0"
+
+[deps]
+Accessors = "7d9f7c33-5ae7-4f3b-8dc6-eff91059b697"
+Crayons = "a8cc5b0e-0ffa-5ad4-8c14-923d3ee1735f"
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+FIGlet = "3064a664-84fe-4d92-92c7-ed492f3d8fae"
+InteractiveUtils = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
+Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+TypedTables = "9d95f2ec-7b3d-5a63-8d20-e2491e220bb9"
+
+[compat]
+Accessors = "0.1.43"
+Crayons = "4.1.1"
+DataStructures = "0.18, 0.19"
+FIGlet = "0.2.2"
+TOML = "1.0.3"
+TypedTables = "1.4.6"
+julia = "1.10, 1.11"

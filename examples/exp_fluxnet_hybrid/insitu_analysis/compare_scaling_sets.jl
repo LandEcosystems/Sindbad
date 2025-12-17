@@ -1,5 +1,5 @@
 using Revise
-using SindbadExperiment
+using Sindbad.Simulation
 using Dates
 using Plots
 toggleStackTraceNT()
@@ -87,7 +87,7 @@ for site_index in 1:205
                 obs_dat = obs_dat #.- nanmean(obs_dat)
             end
 
-            plot(xdata, obs_dat; label="obs", seriestype=:scatter, mc=:black, ms=4, lw=0, ma=0.65, left_margin=1Plots.cm)
+            plot(xdata, obs_dat; label="obs", seriestype=:scatter, mc=:black, ms=4, lw=0, ma=0.65, left_margin=1plots_cm)
 
             mod_path = joinpath(path_site, "data", "$(exp_name)_$(domain)_$(mod_v).zarr")
             kn_i = 1
@@ -101,7 +101,7 @@ for site_index in 1:205
                     @show mod_path_mtr
                     continue
                 end
-                mod_dat_ds = SindbadData.zopen(mod_path_mtr, "r")
+                mod_dat_ds = DataLoaders.zopen(mod_path_mtr, "r")
                 mod_dat = mod_dat_ds["$(mod_v)"][:, 1]
 
 
@@ -113,7 +113,7 @@ for site_index in 1:205
                 obs_dat_n, obs_σ_n, mod_dat_n = getDataWithoutNaN(obs_dat, obs_σ, mod_dat)
                 metr_mod = metric(obs_dat_n, obs_σ_n, mod_dat_n, lossMetric)
 
-                plot!(xdata, mod_dat, color=k_color[kn_i], lw=1.5, ls=:dash, left_margin=1Plots.cm, legend=:outerbottom, legendcolumns=length(k_names)+1/2, label="$(kn)\n($(nameof(typeof(lossMetric)))=$(round(metr_mod, digits=2)))", size=(2000, 1000), title="$(domain): $(vinfo["long_name"]) ($(vinfo["units"])) -> $(forcing_set), $(o_set)")
+                plot!(xdata, mod_dat, color=k_color[kn_i], lw=1.5, ls=:dash, left_margin=1plots_cm, legend=:outerbottom, legendcolumns=length(k_names)+1/2, label="$(kn)\n($(nameof(typeof(lossMetric)))=$(round(metr_mod, digits=2)))", size=(2000, 1000), title="$(domain): $(vinfo["long_name"]) ($(vinfo["units"])) -> $(forcing_set), $(o_set)")
                 kn_i += 1
             end
 

@@ -1,5 +1,5 @@
 using Revise
-using SindbadExperiment
+using Sindbad
 using Dates
 using Plots
 toggleStackTraceNT()
@@ -159,7 +159,7 @@ for i in eachindex(pool_comps)
     cpool = map(cEco_all) do cE
         cE[i]
     end
-    plot(cpool; label="Spinup ($(round(SindbadTEM.mean(cpool), digits=2)))", size=(2000, 1000), title="layer $(i): $(pool_comps[i])", left_margin=1Plots.cm, color=:steelblue2)
+    plot(cpool; label="Spinup ($(round(SindbadTEM.mean(cpool), digits=2)))", size=(2000, 1000), title="layer $(i): $(pool_comps[i])", left_margin=1plots_cm, color=:steelblue2)
     scatter!([1], [cpool[1]], color=:red, label="Init", marker=:circle, markersize=10)
     annotate!(5, cpool[1], text("Init", :red, :bold, rotation=rot_max, halign=:left))
     v_loc = 1

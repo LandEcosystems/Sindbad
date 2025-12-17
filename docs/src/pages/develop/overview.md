@@ -13,7 +13,7 @@ This is an overview of the SINDBAD user documentation, which lists and links all
 | [Land Utils](./land_utils.md) | Working with land variables and time series data | - LandWrapper usage; Data visualization; Time series handling; Performance optimization |
 | [Experiments](./experiments.md) | Designing and running experiments | - Experiment types; Configuration; Result analysis; Best practices |
 | [Spinup](./spinup.md) | Configuring and running model spinup | - Spinup methods; Sequence handling; Performance optimization; Best practices |
-| [Optimization Method](./optimization_method.md) | Configuring and implementing optimization | - Available algorithms; Parameter optimization; Multi-constraint handling; Performance tuning |
+| [ParameterOptimization Method](./optimization_method.md) | Configuring and implementing optimization | - Available algorithms; Parameter optimization; Multi-constraint handling; Performance tuning |
 | [Cost Function](./cost_function.md) | Implementing and customizing cost calculations | - Cost calculation methods; Parameter scaling; Multi-threading; Performance evaluation |
 | [Cost Metrics](./cost_metrics.md) | Defining and using model evaluation metrics | - Available metrics; Adding new metrics; Metric implementation; Best practices |
 | [How to Document](./how_to_doc.md) | Documentation guidelines and standards | - Formatting rules; Content requirements; Style guidelines; Examples |
@@ -27,7 +27,7 @@ This is an overview of the SINDBAD user documentation, which lists and links all
 4. Learn about [Array Handling](./array_handling.md) and [Land Utils](./land_utils.md) for data management
 5. Use [Experiments](./experiments.md) for running simulations
 6. Check [Spinup](./spinup.md) for model initialization procedures
-7. Refer to [Optimization Method](./optimization_method.md) for parameter optimization
+7. Refer to [ParameterOptimization Method](./optimization_method.md) for parameter optimization
 8. Use [Cost Function](./cost_function.md) and [Cost Metrics](./cost_metrics.md) for model evaluation
 9. Follow [How to Document](./how_to_doc.md) for documentation guidelines
 

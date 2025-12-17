@@ -1,12 +1,12 @@
-using SindbadData
-using SindbadData.DimensionalData
-using SindbadData.AxisKeys
-using SindbadData.YAXArrays
-using SindbadTEM
-using SindbadML
-using SindbadML.JLD2
+using Sindbad.DataLoaders
+using Sindbad.DataLoaders.DimensionalData
+using Sindbad.DataLoaders.AxisKeys
+using Sindbad.DataLoaders.YAXArrays
+using Sindbad
+using Sindbad.MachineLearning
+using Sindbad.MachineLearning.JLD2
 using ProgressMeter
-using SindbadOptimization
+using Sindbad.ParameterOptimization
 
 # extra includes for covariate and activation functions
 include("load_covariates.jl")
@@ -86,7 +86,7 @@ xfeatures = loadCovariates(sites_forcing; kind="all");
 nor_names_order = xfeatures.features;
 n_features = length(nor_names_order)
 
-## Build ML method
+## BuildMachine Learningmethod
 k_σs=Tuple(Float32[1.0, 0.25, 4.0, 0.5, 2, 0.125, 8])
 n_params = sum(tbl_params.is_ml);
 nlayers = 3 # Base.parse(Int, ARGS[2])

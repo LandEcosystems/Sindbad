@@ -1,160 +1,119 @@
 """
     Sindbad
 
-A Julia package for the terrestrial ecosystem models within **S**trategies to **IN**tegrate **D**ata and **B**iogeochemic**A**l mo**D**els `(SINDBAD)` framework.
-
-The `Sindbad` package serves as the core of the SINDBAD framework, providing foundational types, utilities, and tools for building and managing SINDBAD models.
+Top-level orchestration package for **S**trategies to **IN**tegrate
+**D**ata and **B**iogeochemic**A**l mo**D**els. `Sindbad` reexports the
+complete `SindbadTEM` modeling stack and combines the user-facing
+modules under `src/` to offer a single public entry point for data
+ingest, configuration, simulation, optimization, machine learning,
+and visualization workflows.
 
 # Purpose:
-This package defines the `LandEcosystem` supertype, which serves as the base for all SINDBAD models. It also provides utilities for managing model variables, tools for model operations, and a catalog of variables used in SINDBAD workflows.
+- Provide a cohesive API that ties together process-level models from
+  `SindbadTEM` with higher-level experiment tooling.
+- Ensure every stage of a SINDBAD pipeline—data handling, setup, model
+  execution, calibration, post-processing, and plotting—is available
+  through one package.
 
 # Dependencies:
-- `Reexport`: Simplifies re-exporting functionality from other packages, ensuring a clean and modular design.
-- `CodeTracking`: Enables tracking of code definitions, useful for debugging and development workflows.
-- `DataStructures`: Provides advanced data structures (e.g., `OrderedDict`, `Deque`) for efficient data handling in SINDBAD models.
-- `Dates`: Handles date and time operations, useful for managing temporal data in SINDBAD experiments.
-- `Flatten`: Supplies tools for flattening nested data structures, simplifying the handling of hierarchical model variables.
-- `InteractiveUtils`: Enables interactive exploration and debugging during development.
-- `Parameters`: Provides macros for defining and managing model parameters in a concise and readable manner.
-- `StaticArraysCore`: Supports efficient, fixed-size arrays (e.g., `SVector`, `MArray`) for performance-critical operations in SINDBAD models.
-- `TypedTables`: Provides lightweight, type-stable tables for structured data manipulation.
-- `Accessors`: Enables efficient access and modification of nested data structures, simplifying the handling of SINDBAD configurations.
-- `StatsBase`: Supplies statistical functions such as `mean`, `percentile`, `cor`, and `corspearman` for computing metrics like correlation and distribution-based statistics.
-- `NaNStatistics`: Extends statistical operations to handle missing values (`NaN`), ensuring robust data analysis.
+## Related (SINDBAD ecosystem)
+- `ErrorMetrics`: Model–observation metrics used across cost/diagnostics.
+- `TimeSampler`: Temporal sampling/aggregation helpers.
+- `UtilsKit`: Shared utilities used across modules.
 
+## External (third-party)
+- `CSV`: Input/output of tabular forcing and calibration datasets.
+- `ConstructionBase`: Shared constructors needed by downstream modules.
+- `JSON`: Experiment metadata serialization (`parsefile`, `json`, `print`).
+- `JLD2`: Persisting SINDBAD state, diagnostics, and trained artifacts.
+- `YAXArrays` + `YAXArrays.Datasets`: Labeled n-dimensional arrays and dataset writers for model output.
 
-# Included Files:
-1. **`coreTypes.jl`**:
-   - Defines the core types used in SINDBAD, including the `LandEcosystem` supertype and other fundamental types.
+## Internal (within `Sindbad`)
+- `Sindbad.DataLoaders`
+- `Sindbad.Experiment`
+- `Sindbad.MachineLearning`
+- `Sindbad.ParameterOptimization`
+- `Sindbad.Setup`
+- `Sindbad.Simulation`
+- `Sindbad.Types`
+- `Sindbad.Visualization`
+- `SindbadTEM`
 
-2. **`utilsCore.jl`**:
-   - Contains core utility functions for SINDBAD, including helper methods for array operations and code generation macros for NamedTuple packing and unpacking.
-
-3. **`sindbadVariableCatalog.jl`**:
-   - Defines a catalog of variables used in SINDBAD models, ensuring consistency and standardization across workflows. Note that every new variable would need a manual entry in the catalog so that the output files are written with correct information.
-
-4. **`modelTools.jl`**:
-   - Provides tools for extracting information from SINDBAD models, including mode code, variables, and parameters.
-
-5. **`Models/models.jl`**:
-   - Implements the core SINDBAD models, inheriting from the `LandEcosystem` supertype. Also, introduces the fallback function for compute, precompute, etc. so that they are optional in every model.
-
-6. **`generateCode.jl`**:
-   - Contains code generation utilities for SINDBAD models and workflows.
+# Included Modules:
+- **DataLoaders** (`src/DataLoaders/`):
+  - Handles file IO, preprocessing, and conversion into SINDBAD-native
+    data structures; exposes reusable loaders and utility helpers.
+- **Setup** (`src/Setup/`):
+  - Builds experiment `info` objects, validates model selections, and
+    wires pools, spinup settings, and derived configuration metadata.
+- **Simulation** (`src/Simulation/`):
+  - Orchestrates terrestrial ecosystem simulations, including spinup,
+    forward runs, diagnostics, and interaction with `SindbadTEM`.
+- **ParameterOptimization** (`src/ParameterOptimization/`):
+  - Provides parameter-calibration utilities and objective hooks.
+  - Some optimizer backends are enabled via optional extensions (see Notes).
+- **MachineLearning** (`src/MachineLearning/`):
+  - Adds ML-assisted surrogates, emulators, and training pipelines that
+    integrate with Sindbad outputs and optimization targets.
+- **Visualization** (`src/Visualization/`):
+  - Supplies plotting and reporting helpers for experiment evaluation
+    (time series, spatial maps, diagnostic overlays, etc.).
 
 # Notes:
-- The `LandEcosystem` supertype serves as the foundation for all SINDBAD models, enabling extensibility and modularity.
-- The package re-exports key functionality from other packages (e.g., `Flatten`, `StaticArraysCore`, `DataStructures`) to simplify usage and integration.
-- Designed to be lightweight and modular, allowing seamless integration with other SINDBAD packages.
+- Each submodule is included and reexported so end users can call
+  `using Sindbad` and immediately access `Sindbad.DataLoaders`,
+  `Sindbad.Simulation`, and the rest without extra imports.
+- Shared dependencies are loaded here to guarantee consistent versions
+  across all components.
+- Some functionality is enabled via Julia extensions (`Project.toml` `[weakdeps]` + `[extensions]` and `ext/`):
+  - `NLsolve` → `SindbadNLsolveExt`
+  - `Optimization` → `SindbadOptimizationExt`
+  - `CMAEvolutionStrategy` → `SindbadCMAEvolutionStrategyExt`
 
 # Examples:
-1. **Defining a new SINDBAD model**:
-```julia
-struct MyModel <: LandEcosystem
-    # Define model-specific fields
-end
-```
-
-2. **Using utilities from the package**:
 ```julia
 using Sindbad
-# Access utilities or models
-flattened_data = flatten(nested_data)
-```
 
-3. **Querying the variable catalog**:
-```julia
-using Sindbad
-catalog = getVariableCatalog()
+out = Sindbad.Experiment.runExperimentForward("experiment_config.json")
 ```
 """
 module Sindbad
-   using Reexport: @reexport
-   @reexport using Reexport
-   @reexport using Pkg
-   @reexport using CodeTracking
-   @reexport using DataStructures: DataStructures
-   @reexport using Dates
-   @reexport using Flatten: flatten, metaflatten, fieldnameflatten, parentnameflatten
-   @reexport using InteractiveUtils
-   @reexport using StaticArraysCore: StaticArray, SVector, MArray, SizedArray
-   @reexport using TypedTables: Table
-   @reexport using Accessors: @set
-   @reexport using StatsBase
-   @reexport using NaNStatistics
-   @reexport using Crayons
+  using SindbadTEM
+  using SindbadTEM.Reexport: @reexport
+  @reexport using SindbadTEM
+  @reexport using SindbadTEM.StatsBase
+  @reexport using NaNStatistics
+  @reexport using TimeSampler
+  @reexport using ErrorMetrics
 
-   # create a tmp_ file for tracking the creation of new approaches. This is needed because precompiler is not consistently loading the newly created approaches. This file is appended every time a new model/approach is created which forces precompile in the next use of Sindbad.
-   file_path = file_path = joinpath(@__DIR__, "tmp_precompile_placeholder.jl")
-   # Check if the file exists
-   if isfile(file_path)
-      # Include the file if it exists
-      include(file_path)
-   else
-      # Create a blank file if it does not exist
-      open(file_path, "w") do file
-         # Optionally, you can write some initial content
-         write(file, "# This is a blank file created by Sindbad module to keep track of newly added sindbad approaches/models which automatically updates this file and then forces precompilation to include the new models.\n")
-      end
-      println("Created a blank file: $file_path to track precompilation of new models and approaches")
-   end
-   
-   include("Types/Types.jl")
-   @reexport using .Types
-   include("utilsCore.jl")   
-   include("sindbadVariableCatalog.jl")
-   include("modelTools.jl")
-   include("Models/Models.jl")
-   include("generateCode.jl")
-   @reexport using .Models
+  include("Types/Types.jl")
+  @reexport using .Types
+  include("Setup/Setup.jl")
+  @reexport using .Setup
+  include("DataLoaders/DataLoaders.jl")
+  @reexport using .DataLoaders
+  include("Visualization/Visualization.jl")
+  @reexport using .Visualization
+  include("Simulation/Simulation.jl")
+  @reexport using .Simulation
+  include("ParameterOptimization/ParameterOptimization.jl")
+  @reexport using .ParameterOptimization
+  include("MachineLearning/MachineLearning.jl")
+  @reexport using .MachineLearning
+  include("Experiment/Experiment.jl")
+  @reexport using .Experiment
+  # include("writeDocStringForTypes.jl")
+  # include("Types/docStringForTypes.jl")
 
-   # append the docstring of the LandEcosystem type to the docstring of the Sindbad module so that all the methods of the LandEcosystem type are included after the models have been described
-   @doc """
-   LandEcosystem
+  export addExtensionToSindbad
+  """
+  addExtensionToSindbad(function_to_extend::Function, external_package::String) -> String
 
-   $(purpose(LandEcosystem))
-
-   # Methods
-   All subtypes of `LandEcosystem` must implement at least one of the following methods:
-   - `define`: Initialize arrays and variables
-   - `precompute`: Update variables with new realizations
-   - `compute`: Update model state in time
-   - `update`: Update pools within a single time step
-
-
-   # Example
-   ```julia
-   # Define a new model type
-   struct MyModel <: LandEcosystem end
-
-   # Implement required methods
-   function define(params::MyModel, forcing, land, helpers)
-   # Initialize arrays and variables
-   return land
-   end
-
-   function precompute(params::MyModel, forcing, land, helpers)
-   # Update variables with new realizations
-   return land
-   end
-
-   function compute(params::MyModel, forcing, land, helpers)
-   # Update model state in time
-   return land
-   end
-
-   function update(params::MyModel, forcing, land, helpers)
-   # Update pools within a single time step
-   return land
-   end
-   ```
-
-   ---
-
-   # Extended help
-   $(methodsOf(Types.LandEcosystem))
-   """
-   Types.LandEcosystem
-   
-   include(joinpath(@__DIR__, "Types/docStringForTypes.jl"))
-end
+  Convenience wrapper for this repo: asserts the function belongs to `Sindbad` and always uses folder layout.
+  """
+  function addExtensionToSindbad(function_to_extend::Function, external_package::String)
+    root_pkg = Base.moduleroot(parentmodule(function_to_extend))
+    nameof(root_pkg) == :Sindbad || error("Expected a Sindbad function; got root package $(root_pkg).")
+    return addExtensionToFunction(function_to_extend, external_package; extension_location=:Folder)
+  end
+end # module Sindbad

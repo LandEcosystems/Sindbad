@@ -1,11 +1,11 @@
 # install dependencies by running the following line first:
-# dev ../.. ../../lib/SindbadUtils/ ../../lib/SindbadData/ ../../lib/SindbadMetrics/ ../../lib/SindbadSetup/ ../../lib/SindbadTEM ../../lib/SindbadML
-# dev ../.. ../../lib/SindbadUtils/ ../../lib/SindbadData/ ../../lib/SindbadMetrics/ ../../lib/SindbadSetup/ ../../lib/SindbadTEM ../../lib/SindbadOptimization ../../lib/SindbadML
+# dev ../.. ../../lib/Utils/ ../../lib/DataLoaders/ ../../lib/SindbadMetrics/ ../../lib/Setup/ ../../lib/SindbadTEM ../../lib/MachineLearning
+# dev ../.. ../../lib/Utils/ ../../lib/DataLoaders/ ../../lib/SindbadMetrics/ ../../lib/Setup/ ../../lib/SindbadTEM ../../lib/Sindbad.ParameterOptimization ../../lib/MachineLearning
 using Revise
-using SindbadData
-using SindbadTEM
+using Sindbad.DataLoaders
+using Sindbad.Simulation
 using YAXArrays
-using SindbadML
+using Sindbad.MachineLearning
 using ForwardDiff
 using Zygote
 using Optimisers

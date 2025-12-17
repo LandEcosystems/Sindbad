@@ -1,21 +1,20 @@
 # SINDBAD Packages Overview
 
-This page provides an overview of all SINDBAD packages and their main functionalities.
+This page provides an overview of all SINDBAD packages and their main modules and functionalities.
 
-| Package | Description | Key Features |
-|---------|-------------|--------------|
-| [Core](sindbad.md) | Core package `Sindbad` | Main package for model processes and types |
-| [ Models](models.md) | Model implementations | Ecosystem model processes and approaches |
-| [ Types](types.md) | SINDBAD Types | Definition of all SINDBAD types and purposes |
-| [Data](data.md) | Data handling | Input/output operations, data processing, and handling |
-| [Experiment](experiment.md) | Simulation experiments | Experiment setup, configuration, and execution |
-| [Metrics](metrics.md) | Performance metrics | Cost functions, evaluation metrics, and validation tools |
-| [ML](ml.md) | Machine learning | Machine learning integration and model training |
-| [Optimization](optimization.md) | Optimization methods | Parameter optimization and calibration |
-| [Setup](setup.md) | Setup utilities | configuration of SINDBAD experiment and setup |
-| [TEM](tem.md) | Terrestrial Ecosystem Model | Core ecosystem modeling framework |
-| [Utils](utils.md) | Utility functions | Helper functions and common utilities for all packages|
-| [Visuals](visuals.md) | Visualization tools | Plotting and data visualization helpers |
+| Package | Module | Description | Key Features |
+|--------|--------|-------------|--------------|
+| [Sindbad](sindbad.md) | - | SINDBAD MDI Framework | Top-level orchestration package for **S**trategies to **IN**tegrate **D**ata and **B**iogeochemic**A**l mo**D**els. |
+| | [MachineLearning](ml.md) | Machine learning | Machine learning integration and model training |
+| | [ParameterOptimization](optimization.md) | ParameterOptimization methods | Parameter optimization and calibration |
+| | [Setup](setup.md) | Setup utilities | Configuration of SINDBAD experiments and setup |
+| | [Simulation](simulation.md) | Terrestrial Ecosystem Model | Core ecosystem modeling framework |
+| | [Visualization](visuals.md) | Visualization tools | Plotting and data visualization helpers |
+| [SindbadTEM](sindbadTEM.md) | - | Core terrestrial ecosystem models and types `Sindbad` | Main package for model processes, types, and utils |
+| | [Processes](models.md) | Model implementations | Ecosystem model processes and approaches |
+| | [Metrics](metrics.md) | Performance metrics | Cost functions, evaluation metrics, and validation tools |
+| | [Types](types.md) | SINDBAD Types | Definition of all SINDBAD types and purposes |
+| | [UtilsKit](utils.md) | Utility functions | Helper functions and common utilities for all packages |
 
 
 ::: tip `Exported` and `Internal` Sections
@@ -35,23 +34,23 @@ These remain accessible but require qualification with the module name (e.g., `M
 
 ## Package Descriptions
 
-### Core Packages
-- **Sindbad**: The main package that provides the core of SINDBAD.
+### Core Package
+- **SindbadTEM**: The main package that provides the core of SINDBAD.
   - **Models**: Module that implements various ecosystem model components and approaches.
+  - **Metrics**: Implements performance metrics and cost functions.
   - **Types**: Module that defines various types for dispatching on methods ranging from setup to cost computation.
-- **TEM**: Provides the Terrestrial Ecosystem Model framework and its execution.
+  - **UtilsKit**: Provides helper functions and common utilities used across packages.
 
-### Modeling Packages
-- **Experiment**: Manages experiment setup, configuration, and simulations.
-- **Metrics**: Implements performance metrics and cost functions.
-- **ML**: Integrates machine learning capabilities for model training and analysis.
-- **Optimization**: Provides methods for parameter optimization and model calibration.
+### MDI Package
+#### Modeling Modules
+- **Simulation**: Provides the Terrestrial Ecosystem Model framework and its execution, and manages experiment setup, configuration, and simulations.
+- **MachineLearning**: Integrates machine learning capabilities for model training and analysis.
+- **ParameterOptimization**: Provides methods for parameter optimization and model calibration.
 
-### Utility Packages
-- **Data**: Handles all data-related operations including input/output, data processing, and management.
+#### Utility Modules
+- **DataLoaders**: Handles all data-related operations including input/output, data processing, and management.
 - **Setup**: Contains configuration tools for SINDBAD info.
-- **Utils**: Provides helper functions and common utilities used across packages.
-- **Visuals**: Offers tools and helpers for data visualization and plotting.
+- **Visualization**: Offers tools and helpers for data visualization and plotting.
 
 
 ## Sindbad Package Dependencies
@@ -63,7 +62,7 @@ Package Dependency
 ::: info Package Usage
 
 - Most application packages can be used independently for specific tasks
-- The core `Sindbad` and ```SindbadUtils``` are required
+- The core `Sindbad` and `UtilsKit` are required
 
 ::: 
 
@@ -71,50 +70,50 @@ Package Dependency
 ```mermaid
 graph TD
     %% Main Sindbad package
-    Sindbad[Sindbad Core] --> Types[Types]
+    SindbadTEM[Sindbad TEM] --> Types[Types]
     
     %% Core dependencies
-    Sindbad --> ModelTypes[ModelTypes]
-    Sindbad --> TimeTypes[TimeTypes]
-    Sindbad --> LandTypes[LandTypes]
-    Sindbad --> ArrayTypes[ArrayTypes]
+    SindbadTEM --> TEMTypes[TEMTypes]
+    SindbadTEM --> TimeSamplers[TimeSamplers]
+    SindbadTEM --> LandTypes[LandTypes]
+    SindbadTEM --> ArrayTypes[ArrayTypes]
     
     %% Lib packages
-    SindbadUtils[SindbadUtils] --> Sindbad
-    SindbadData[SindbadData] --> Sindbad
-    SindbadData --> SindbadUtils
+    UtilsKit[UtilsKit] --> Sindbad
+    DataLoaders[DataLoaders] --> Sindbad
+    DataLoaders --> UtilsKit
     
-    SindbadSetup[SindbadSetup] --> Sindbad
-    SindbadSetup --> SindbadUtils
-    SindbadSetup --> SindbadData
+    Setup[Setup] --> Sindbad
+    Setup --> UtilsKit
+    Setup --> DataLoaders
     
     SindbadMetrics[SindbadMetrics] --> Sindbad
-    SindbadMetrics --> SindbadUtils
+    SindbadMetrics --> UtilsKit
     
-    SindbadTEM[SindbadTEM] --> Sindbad
-    SindbadTEM --> SindbadUtils
-    SindbadTEM --> SindbadData
-    SindbadTEM --> SindbadSetup
-    SindbadTEM --> SindbadMetrics
+    Simulation[Simulation] --> SindbadTEM
+    Simulation --> UtilsKit
+    Simulation --> Sindbad.DataLoaders
+    Simulation --> Sindbad.Setup
+    Simulation --> SindbadTEM.Metrics
     
-    SindbadOptimization[SindbadOptimization] --> Sindbad
-    SindbadOptimization --> SindbadUtils
-    SindbadOptimization --> SindbadMetrics
-    SindbadOptimization --> SindbadSetup
-    SindbadOptimization --> SindbadTEM
+    Sindbad.ParameterOptimization[Sindbad.ParameterOptimization] --> Sindbad
+    Sindbad.ParameterOptimization --> UtilsKit
+    Sindbad.ParameterOptimization --> SindbadMetrics
+    Sindbad.ParameterOptimization --> Setup
+    Sindbad.ParameterOptimization --> SindbadTEM
     
-    SindbadML[SindbadML] --> Sindbad
-    SindbadML --> SindbadUtils
-    SindbadML --> SindbadMetrics
+    MachineLearning[MachineLearning] --> Sindbad
+    MachineLearning --> UtilsKit
+    MachineLearning --> SindbadMetrics
     
-    SindbadVisuals[SindbadVisuals] --> Sindbad
-    SindbadVisuals --> SindbadUtils
+    Visualization[Visualization] --> Sindbad
+    Visualization --> UtilsKit
     
-    SindbadExperiment[SindbadExperiment] --> Sindbad
-    SindbadExperiment --> SindbadUtils
-    SindbadExperiment --> SindbadData
-    SindbadExperiment --> SindbadSetup
-    SindbadExperiment --> SindbadTEM
-    SindbadExperiment --> SindbadOptimization
-    SindbadExperiment --> SindbadMetrics    
+    Sindbad.Simulation[Sindbad.Simulation] --> Sindbad
+    Sindbad.Simulation --> UtilsKit
+    Sindbad.Simulation --> DataLoaders
+    Sindbad.Simulation --> Setup
+    Sindbad.Simulation --> SindbadTEM
+    Sindbad.Simulation --> Sindbad.ParameterOptimization
+    Sindbad.Simulation --> SindbadMetrics    
 ```

@@ -13,7 +13,7 @@ The following table outlines SINDBAD's main configuration files:
 | 1 | [Experiment](experiment.md) | Yes | Defines experiment basics and simulation settings |
 | 2 | [Forcing](forcing.md) | Yes | Configures forcing dataset specifications |
 | 3 | [Model Structure](model_structure.md) | Yes | Defines model processes and pools |
-| 4 | [Optimization](optimization.md) | No | Configures parameter optimization and model performance evaluation |
+| 4 | [ParameterOptimization](optimization.md) | No | Configures parameter optimization and model performance evaluation |
 | 5 | [Parameters](parameters.md) | No | Specifies non-default parameter values for experiments |
 
 ::: tip Best Practices

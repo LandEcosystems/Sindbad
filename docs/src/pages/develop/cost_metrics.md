@@ -15,7 +15,7 @@ To view the list of available metrics:
 :::tip
 To list all available cost metrics and their purposes, use:
 ```julia
-using Sindbad
+using Sindbad.Simulation
 showMethodsOf(PerfMetric)
 ```
 This will display a formatted list of all cost metrics and their descriptions, including:
@@ -85,7 +85,7 @@ Requirements:
 Implement the metric calculation in `lib/SindbadMetrics/src/metrics.jl`:
 
 ```julia
-function metric(y::AbstractArray, yσ::AbstractArray, ŷ::AbstractArray, ::NewMetric)
+function metric(::NewMetric, ŷ::AbstractArray, y::AbstractArray, yσ::AbstractArray)
     # Your metric calculation here
     return metric_value
 end
@@ -94,9 +94,9 @@ end
 Requirements:
 - Function must be named `metric`
 - Must take four arguments:
+  - `ŷ`: Model simulation data/estimate
   - `y`: Observation data
   - `yσ`: Observational uncertainty data
-  - `ŷ`: Model simulation data/estimate
   - The metric type
 - Must return a scalar value
 
@@ -144,7 +144,7 @@ Metrics can be combined using various methods:
 ### Calculating a Simple Metric
 
 ```julia
-using SindbadMetrics
+using SindbadTEM.Metrics
 
 # Define observations and model output
 y = [1.0, 2.0, 3.0]  # observations
@@ -152,13 +152,13 @@ yσ = [0.1, 0.1, 0.1]  # uncertainties
 ŷ = [1.1, 2.1, 3.1]  # model output
 
 # Calculate MSE
-mse = metric(y, yσ, ŷ, MSE())
+mse = metric(MSE(), ŷ, y, yσ)
 
 # Calculate correlation
-correlation = metric(y, yσ, ŷ, Pcor())
+correlation = metric(Pcor(), ŷ, y, yσ)
 ```
 
-### Using Multiple Metrics in Optimization
+### Using Multiple Metrics in ParameterOptimization
 
 ```julia
 # Define cost options for multiple variables
@@ -208,9 +208,9 @@ Each metric type in SINDBAD should have a `purpose` function that describes its 
 
 ### How to Define Purpose
 
-1. Make sure that the base `purpose` function from SindbadUtils is already imported:
+1. Make sure that the base `purpose` function from UtilsKit is already imported:
 ```julia
-import SindbadUtils: purpose
+import UtilsKit: purpose
 ```
 
 2. Then, `purpose` can be easily extended for your metric type:

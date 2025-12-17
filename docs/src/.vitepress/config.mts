@@ -17,39 +17,38 @@ const settingsItems = [
   { text: 'Experiments', link: '/pages/settings/experiment' },
   { text: 'Forcing', link: '/pages/settings/forcing' },
   { text: 'Models', link: '/pages/settings/model_structure' },
-  { text: 'Optimization', link: '/pages/settings/optimization' },
+  { text: 'ParameterOptimization', link: '/pages/settings/optimization' },
   { text: 'Parameters', link: '/pages/settings/parameters' },
 ]
 
 const codeItems = [
   { text: 'Sindbad', link: '/pages/code/overview' },
-  { text: ' + Core', link: '/pages/code/sindbad' },
-  { text: ' \u00A0\u00A0++ Models', link: '/pages/code/models' },
+  { text: ' + TEM', link: '/pages/code/sindbadTEM' },
+  { text: ' \u00A0\u00A0++ Metrics', link: '/pages/code/metrics' },
+  { text: ' \u00A0\u00A0++ Processes', link: '/pages/code/models' },
   { text: ' \u00A0\u00A0++ Types', link: '/pages/code/types' },
-  { text: ' + Data', link: '/pages/code/data' },
-  { text: ' + Experiment', link: '/pages/code/experiment' },
-  { text: ' + Metrics', link: '/pages/code/metrics' },
-  { text: ' + ML', link: '/pages/code/ml' },
-  { text: ' + Optimization', link: '/pages/code/optimization' },
+  { text: ' \u00A0\u00A0++ Utils', link: '/pages/code/utils' },
+  { text: ' + DataLoaders', link: '/pages/code/data' },
+  { text: ' + MachineLearning', link: '/pages/code/ml' },
+  { text: ' + ParameterOptimization', link: '/pages/code/optimization' },
   { text: ' + Setup', link: '/pages/code/setup' },
-  { text: ' + TEM', link: '/pages/code/tem' },
-  { text: ' + Utils', link: '/pages/code/utils' },
-  { text: ' + Visuals', link: '/pages/code/visuals' }
+  { text: ' + Simulation', link: '/pages/code/simulation' },
+  { text: ' + Visualization', link: '/pages/code/visuals' }
 ]
 
 const codeGenItems = [
   { text: 'Sindbad', link: '/pages/code_gen/Sindbad' },
   { text: ' + Core', link: '/pages/code_gen/Sindbad' },
-  { text: ' + Data', link: '/pages/code_gen/SindbadData' },
-  { text: ' + Experiment', link: '/pages/code_gen/SindbadExperiment' },
+  { text: ' + Data', link: '/pages/code_gen/DataLoaders' },
+  { text: ' + Experiment', link: '/pages/code_gen/Sindbad.Simulation' },
   { text: ' + Metrics', link: '/pages/code_gen/SindbadMetrics' },
-  { text: ' + ML', link: '/pages/code_gen/SindbadML' },
+  { text: ' + ML', link: '/pages/code_gen/MachineLearning' },
   { text: ' + Models', link: '/pages/code_gen/SindbadModels' },
-  { text: ' + Optimization', link: '/pages/code_gen/SindbadOptimization' },
-  { text: ' + Setup', link: '/pages/code_gen/SindbadSetup' },
+  { text: ' + ParameterOptimization', link: '/pages/code_gen/Sindbad.ParameterOptimization' },
+  { text: ' + Setup', link: '/pages/code_gen/Setup' },
   { text: ' + TEM', link: '/pages/code_gen/SindbadTEM' },
-  { text: ' + Utils', link: '/pages/code_gen/SindbadUtils' },
-  // { text: ' + Visuals', link: '/pages/code_gen/SindbadVisuals' }
+  { text: ' + Utils', link: '/pages/code_gen/Utils' },
+  // { text: ' + Visuals', link: '/pages/code_gen/Visualization' }
 ]
 const aboutItems = [
   { text: 'Contact', link: '/pages/about/contact' },
@@ -71,7 +70,7 @@ const manualItems = [
   { text: 'Experiment Outputs', link: '/pages/develop/sindbad_outputs' },
   { text: 'Spinup', link: '/pages/develop/spinup' },
   { text: 'Hybrid ML', link: '/pages/develop/hybrid_modeling' },
-  { text: 'Optimization Methods', link: '/pages/develop/optimization_method' },
+  { text: 'ParameterOptimization Methods', link: '/pages/develop/optimization_method' },
   { text: 'Cost Metrics', link: '/pages/develop/cost_metrics' },
   { text: 'Cost Function', link: '/pages/develop/cost_function' },
   { text: 'Documentation', link: '/pages/develop/how_to_doc' },
