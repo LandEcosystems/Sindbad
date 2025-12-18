@@ -82,7 +82,7 @@ SINDBAD uses a type-based dispatch system for spinup methods. To add a new spinu
 In `src/Types/SpinupTypes.jl`, add a new struct and its purpose function:
 
 ```julia
-import UtilsKit: purpose
+import OmniTools: purpose
 
 # Define the new spinup type
 struct YourNewSpinupMode <: SpinupMode end

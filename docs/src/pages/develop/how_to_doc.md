@@ -1,4 +1,4 @@
-This documentation is build using [Documenter.jl](https://documenter.juliadocs.org/stable/) and [DocumenterVitepress.jl](https://github.com/LuxDL/DocumenterVitepress.jl), hence a working installaion of
+This documentation is build using [Documenter.jl](https://documenter.juliadocs.org/dev/) and [DocumenterVitepress.jl](https://github.com/LuxDL/DocumenterVitepress.jl), hence a working installaion of
 [VitePress](https://vitepress.dev) in your system needs to be installed. 
 
 ### Prerequisites

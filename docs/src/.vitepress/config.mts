@@ -189,7 +189,7 @@ export default defineConfig({
     socialLinks: [
       {
         icon: "github",
-        link: 'https://github.com/EarthyScience/SINDBAD',
+        link: 'https://github.com/LandEcosystems/Sindbad',
         // You can include a custom label for accessibility too (optional but recommended):
         ariaLabel: 'repo address'
       },

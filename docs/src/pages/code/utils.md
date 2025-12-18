@@ -1,19 +1,19 @@
 ```@docs
-UtilsKit
+OmniTools
 ```
 
 ## Exported
 ```@meta
 
 DocTestSetup= quote
-using UtilsKit
+using OmniTools
 end
 ```
 
 ```@autodocs
-Modules = [UtilsKit]
+Modules = [OmniTools]
 Private = false
-Filter = f -> !(f === UtilsKit)
+Filter = f -> !(f === OmniTools)
 ```
 
 ## Internal
@@ -21,11 +21,11 @@ Filter = f -> !(f === UtilsKit)
 CollapsedDocStrings = false
 
 DocTestSetup= quote
-using UtilsKit
+using OmniTools
 end
 ```
 
 ```@autodocs
-Modules = [UtilsKit]
+Modules = [OmniTools]
 Public = false
 ```
