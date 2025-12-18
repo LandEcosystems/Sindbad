@@ -25,6 +25,17 @@ This function initializes an experiment by:
 1. Reading and processing the experiment configuration
 2. Setting up forcing data based on the configuration
 3. Preparing output settings
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Prepare experiment from configuration file
+julia> # info, forcing = prepExperiment("experiment_config.json")
+
+julia> # Prepare with configuration overrides
+julia> # info, forcing = prepExperiment("experiment_config.json"; replace_info=Dict("output" => Dict("save_all" => true)))
+```
 """
 function prepExperiment(sindbad_experiment::String; replace_info=Dict())
     print_figlet_banner("SINDBAD")

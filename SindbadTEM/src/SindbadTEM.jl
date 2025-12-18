@@ -32,24 +32,16 @@ Key dependencies used/re-exported by the module include:
 - Designed to be lightweight and modular, allowing seamless integration with other SINDBAD modules in the top src directory of the repository.
 
 # Examples
-1. **Defining a new SINDBAD model**:
-```julia
-struct MyProcess <: LandEcosystem
-    # Define model-specific fields
-end
-```
+```jldoctest
+julia> using SindbadTEM
 
-2. **Using utilities from the package**:
-```julia
-using Sindbad.Simulation
-# Access utilities or models
-flattened_data = flatten(nested_data)
-```
+julia> # Define a new SINDBAD model
+julia> struct MyProcess <: LandEcosystem
+           # Define model-specific fields
+       end
 
-3. **Querying the variable catalog**:
-```julia
-using Sindbad.Simulation
-catalog = getVariableCatalog()
+julia> # Query the variable catalog
+julia> # catalog = getVariableCatalog()
 ```
 """
 module SindbadTEM
@@ -102,31 +94,33 @@ module SindbadTEM
    - `update`: Update pools within a single time step
 
 
-   # Example
-   ```julia
-   # Define a new model type
-   struct MyProcess <: LandEcosystem end
+   # Examples
+   ```jldoctest
+   julia> using SindbadTEM
 
-   # Implement required methods
-   function define(params::MyProcess, forcing, land, helpers)
-   # Initialize arrays and variables
-   return land
-   end
+   julia> # Define a new model type
+   julia> struct MyProcess <: LandEcosystem end
 
-   function precompute(params::MyProcess, forcing, land, helpers)
-   # Update variables with new realizations
-   return land
-   end
+   julia> # Implement required methods
+   julia> function define(params::MyProcess, forcing, land, helpers)
+              # Initialize arrays and variables
+              return land
+          end
 
-   function compute(params::MyProcess, forcing, land, helpers)
-   # Update model state in time
-   return land
-   end
+   julia> function precompute(params::MyProcess, forcing, land, helpers)
+              # Update variables with new realizations
+              return land
+          end
 
-   function update(params::MyProcess, forcing, land, helpers)
-   # Update pools within a single time step
-   return land
-   end
+   julia> function compute(params::MyProcess, forcing, land, helpers)
+              # Update model state in time
+              return land
+          end
+
+   julia> function update(params::MyProcess, forcing, land, helpers)
+              # Update pools within a single time step
+              return land
+          end
    ```
 
    ---

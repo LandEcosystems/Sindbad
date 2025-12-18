@@ -445,6 +445,17 @@ The main spinup function that handles the spinup method based on inputs from spi
     - `::DoSpinupTEM`: Runs the spinup process before the main simulation. Set `spinup_TEM` to `true` in the flag section of experiment_json.
     - `::DoNotSpinupTEM`: Skips the spinup process and directly runs the main simulation. Set `spinup_TEM` to `false` in the flag section of experiment_json.
 
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Run spinup with DoSpinupTEM
+julia> # land_spinup = spinupTEM(selected_models, forcing, loc_forcing_t, land, tem_info, DoSpinupTEM())
+
+julia> # Skip spinup with DoNotSpinupTEM
+julia> # land = spinupTEM(selected_models, forcing, loc_forcing_t, land, tem_info, DoNotSpinupTEM())
+```
+
 # Notes:
 - When `DoSpinupTEM` is used:
     - The function runs the spinup sequences

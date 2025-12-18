@@ -65,6 +65,17 @@ saves the output variables from the run as one file
     - `::DoNotSaveSingleFile`: single file per variable
 
 # note: this function is overloaded to handle different dispatch types and the version with fewer arguments is used as a shorthand for the single file output mode
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Save output cubes (shorthand version)
+julia> # saveOutCubes(info, out_cubes, output_dims, output_vars)
+
+julia> # Save to single file
+julia> # saveOutCubes(data_path_base, global_metadata, var_pairs, data, data_dims, "nc", t_step, DoSaveSingleFile())
+```
 """
 function saveOutCubes end
 

@@ -19,6 +19,17 @@ Loads and sets up the experiment configuration, saving the information and enabl
   2. Sets up the experiment `info` using `setupInfo`.
   3. Saves the experiment `info` if `save_info` is enabled.
   4. Sets up a debug error catcher if `catch_model_errors` is enabled.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Load experiment configuration
+julia> # info = getExperimentInfo("experiment_config.json")
+
+julia> # Load with configuration overrides
+julia> # info = getExperimentInfo("experiment_config.json"; replace_info=Dict("output" => Dict("save_all" => true)))
+```
 """
 function getExperimentInfo(sindbad_experiment::String; replace_info=Dict())
     replace_info_text = isempty(replace_info) ? "none" : " $(Tuple(keys(replace_info)))"

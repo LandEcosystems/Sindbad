@@ -23,17 +23,16 @@ Adds an error catcher to monitor and debug the SINDBAD land variables during mod
     - Prints the `loc_land` for inspection using `tc_print`.
 - When `debug_mode` is `DoNotDebugModel`, the function performs no actions.
 
-# Examples:
-1. **Enabling debugging**:
-```julia
-loc_land = (temperature = 15.0, precipitation = 100.0)
-addErrorCatcher(loc_land, DoDebugModel())
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Disabling debugging**:
-```julia
-loc_land = (temperature = 15.0, precipitation = 100.0)
-addErrorCatcher(loc_land, DoNotDebugModel())
+julia> # Enable debugging mode
+julia> # loc_land = (temperature = 15.0, precipitation = 100.0)
+julia> # addErrorCatcher(loc_land, DoDebugModel())
+
+julia> # Disable debugging mode
+julia> # addErrorCatcher(loc_land, DoNotDebugModel())
 ```
 """
 function addErrorCatcher end
@@ -290,18 +289,16 @@ Prepares the necessary information and objects needed to run the SINDBAD Terrest
 - It handles spatial and temporal data preparation, including filtering NaN pixels, initializing land variables, and setting up forcing and output arrays.
 - This function is a key step in preparing the SINDBAD TEM for execution.
 
-# Examples:
-1. **Preparing TEM with `PreAllocArray`**:
-```julia
-run_helpers = helpPrepTEM(selected_models, info, forcing, output, PreAllocArray())
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Preparing TEM with `PreAllocTimeseries`**:
-```julia
-run_helpers = helpPrepTEM(selected_models, info, forcing, output, PreAllocTimeseries())
-```
+julia> # Prepare TEM with PreAllocArray
+julia> # run_helpers = helpPrepTEM(selected_models, info, forcing, output, PreAllocArray())
 
-3. **Preparing TEM with `PreAllocArrayFD` for FD experiments**:
+julia> # Prepare TEM with PreAllocTimeseries
+julia> # run_helpers = helpPrepTEM(selected_models, info, forcing, output, PreAllocTimeseries())
+```
 ```julia
 run_helpers = helpPrepTEM(selected_models, info, forcing, observations, output, PreAllocArrayFD())
 ```

@@ -13,6 +13,14 @@ Initializes the land state by creating a NamedTuple with pools, states, and sele
 
 # Returns:
 - A NamedTuple containing initialized pools, states, fluxes, diagnostics, properties, models, and constants.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Initialize land state for an experiment
+julia> # init_land = createInitLand(pool_info, tem)
+```
 """
 function createInitLand(pool_info, tem)
     print_info(createInitLand, @__FILE__, @__LINE__, "creating Initial Land...")

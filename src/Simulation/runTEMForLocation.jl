@@ -68,15 +68,18 @@ Runs the SINDBAD Terrestrial Ecosystem Model (TEM) for a single location, with o
 - If spinup is disabled (`DoNotSpinupTEM`), the function directly runs the main simulation.
 - The function prepares the necessary inputs and configurations using `prepTEM` before executing the simulation.
 
-# Examples:
-1. **Running TEM with spinup**:
-```julia
-land_time_series = runTEM(selected_models, forcing, loc_spinup_forcing, loc_forcing_t, loc_land, tem_info)
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Running TEM without spinup**:
-```julia
-land_time_series = runTEM(selected_models, forcing, nothing, loc_forcing_t, loc_land, tem_info)
+julia> # Run TEM with spinup (shorthand version)
+julia> # land_time_series = runTEM(forcing, info)
+
+julia> # Run TEM with spinup (detailed version)
+julia> # land_time_series = runTEM(selected_models, forcing, loc_spinup_forcing, loc_forcing_t, loc_land, tem_info)
+
+julia> # Run TEM without spinup
+julia> # land_time_series = runTEM(selected_models, forcing, nothing, loc_forcing_t, loc_land, tem_info)
 ```
 """
 function runTEM end

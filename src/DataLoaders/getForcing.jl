@@ -132,6 +132,14 @@ Reads forcing data from the `data_path` specified in the experiment configuratio
   - `f_types`: The types of the forcing data (e.g., `ForcingWithTime` or `ForcingWithoutTime`).
   - `helpers`: Helper information for the forcing data.
 
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Load forcing data from experiment configuration
+julia> # forcing = getForcing(info)
+```
+
 # Notes:
 - Reads forcing data from the specified data path and processes it using the SINDBAD framework.
 - Handles spatiotemporal and spatial-only forcing data.

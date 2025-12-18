@@ -71,10 +71,14 @@ and visualization workflows.
   - `CMAEvolutionStrategy` → `SindbadCMAEvolutionStrategyExt`
 
 # Examples:
-```julia
-using Sindbad
+```jldoctest
+julia> using Sindbad
 
-out = Sindbad.Experiment.runExperimentForward("experiment_config.json")
+julia> # Prepare an experiment from a configuration file
+julia> # info, forcing = prepExperiment("path/to/experiment_config.json")
+
+julia> # Run a forward simulation
+julia> # out = runExperimentForward("path/to/experiment_config.json")
 ```
 """
 module Sindbad

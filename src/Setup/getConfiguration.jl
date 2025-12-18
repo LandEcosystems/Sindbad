@@ -38,10 +38,18 @@ Creates a nested dictionary from a flat dictionary where keys are strings separa
 # Returns:
 - A nested dictionary where each dot-separated key is converted into nested dictionaries.
 
-# Example:
-```julia
-dict = Dict("a.b.c" => 2)
-nested_dict = createNestedDict(dict)
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> dict = Dict("a.b.c" => 2, "a.b.d" => 3)
+Dict{String, Int64} with 2 entries:
+  "a.b.c" => 2
+  "a.b.d" => 3
+
+julia> nested_dict = createNestedDict(dict)
+Dict{Any, Any} with 1 entry:
+  "a" => Dict{Any, Any}("b"=>Dict{Any, Any}("c"=>2, "d"=>3))
 ```
 """
 function createNestedDict(dict::AbstractDict)
@@ -86,6 +94,27 @@ Recursively merges multiple dictionaries, giving priority to the last dictionary
 
 # Returns:
 - A single dictionary with merged fields, where the last dictionary's values take precedence.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> dict1 = Dict("a" => Dict("b" => 1), "c" => 2)
+Dict{String, Any} with 2 entries:
+  "a" => Dict("b" => 1)
+  "c" => 2
+
+julia> dict2 = Dict("a" => Dict("d" => 3), "e" => 4)
+Dict{String, Any} with 2 entries:
+  "a" => Dict("d" => 3)
+  "e" => 4
+
+julia> merged = deepMerge(dict1, dict2)
+Dict{String, Any} with 3 entries:
+  "a" => Dict{String, Any}("b" => 1, "d" => 3)
+  "c" => 2
+  "e" => 4
+```
 """
 function deepMerge end
 
@@ -127,6 +156,17 @@ Loads the experiment configuration from a JSON or JLD2 file.
 # Notes:
 - Supports both JSON and JLD2 formats.
 - If `replace_info` is provided, the specified fields are replaced in the configuration.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Load configuration from JSON file
+julia> # config = getConfiguration("experiment_config.json")
+
+julia> # Load with configuration overrides
+julia> # config = getConfiguration("experiment_config.json"; replace_info=Dict("output" => Dict("save_all" => true)))
+```
 """
 function getConfiguration(sindbad_experiment::String; replace_info=Dict())
     local_root = dirname(Base.active_project())

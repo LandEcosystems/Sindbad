@@ -31,20 +31,18 @@ Optimize model parameters using various optimization algorithms.
 - The `algo_options` argument allows fine-tuning of the optimization process for each algorithm.
 - Some algorithms (e.g., `BayesOptKMaternARD5`, `OptimizationBBOxnes`) require additional configuration steps, such as setting kernels or merging default and user-defined options.
 
-# Examples:
-1. **Using CMAES from CMAEvolutionStrategy.jl**:
-```julia
-optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, CMAEvolutionStrategyCMAES())
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Using BFGS from Optim.jl**:
-```julia
-optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, OptimBFGS())
-```
+julia> # Optimize using CMA-ES algorithm
+julia> # optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, CMAEvolutionStrategyCMAES())
 
-3. **Using Black Box Optimization (xNES) from Optimization.jl**:
-```julia
-optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, OptimizationBBOxnes())
+julia> # Optimize using BFGS algorithm
+julia> # optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, OptimBFGS())
+
+julia> # Optimize using Black Box Optimization (xNES)
+julia> # optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, OptimizationBBOxnes())
 ```
 
 # Implementation Details:

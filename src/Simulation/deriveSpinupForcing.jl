@@ -9,6 +9,17 @@ prepare the spinup forcing all forcing setups in the spinup sequence
 - `forcing`: a forcing NT that contains the forcing time series set for ALL locations
 - `spin_seq`: a sequence of information to carry out spinup at different steps with information on models to use, forcing, stopping critera, etc.
 - `tem_helpers`: helper NT with necessary objects for model run and type consistencies
+
+# Returns:
+- `spinup_forcing::NamedTuple`: A NamedTuple containing aggregated forcing data for each spinup sequence
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Prepare spinup forcing for all sequences
+julia> # spinup_forcing = getAllSpinupForcing(forcing, spin_sequences, tem_helpers)
+```
 """
 function getAllSpinupForcing(forcing, spin_sequences::Vector{SpinupSequenceWithAggregator}, tem_helpers)
     spinup_forcing = (;)

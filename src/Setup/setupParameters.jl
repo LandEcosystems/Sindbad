@@ -17,6 +17,17 @@ Filters a parameter table based on a specified property and values.
 
 # Returns
 A filtered parameter table.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Filter parameter table by model
+julia> # filtered_table = filterParameterTable(parameter_table; prop_name=:model, prop_values=(:gpp,))
+
+julia> # Return all parameters
+julia> # all_params = filterParameterTable(parameter_table; prop_values=:all)
+```
 """
 function filterParameterTable(parameter_table::Table; prop_name::Symbol=:model, prop_values::Union{Vector{Symbol},Symbol}=:all)
     if prop_values == :all
@@ -43,6 +54,14 @@ Retrieves parameters for the specified models with given numerical type and time
 
 # Returns
 Parameters information for the selected models based on the specified settings.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Get parameters for selected models
+julia> # param_table = getParameters(selected_models, Float64, model_timestep)
+```
 """
 function getParameters end
 

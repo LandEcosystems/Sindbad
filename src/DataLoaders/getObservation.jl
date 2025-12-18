@@ -25,6 +25,14 @@ Reads data from the observation file and returns the data, YAXArray, variable in
 # Notes:
 - If the subfield is not provided or `use_data_sub` is `false`, default values are used.
 - Handles quality flags, uncertainty, spatial weights, and selection masks for observation constraints.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Get constraint data for observations
+julia> # nc_sub, yax_sub, v_info_sub, bounds_sub = getAllConstraintData(nc, data_backend, data_path, default_info, v_info, :data, info)
+```
 """
 function getAllConstraintData(nc, data_backend, data_path, default_info, v_info, data_sub_field, info; yax=nothing, use_data_sub=true)
     nc_sub = nothing
@@ -94,6 +102,14 @@ Processes observation data and returns a NamedTuple containing the observation d
 
 # Notes:
 - Reads observation data from the path specified in the experiment configuration.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Load observation data from experiment configuration
+julia> # observations = getObservation(info, forcing_helpers)
+```
 - Handles quality flags, uncertainty, spatial weights, and selection masks for each observation variable.
 - Subsets and harmonizes the observation data based on the target dimensions and masks.
 """

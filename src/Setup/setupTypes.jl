@@ -21,6 +21,14 @@ Converts model run-related flags from the experiment configuration into types fo
   - If a flag is a `NamedTuple`, its subfields are converted into types.
   - If a flag is a scalar, it is directly converted into a type using `getTypeInstanceForFlags`.
 - The resulting `new_run` NamedTuple is used for type-based dispatch in SINDBAD's model execution.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Convert run flags to types
+julia> # new_run = convertRunFlagsToTypes(info)
+```
 """
 function convertRunFlagsToTypes(info)
     new_run = (;)
@@ -68,24 +76,20 @@ Creates an array or view of the specified type `array_type` based on the input v
 - When `ismain` is `false`, the function creates a view of the `pool_array` using the indices `indx`.
 - For `ModelArrayStaticArray`, the function ensures that the resulting static array (`SVector`) has the correct type and length.
 
-# Examples:
-1. **Creating a view from a preallocated array**:
-```julia
-pool_array = rand(10, 10)
-indx = (1:5,)
-view_array = createArrayofType(nothing, pool_array, Float64, indx, false, ModelArrayView())
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Creating a new array with a specific numerical type**:
-```julia
-input_values = [1.0, 2.0, 3.0]
-new_array = createArrayofType(input_values, nothing, Float64, nothing, true, ModelArrayArray())
-```
+julia> # Create a view from a preallocated array
+julia> # pool_array = rand(10, 10)
+julia> # indx = (1:5,)
+julia> # view_array = createArrayofType(nothing, pool_array, Float64, indx, false, ModelArrayView())
 
-3. **Creating a static array (`SVector`)**:
-```julia
-input_values = [1.0, 2.0, 3.0]
-static_array = createArrayofType(input_values, nothing, Float64, nothing, true, ModelArrayStaticArray())
+julia> # Create a new array with a specific numerical type
+julia> # new_array = createArrayofType([1.0, 2.0, 3.0], nothing, Float64, nothing, true, ModelArrayArray())
+
+julia> # Create a static array (SVector)
+julia> # static_array = createArrayofType([1.0, 2.0, 3.0], nothing, Float64, nothing, true, ModelArrayStaticArray())
 ```
 """
 function createArrayofType end
@@ -124,6 +128,20 @@ Retrieves the numerical type based on the input, which can be a string or a data
 # Notes:
 - If the input is a string, it is parsed and evaluated to return the corresponding type.
 - If the input is already a `DataType`, it is returned as-is.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> getNumberType("Float64")
+Float64
+
+julia> getNumberType(Float64)
+Float64
+
+julia> getNumberType("Int")
+Int64
+```
 """
 function getNumberType end
 
@@ -152,6 +170,17 @@ Retrieves the type instance for a given cost metric based on its name.
 - The function converts the cost metric name to a type by capitalizing the first letter of each word and removing underscores.
 - The type is retrieved from the `SindbadMetrics` module and instantiated.
 - Used for dispatching cost metric calculations in SINDBAD.
+
+# Examples
+```jldoctest
+julia> using Sindbad, ErrorMetrics
+
+julia> getTypeInstanceForCostMetric(ErrorMetrics, "MSE")
+MSE()
+
+julia> getTypeInstanceForCostMetric(ErrorMetrics, "NSE")
+NSE()
+```
 """
 function getTypeInstanceForCostMetric(source_module::Module, option_name::String)
     opt_ss = to_uppercase_first(option_name)
@@ -179,6 +208,19 @@ Generates a type instance for boolean flags based on the flag name and value.
 - The function converts the flag name to a string, capitalizes the first letter of each word, and appends the appropriate prefix (`Do` or `DoNot`).
 - The resulting type is retrieved from the `Setup` module and instantiated.
 - This is used for type-based dispatch in SINDBAD's model execution.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Get type instance for a flag set to true
+julia> # flag_type = getTypeInstanceForFlags(:run_optimization, true)
+julia> # Returns: DoRunOptimization()
+
+julia> # Get type instance for a flag set to false
+julia> # flag_type = getTypeInstanceForFlags(:run_optimization, false)
+julia> # Returns: DoNotRunOptimization()
+```
 """
 function getTypeInstanceForFlags(option_name::Symbol, option_value, opt_pref="Do")
     opt_s = string(option_name)
@@ -207,11 +249,18 @@ Retrieves a type instance for a named option based on its string or symbol repre
 - This is used for type-based dispatch in SINDBAD's configuration and execution.
 - The type for temporal aggregation is set using `get_TimeSampler` in `Utils`. It uses a similar approach and prefixes `Time` to type.
 
-# Example:
-- A named option for 
-    - "cost_metric": "NSE_inv" would be converted to NSEInv type
-    - "temporal_data_aggr": "month_anomaly" would be converted to MonthAnomaly
+# Examples
+```jldoctest
+julia> using Sindbad
 
+julia> # Get type instance for a named option
+julia> # option_type = getTypeInstanceForNamedOptions("metric_sum")
+julia> # Returns: MetricSum() type instance
+julia> # 
+julia> # Examples of conversions:
+julia> # - "cost_metric": "NSE_inv" → NSEInv type
+julia> # - "temporal_data_aggr": "month_anomaly" → MonthAnomaly type
+```
 """
 function getTypeInstanceForNamedOptions end
 
@@ -222,7 +271,6 @@ function getTypeInstanceForNamedOptions(option_name::String)
 end
 
 function getTypeInstanceForNamedOptions(option_name::Symbol)
-    getTypeInstanceForNamedOptions(string(option_name))
-    return struct_instance
+    return getTypeInstanceForNamedOptions(string(option_name))
 end
 

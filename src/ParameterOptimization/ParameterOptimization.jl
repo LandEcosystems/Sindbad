@@ -43,19 +43,14 @@ Other packages listed under `[weakdeps]` may be used by experimental workflows b
     - Supports both gradient-based and derivative-free optimization methods, ensuring flexibility for different types of cost functions.
 
 # Examples
-1. **Running an experiment**:
-```julia
-using Sindbad.Simulation
-# Set up experiment parameters
-experiment_config = ...
+```jldoctest
+julia> using Sindbad
 
-# Run the experiment
-runExperimentOpti(experiment_config)
-```
-2. **Running a CMA-ES optimization**:
-```julia
-using Sindbad.ParameterOptimization
-optimized_params = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, CMAEvolutionStrategyCMAES())
+julia> # Run parameter optimization from a configuration file
+julia> # result = runExperimentOpti("path/to/experiment_config.json")
+
+julia> # Calculate cost between model output and observations
+julia> # cost_result = runExperimentCost("path/to/experiment_config.json")
 ```
 """
 module ParameterOptimization

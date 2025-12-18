@@ -22,11 +22,13 @@ Defines and instantiates numeric arrays for SINDBAD output variables.
 - The numeric type of the arrays is determined by the model settings (`info.helpers.numbers.num_type`).
 - If forward differentiation is enabled (`info.helpers.run.use_forward_diff`), the array type is adjusted accordingly.
 
-# Examples:
-1. **Creating numeric arrays for output variables**:
-```julia
-forcing_sizes = (time=10, lat=5, lon=5)
-numeric_arrays = getNumericArrays(info, forcing_sizes)
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Create numeric arrays for output variables
+julia> # forcing_sizes = (time=10, lat=5, lon=5)
+julia> # numeric_arrays = getNumericArrays(info, forcing_sizes)
 ```
 """
 function getNumericArrays(info, forcing_sizes)
@@ -62,19 +64,17 @@ Determines the type of elements to be used in the output array based on whether 
   - `Real` if forward differentiation is enabled.
   - `num_type` if forward differentiation is not enabled.
 
-# Examples:
-1. **Forward differentiation enabled**:
-```julia
-num_type = Float64
-array_type = getOutArrayType(num_type, DoUseForwardDiff())
-# array_type = Real
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Forward differentiation not enabled**:
-```julia
-num_type = Float64
-array_type = getOutArrayType(num_type, DoNotUseForwardDiff())
-# array_type = Float64
+julia> # Get array type with forward differentiation enabled
+julia> getOutArrayType(Float64, DoUseForwardDiff())
+Real
+
+julia> # Get array type without forward differentiation
+julia> getOutArrayType(Float64, DoNotUseForwardDiff())
+Float64
 ```
 """
 function getOutArrayType end
@@ -107,20 +107,15 @@ Retrieves the dimensions for SINDBAD output based on the specified array backend
 - For `OutputArray`, `OutputMArray`, and `OutputSizedArray`, all dimensions are included.
 - For `OutputYAXArray`, spatial dimensions are excluded, and metadata is added for each variable.
 
-# Examples:
-1. **Using a base Array**:
-```julia
-outdims = getOutDims(info, forcing_helpers, OutputArray())
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Using YAXArray**:
-```julia
-outdims = getOutDims(info, forcing_helpers, OutputYAXArray())
-```
+julia> # Get output dimensions with default array type
+julia> # outdims = getOutDims(info, forcing_helpers)
 
-3. **Default behavior**:
-```julia
-outdims = getOutDims(info, forcing_helpers)
+julia> # Get output dimensions with YAXArray
+julia> # outdims = getOutDims(info, forcing_helpers, OutputYAXArray())
 ```
 """
 function getOutDims end

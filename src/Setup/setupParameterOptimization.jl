@@ -79,6 +79,14 @@ Sets up cost optimization options based on the provided parameters.
 
 # Notes:
 - Configures temporal and spatial aggregation, cost metrics, and other optimization-related settings.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Setup cost options for optimization
+julia> # cost_options = getCostOptions(optim_info, vars_info, tem_variables, number_helpers, dates_helpers)
+```
 """
 function getCostOptions(optim_info::NamedTuple, vars_info, tem_variables, number_helpers, dates_helpers)
     varlist = Symbol.(optim_info.observational_constraints)
@@ -232,6 +240,14 @@ $(methods_of(CostMethod))
 
 ---
 # Extended help
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Prepare cost options for optimization
+julia> # filtered_cost_options = prepCostOptions(observations, cost_options, CostModelObs())
+```
 
 # Notes:
 - The function iterates through the observation variables and checks if the number of valid data points meets the minimum threshold specified in `cost_options.min_data_points`.

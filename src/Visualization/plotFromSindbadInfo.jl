@@ -13,14 +13,25 @@ Extracts all unique variables from the input-output of the models in selected mo
 # Returns
 - A sorted array of unique variables across all specified fields.
 
-# Example
-```julia
-in_out_models = Dict(
-    :model1 => Dict(:input => [:var1, :var2], :output => [:var3]),
-    :model2 => Dict(:input => [:var2, :var4], :output => [:var5])
-)
-unique_vars = getAllVariables(in_out_models, [:input, :output])
-println(unique_vars)  # Output: [:var1, :var2, :var3, :var4, :var5]
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> in_out_models = Dict(
+           :model1 => Dict(:input => [:var1, :var2], :output => [:var3]),
+           :model2 => Dict(:input => [:var2, :var4], :output => [:var5])
+       )
+Dict{Symbol, Dict{Symbol, Vector{Symbol}}} with 2 entries:
+  :model1 => Dict(:input=>[:var1, :var2], :output=>[:var3])
+  :model2 => Dict(:input=>[:var2, :var4], :output=>[:var5])
+
+julia> unique_vars = getAllVariables(in_out_models, [:input, :output])
+5-element Vector{Symbol}:
+ :var1
+ :var2
+ :var3
+ :var4
+ :var5
 ```
 """
 function getAllVariables(in_out_models, which_field)
@@ -64,6 +75,14 @@ Convert a nested NamedTuple into a flare.json format suitable for d3.js visualiz
 - The function recursively traverses the NamedTuple structure
 - Fields with no children are treated as leaf nodes with a value of 1
 - The structure is flattened to show the full path to each field
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Convert experiment info to flare.json format
+julia> # flare_json = namedTupleToFlareJSON(info)
+```
 """
 function namedTupleToFlareJSON(info::NamedTuple)
     function _convert_to_flare(nt::NamedTuple, name="sindbad_info")
@@ -106,10 +125,15 @@ This function creates a grid-based visualization of the input-output relationshi
 - Output variables (`:output`) with "x" marker style.
 
 
-# Example
-```julia
-info = prepExperiment("path/to/experiment/config")
-plotIOModelStructure(info, :compute, [:input, :output])
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Plot IO model structure for compute function
+julia> # plotIOModelStructure(info, :compute, [:input, :output])
+
+julia> # Plot IO model structure for define function
+julia> # plotIOModelStructure(info, :define, [:input, :output])
 ```
 
 # Notes

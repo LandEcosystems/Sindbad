@@ -4,12 +4,23 @@ export optimizeTEMYax
 """
     optimizeTEM(forcing::NamedTuple, observations, info::NamedTuple)
 
-
+Optimizes TEM parameters by minimizing the cost function between model outputs and observations.
 
 # Arguments:
 - `forcing`: a forcing NT that contains the forcing time series set for ALL locations
 - `observations`: a NT or a vector of arrays of observations, their uncertainties, and mask to use for calculation of performance metric/loss
 - `info`: a SINDBAD NT that includes all information needed for setup and execution of an experiment
+
+# Returns:
+- `parameter_table`: A table containing optimized parameter values
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Optimize TEM parameters
+julia> # optimized_params = optimizeTEM(forcing, observations, info)
+```
 """
 function optimizeTEM end
 
