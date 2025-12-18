@@ -1,6 +1,25 @@
 using Pkg
 cd(@__DIR__)
 Pkg.activate(".")
+
+# Ensure unregistered packages are available (for CI/CD)
+# These packages are dependencies of Sindbad but not registered
+unregistered_packages = [
+    ("OmniTools", "https://github.com/LandEcosystems/OmniTools.jl.git"),
+    ("ErrorMetrics", "https://github.com/LandEcosystems/ErrorMetrics.jl.git"),
+    ("TimeSamplers", "https://github.com/LandEcosystems/TimeSamplers.jl.git"),
+]
+
+for (pkg_name, pkg_url) in unregistered_packages
+    try
+        # Try to load the package to see if it's available
+        eval(Meta.parse("using $pkg_name"))
+    catch
+        @info "$pkg_name not available, adding from git..."
+        Pkg.add(url = pkg_url, rev = "main")
+    end
+end
+
 Pkg.instantiate()
 Pkg.precompile()
 
