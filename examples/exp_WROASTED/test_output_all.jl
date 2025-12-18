@@ -42,7 +42,7 @@ output_data = values(output_all.output);
 info = output_all.info;
 output_vars = info.output.variables;
 # plot the debug figures
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 fig_prefix = joinpath(info.output.dirs.figure, "debug_" * info.experiment.basics.name * "_" * info.experiment.basics.domain)
 for (o, v) in enumerate(output_vars)
     def_var = output_data[o][:, :, 1, 1]

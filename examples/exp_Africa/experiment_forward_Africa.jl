@@ -23,7 +23,7 @@ run_helpers = prepTEM(forcing, info);
 
 ds = forcing.data[1];
 plotdat = run_helpers.output_array;
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 output_vars = val_to_symbol(run_helpers.tem_info.vals.output_vars)
 for i ∈ eachindex(output_vars)
     v = output_vars[i]
@@ -34,13 +34,13 @@ for i ∈ eachindex(output_vars)
     if size(pd, 2) == 1
         dt = mean(pd[:, 1, :, :], dims=1)[1, :, :]
         @show size(dt)
-        heatmap(dt; title="$(vname)" , size=(2000, 1000))
+        plots_heatmap(dt; title="$(vname)" , size=(2000, 1000))
         # Colorbar(fig[1, 2], obj)
-        savefig(joinpath(info.output.dirs.figure, "glob_$(vname).png"))
+        plots_savefig(joinpath(info.output.dirs.figure, "glob_$(vname).png"))
     else
         foreach(axes(pd, 2)) do ll
             dt = mean(pd[:, ll, :, :], dims=1)[1, :, :]
-            heatmap(dt; title="$(vname)" , size=(2000, 1000))
+            plots_heatmap(dt; title="$(vname)" , size=(2000, 1000))
             # Colorbar(fig[1, 2], obj)
             savefig(joinpath(info.output.dirs.figure, "africa_spatial_$(vname)_$(ll).png"))
         end

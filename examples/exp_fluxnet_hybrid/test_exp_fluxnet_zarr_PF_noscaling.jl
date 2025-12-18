@@ -145,7 +145,7 @@ info = out_opti.info;
 opt_dat = out_opti.output.optimized;
 def_dat = out_opti.output.default;
 costOpt = prepCostOptions(obs_array, info.optimization.cost_options);
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue));
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue));
 
 # load matlab wroasted results
 
@@ -204,7 +204,7 @@ saveOutCubes(info.output.file_info.file_prefix, info.output.file_info.global_met
 
 
 # plot the debug figures
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 fig_prefix = joinpath(info.output.dirs.figure, "debug_" * info.experiment.basics.name * "_" * info.experiment.basics.domain)
 for (o, v) in enumerate(output_vars)
     def_var = output_array_def[o][:, :, 1, 1]

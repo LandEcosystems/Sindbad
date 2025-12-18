@@ -53,7 +53,7 @@ end
 ds = forcing.data[1];
 # plotdat = output_cost.output.optimized;
 plotdat = output_cost.output;
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 output_vars = keys(plotdat)
 for i ∈ eachindex(output_vars)
     v = output_vars[i]
@@ -63,19 +63,19 @@ for i ∈ eachindex(output_vars)
     println("plot output-model => domain: $domain, variable: $vname")
     pd = plotdat[i]
     if size(pd, 2) == 1
-        heatmap(pd[:, 1, :]; title="$(vname)" , size=(2000, 1000))
+        plots_heatmap(pd[:, 1, :]; title="$(vname)" , size=(2000, 1000))
         # Colorbar(fig[1, 2], obj)
-        savefig(joinpath(info.output.dirs.figure, "$(domain)_$(vname).png"))
+        plots_savefig(joinpath(info.output.dirs.figure, "$(domain)_$(vname).png"))
     else
         foreach(axes(pd, 2)) do ll
-            heatmap(pd[:, ll, :]; title="$(vname)" , size=(2000, 1000))
+            plots_heatmap(pd[:, ll, :]; title="$(vname)" , size=(2000, 1000))
             # Colorbar(fig[1, 2], obj)
-            savefig(joinpath(info.output.dirs.figure, "$(domain)_$(vname)_$(ll).png"))
+            plots_savefig(joinpath(info.output.dirs.figure, "$(domain)_$(vname)_$(ll).png"))
         end
     end
 end
 
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 forc_vars = forcing.variables
 for (o, v) in enumerate(forc_vars)
     println("plot forc-model => domain: $domain, variable: $v")
@@ -89,8 +89,8 @@ for (o, v) in enumerate(forc_vars)
     else
         plot_data =  def_var[:,:]
     end
-    heatmap(plot_data; title="$(v):: mean = $(round(SindbadTEM.mean(def_var), digits=2)), nans=$(sum(is_invalid_number.(plot_data)))", size=(2000, 1000))
-    savefig(joinpath(info.output.dirs.figure, "forc_$(domain)_$v.png"))
+    plots_heatmap(plot_data; title="$(v):: mean = $(round(SindbadTEM.mean(def_var), digits=2)), nans=$(sum(is_invalid_number.(plot_data)))", size=(2000, 1000))
+    plots_savefig(joinpath(info.output.dirs.figure, "forc_$(domain)_$v.png"))
 end
 #set_log_level(:debug)
 # @profview metricVector(run_helpers.output_array, obs_array, cost_options) # |> sum
@@ -149,13 +149,13 @@ losses = map(costOpt) do var_row
     end
 
 
-    default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+    plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
     b_range = range(-1, 1, length=50)
     p_title = "$(var_row.variable) ($(nameof(typeof(lossMetric))))"
-    histogram(first.(loss_space); title=p_title, size=(2000, 1000),bins=b_range, alpha=0.9, label="default", color="#FDB311")
-    vline!([metric(lossMetric, def_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="default_spatial", color="#FDB311", lw=3)
-    histogram!(last.(loss_space); size=(2000, 1000), bins=b_range, alpha=0.5, label="optimized", color="#18A15C")
-    vline!([metric(lossMetric, opt_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="optimized_spatial", color="#18A15C", lw=3)
-    xlabel!("")
-    savefig(joinpath(info.output.dirs.figure, "obs_vs_pred_$(v_key).png"))
+    plots_histogram(first.(loss_space); title=p_title, size=(2000, 1000),bins=b_range, alpha=0.9, label="default", color="#FDB311")
+    plots_vline!([metric(lossMetric, def_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="default_spatial", color="#FDB311", lw=3)
+    plots_histogram!(last.(loss_space); size=(2000, 1000), bins=b_range, alpha=0.5, label="optimized", color="#18A15C")
+    plots_vline!([metric(lossMetric, opt_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="optimized_spatial", color="#18A15C", lw=3)
+    plots_xlabel!("")
+    plots_savefig(joinpath(info.output.dirs.figure, "obs_vs_pred_$(v_key).png"))
 end
