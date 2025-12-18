@@ -4,20 +4,29 @@ Pkg.activate(".")
 
 # Ensure unregistered packages are available (for CI/CD)
 # These packages are dependencies of Sindbad but not registered
+# Add them all in a single operation to avoid dependency resolution issues
 unregistered_packages = [
     ("OmniTools", "https://github.com/LandEcosystems/OmniTools.jl.git"),
     ("ErrorMetrics", "https://github.com/LandEcosystems/ErrorMetrics.jl.git"),
     ("TimeSamplers", "https://github.com/LandEcosystems/TimeSamplers.jl.git"),
 ]
 
+# Check which packages need to be added
+packages_to_add = PackageSpec[]
 for (pkg_name, pkg_url) in unregistered_packages
     try
         # Try to load the package to see if it's available
         eval(Meta.parse("using $pkg_name"))
     catch
-        @info "$pkg_name not available, adding from git..."
-        Pkg.add(url = pkg_url, rev = "main")
+        @info "$pkg_name not available, will add from git..."
+        push!(packages_to_add, PackageSpec(url = pkg_url, rev = "main"))
     end
+end
+
+# Add all missing packages at once to avoid dependency resolution issues
+if !isempty(packages_to_add)
+    @info "Adding $(length(packages_to_add)) unregistered package(s) from git..."
+    Pkg.add(packages_to_add)
 end
 
 Pkg.instantiate()
