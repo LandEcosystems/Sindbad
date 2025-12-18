@@ -8,7 +8,7 @@ Streamline the ingestion and preprocessing of input data for SINDBAD experiments
 
 # Dependencies
 ## Related (SINDBAD ecosystem)
-- `UtilsKit`: Utility functions for handling NamedTuples, printing, and shared helpers.
+- `OmniTools`: Utility functions for handling NamedTuples, printing, and shared helpers.
 
 ## External (third-party)
 - `AxisKeys`: Labeled multidimensional arrays (`KeyedArray`).
@@ -39,7 +39,7 @@ module DataLoaders
    using SindbadTEM
    using ..Setup
    using ..Types
-   using UtilsKit
+   using OmniTools
    using AxisKeys: KeyedArray, AxisKeys
    using FillArrays
    using Dates

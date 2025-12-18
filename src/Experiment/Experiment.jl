@@ -8,7 +8,7 @@ High-level interface for conducting experiments using the SINDBAD framework (wor
 
 # Dependencies
 ## Related (SINDBAD ecosystem)
-- `UtilsKit`: Shared utilities.
+- `OmniTools`: Shared utilities.
 - `ErrorMetrics`: Metric implementations used in cost/diagnostics.
 
 ## Internal (within `Sindbad`)
@@ -41,7 +41,7 @@ julia> # result = runExperiment(info, forcing, DoRunForward())
 ```
 """
 module Experiment
-    using UtilsKit
+    using OmniTools
     using ErrorMetrics
     using ...SindbadTEM
     using ..Types

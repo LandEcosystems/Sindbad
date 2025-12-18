@@ -8,7 +8,7 @@ This module brings together all components required for hybrid (process-based + 
 
 # Dependencies
 ## Related (SINDBAD ecosystem)
-- `UtilsKit`: Shared helpers used indirectly via internal modules.
+- `OmniTools`: Shared helpers used indirectly via internal modules.
 
 ## External (third-party)
 - `Base.Iterators`: Iterators for batching and repetition (`repeated`, `partition`).

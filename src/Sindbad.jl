@@ -19,7 +19,7 @@ and visualization workflows.
 ## Related (SINDBAD ecosystem)
 - `ErrorMetrics`: Model–observation metrics used across cost/diagnostics.
 - `TimeSampler`: Temporal sampling/aggregation helpers.
-- `UtilsKit`: Shared utilities used across modules.
+- `OmniTools`: Shared utilities used across modules.
 
 ## External (third-party)
 - `CSV`: Input/output of tabular forcing and calibration datasets.

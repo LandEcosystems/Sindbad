@@ -10,7 +10,7 @@ This module is designed to support optimization tasks in SINDBAD, such as calibr
 ## Related (SINDBAD ecosystem)
 - `ErrorMetrics`: Metric implementations for cost evaluation.
 - `TimeSamplers`: Temporal helpers used by some workflows.
-- `UtilsKit`: Shared helpers and table utilities.
+- `OmniTools`: Shared helpers and table utilities.
 
 ## External (third-party)
 - `StableRNGs`: Reproducible random number generation for stochastic workflows.
@@ -55,7 +55,7 @@ julia> # cost_result = runExperimentCost("path/to/experiment_config.json")
 """
 module ParameterOptimization
    using StableRNGs
-   using UtilsKit
+   using OmniTools
    using ErrorMetrics
    using TimeSamplers
    using SindbadTEM
