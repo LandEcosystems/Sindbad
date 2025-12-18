@@ -165,9 +165,17 @@ This section configures observational constraints and cost combination methods.
     "spatial_data_aggr": "Spatial data aggregation method",
     "spatial_cost_aggr": "Spatial cost aggregation method",
     "spatial_weight": "Enable area-based weighting",
-    "temporal_data_aggr": "Temporal aggregation method"
+    "temporal_data_aggr": "Temporal aggregation method (from TimeSamplers.jl)"
 }
 ```
+
+::: info Temporal Aggregation
+
+The `temporal_data_aggr` field uses temporal sampling methods from [TimeSamplers.jl](https://landecosystems.github.io/TimeSamplers.jl). Common values include:
+- `"day"`, `"month"`, `"year"` for basic time aggregation
+- See [TimeSamplers.jl documentation](https://landecosystems.github.io/TimeSamplers.jl) for the complete list of available temporal sampling methods
+
+:::
 
 == Example
 ```json

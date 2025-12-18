@@ -24,10 +24,9 @@ const settingsItems = [
 const codeItems = [
   { text: 'Sindbad', link: '/pages/code/overview' },
   { text: ' + TEM', link: '/pages/code/sindbadTEM' },
-  { text: ' \u00A0\u00A0++ Metrics', link: '/pages/code/metrics' },
+
   { text: ' \u00A0\u00A0++ Processes', link: '/pages/code/models' },
   { text: ' \u00A0\u00A0++ Types', link: '/pages/code/types' },
-  { text: ' \u00A0\u00A0++ Utils', link: '/pages/code/utils' },
   { text: ' + DataLoaders', link: '/pages/code/data' },
   { text: ' + MachineLearning', link: '/pages/code/ml' },
   { text: ' + ParameterOptimization', link: '/pages/code/optimization' },

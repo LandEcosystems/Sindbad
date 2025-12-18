@@ -12,9 +12,7 @@ This page provides an overview of all SINDBAD packages and their main modules an
 | | [Visualization](visuals.md) | Visualization tools | Plotting and data visualization helpers |
 | [SindbadTEM](sindbadTEM.md) | - | Core terrestrial ecosystem models and types `Sindbad` | Main package for model processes, types, and utils |
 | | [Processes](models.md) | Model implementations | Ecosystem model processes and approaches |
-| | [Metrics](metrics.md) | Performance metrics | Cost functions, evaluation metrics, and validation tools |
 | | [Types](types.md) | SINDBAD Types | Definition of all SINDBAD types and purposes |
-| | [OmniTools](utils.md) | Utility functions | Helper functions and common utilities for all packages |
 
 
 ::: tip `Exported` and `Internal` Sections
@@ -36,10 +34,8 @@ These remain accessible but require qualification with the module name (e.g., `M
 
 ### Core Package
 - **SindbadTEM**: The main package that provides the core of SINDBAD.
-  - **Models**: Module that implements various ecosystem model components and approaches.
-  - **Metrics**: Implements performance metrics and cost functions.
+  - **Processes**: Module that implements various ecosystem model components and approaches.
   - **Types**: Module that defines various types for dispatching on methods ranging from setup to cost computation.
-  - **OmniTools**: Provides helper functions and common utilities used across packages.
 
 ### MDI Package
 #### Modeling Modules
@@ -62,9 +58,17 @@ Package Dependency
 ::: info Package Usage
 
 - Most application packages can be used independently for specific tasks
-- The core `Sindbad` and `OmniTools` are required
+- The core `Sindbad` and `SindbadTEM` are required
 
-::: 
+:::
+
+## Related Packages
+
+SINDBAD integrates with several related packages that provide specialized functionality:
+
+- **[ErrorMetrics.jl](https://landecosystems.github.io/ErrorMetrics.jl)**: Performance metrics and error calculations for model evaluation and parameter optimization
+- **[TimeSamplers.jl](https://landecosystems.github.io/TimeSamplers.jl)**: Temporal sampling, aggregation, and resampling of time series data
+- **[OmniTools.jl](https://landecosystems.github.io/OmniTools.jl)**: Foundational utility functions for arrays, collections, display formatting, and type introspection 
 
 
 ```mermaid
@@ -87,24 +91,23 @@ graph TD
     Setup --> OmniTools
     Setup --> DataLoaders
     
-    SindbadMetrics[SindbadMetrics] --> Sindbad
-    SindbadMetrics --> OmniTools
+    ErrorMetrics[ErrorMetrics] --> Sindbad
     
     Simulation[Simulation] --> SindbadTEM
     Simulation --> OmniTools
     Simulation --> Sindbad.DataLoaders
     Simulation --> Sindbad.Setup
-    Simulation --> SindbadTEM.Metrics
+    Simulation --> ErrorMetrics
     
     Sindbad.ParameterOptimization[Sindbad.ParameterOptimization] --> Sindbad
     Sindbad.ParameterOptimization --> OmniTools
-    Sindbad.ParameterOptimization --> SindbadMetrics
+    Sindbad.ParameterOptimization --> ErrorMetrics
     Sindbad.ParameterOptimization --> Setup
     Sindbad.ParameterOptimization --> SindbadTEM
     
     MachineLearning[MachineLearning] --> Sindbad
     MachineLearning --> OmniTools
-    MachineLearning --> SindbadMetrics
+    MachineLearning --> ErrorMetrics
     
     Visualization[Visualization] --> Sindbad
     Visualization --> OmniTools
@@ -115,5 +118,5 @@ graph TD
     Sindbad.Simulation --> Setup
     Sindbad.Simulation --> SindbadTEM
     Sindbad.Simulation --> Sindbad.ParameterOptimization
-    Sindbad.Simulation --> SindbadMetrics    
+    Sindbad.Simulation --> ErrorMetrics    
 ```

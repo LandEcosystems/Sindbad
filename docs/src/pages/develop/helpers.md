@@ -1,6 +1,6 @@
 # SINDBAD Helper Functions
 
-This document provides an overview of useful helper functions in the SINDBAD framework.
+This document provides an overview of SINDBAD-specific helper functions. For generic utility functions (e.g., `get_definitions`, `add_package`), see [OmniTools.jl](https://landecosystems.github.io/OmniTools.jl).
 
 ## Data Management Functions
 
@@ -238,43 +238,6 @@ models = getSindbadModels()
 
 :::
 
-### `get_definitions`
-
-```julia
-get_definitions(sindbad_module, what_to_get; internal_only=true)
-```
-
-Returns all defined (and optionally internal) objects in the SINDBAD framework.
-
-**Arguments**
-- `sindbad_module`: The module to search for defined things
-- `what_to_get`: The type of things to get (e.g., Type, Function)
-- `internal_only`: Whether to only include internal definitions (default: true)
-
-**Returns**
-An array of all defined things in the SINDBAD framework that match the specified type.
-
-**Usage**
-```julia
-# Get all defined types in the SINDBAD framework
-defined_types = get_definitions(SindbadTEM, Type)
-
-# Get all functions in a specific module
-functions = get_definitions(SindbadTEM.Processes, Function)
-
-# Get all definitions including external ones
-all_definitions = get_definitions(SindbadTEM, Any, internal_only=false)
-```
-
-::: tip
-
-`get_definitions` is particularly useful for:
-- Discovering available types and functions in SINDBAD modules
-- Understanding the structure of SINDBAD's codebase
-- Accessing internal implementations for debugging or development
-
-:::
-
 ## Model Input-Output Functions
 
 ### `getInoutModels`
@@ -284,12 +247,14 @@ This function extracts the input-output structure of models for a specified func
 ```julia
 getInoutModels(info::NamedTuple, which_function::Symbol=:compute)
 ```
+
 Retrieves the input-output (IO) model structure for a specific function in the SINDBAD framework.
 
 **Arguments**
 
 - `info::NamedTuple`: A NamedTuple containing experiment information, including model configurations and metadata.
 - `which_function::Symbol`: The function for which the IO structure is retrieved (default: :compute).
+
 **Returns**
 A dictionary where:
 - Keys are model names (as symbols).
@@ -301,35 +266,6 @@ A dictionary where:
 io_structure = getInoutModels(experiment_info, :compute)
 ```
 
-## Package Management Functions
-### `add_package`
-```julia
-add_package(where_to_add, the_package_to_add)
-```
-Adds a specified Julia package to the environment of a given module or project.
+## Generic Utility Functions
 
-**Arguments**
-- `where_to_add`: The module or project where the package should be added.
-- `the_package_to_add`: The name of the package to add.
-
-**Behavior**
-
-- Activates the environment of the specified module or project.
-- Checks if the package is already installed in the environment.
-- If the package is not installed:
-  - Adds the package to the environment.
-  - Removes the Manifest.toml file and reinstantiates the environment to ensure consistency.
-  - Provides instructions for importing the package in the module.
-- Restores the original environment after the operation.
-
-**Usage**
-
-Add the DataFrames package to `DataLoaders` module
-```julia
-add_package(DataLoaders, "DataFrames")
-```
-
-**Notes**
-
-- This function assumes that the where_to_add module or project is structured with a standard Julia project layout.
-- It requires the Pkg module for package management, which is re-exported from the core SINDBAD framework.
+For generic utility functions such as `get_definitions` and `add_package`, see the [OmniTools.jl documentation](https://landecosystems.github.io/OmniTools.jl).

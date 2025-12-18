@@ -1,13 +1,12 @@
 using Sindbad
 using SindbadTEM
-using OmniTools
-using SindbadTEM.Metrics
+using OmniTools  # Needed for get_definitions function used in this script
 using Sindbad.Simulation
 using Sindbad.Setup
 using Sindbad.DataLoaders
 using Sindbad.MachineLearning
 
-packages_list = (:Sindbad, :OmniTools, :SindbadTEM, :Setup, :DataLoaders, :ParameterOptimization, :Simulation, :MachineLearning, :ErrorMetrics)
+packages_list = (:Sindbad, :SindbadTEM, :Setup, :DataLoaders, :ParameterOptimization, :Simulation, :MachineLearning)
 mkpath("./src/pages/code_gen")
 lib_path = joinpath(@__DIR__, "../lib")
 
