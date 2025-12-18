@@ -62,7 +62,7 @@ The algorithm configuration file specifies detailed optimization settings:
 To list all implemented optimization methods:
 ```julia
 using Sindbad.ParameterOptimization
-showMethodsOf(ParameterOptimizationMethod)
+show_methods_of(ParameterOptimizationMethod)
 ```
 :::
 
@@ -144,7 +144,7 @@ This section configures observational constraints and cost combination methods.
 :::
 
 ::: tip Available Methods
-- Use `showMethodsOf(SpatialMetricAggr)` for supported `multi_constraint_method` options
+- Use `show_methods_of(SpatialMetricAggr)` for supported `multi_constraint_method` options
 :::
 
 ## Observational Constraints
@@ -210,9 +210,9 @@ This section configures observational constraints and cost combination methods.
 :::
 
 ::: tip Available Methods
-- Use `showMethodsOf(PerfMetric)` for cost metrics
-- Use `showMethodsOf(SpatialMetricAggr)` for spatial aggregation
-- Use `showMethodsOf(TimeSampleMethod)` for temporal methods
+- Use `show_methods_of(PerfMetric)` for cost metrics
+- Use `show_methods_of(SpatialMetricAggr)` for spatial aggregation
+- Use `show_methods_of(TimeSampleMethod)` for temporal methods
 :::
 
 ### Default Observation Settings

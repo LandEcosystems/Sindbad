@@ -12,7 +12,7 @@ using Optimisers
 using PreallocationTools
 using JLD2
 
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 
 experiment_json = "../exp_hybridNN/settings_hybridNN/experiment.json"
 

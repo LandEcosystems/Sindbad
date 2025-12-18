@@ -33,8 +33,8 @@ function compute(params::gppAirT_Maekelae2008, forcing, land, helpers)
     X = X_prev + (o_one / TimConst) * (f_airT_day - X_prev)
 
     # calculate the stress & saturation
-    S = maxZero(X - X0)
-    gpp_f_airT = clampZeroOne(S / s_max)
+    S = at_least_zero(X - X0)
+    gpp_f_airT = clamp_zero_one(S / s_max)
 
     # replace the previous X
     X_prev = X

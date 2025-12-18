@@ -49,7 +49,7 @@ using Sindbad.Simulation
 To list all available spinup methods and their purposes, use:
 ```julia
 using Sindbad.Simulation
-showMethodsOf(SpinupMode)
+show_methods_of(SpinupMode)
 ```
 This will display a formatted list of all spinup methods and their descriptions.
 

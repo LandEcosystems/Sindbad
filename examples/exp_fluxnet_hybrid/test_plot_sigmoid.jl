@@ -1,4 +1,4 @@
-using Plots
+
 
 # Sigmoid function
 sigmoid(x, K) = 1 / (1 + exp(-K * x))

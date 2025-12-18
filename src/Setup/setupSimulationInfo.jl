@@ -22,12 +22,12 @@ Loads and sets up the experiment configuration, saving the information and enabl
 """
 function getExperimentInfo(sindbad_experiment::String; replace_info=Dict())
     replace_info_text = isempty(replace_info) ? "none" : " $(Tuple(keys(replace_info)))"
-    showInfoSeparator()
+    print_info_separator()
     
-    showInfo(getExperimentInfo, @__FILE__, @__LINE__, "loading experiment configurations", n_m=1)
-    showInfo(nothing, @__FILE__, @__LINE__, "→→→    experiment_path: `$(sindbad_experiment)`", n_m=1)
+    print_info(getExperimentInfo, @__FILE__, @__LINE__, "loading experiment configurations", n_m=1)
+    print_info(nothing, @__FILE__, @__LINE__, "→→→    experiment_path: `$(sindbad_experiment)`", n_m=1)
 
-    showInfo(nothing, @__FILE__, @__LINE__, "→→→    replace_info_fields: `$(replace_info_text)`", n_m=1)
+    print_info(nothing, @__FILE__, @__LINE__, "→→→    replace_info_fields: `$(replace_info_text)`", n_m=1)
     info = getConfiguration(sindbad_experiment; replace_info=deepcopy(replace_info))
 
     info = setupInfo(info)
@@ -105,7 +105,7 @@ function saveInfo end
 
 function saveInfo(info, ::DoSaveInfo)
     info_path = joinpath(info.output.dirs.settings, "info.jld2")
-    showInfo(saveInfo, @__FILE__, @__LINE__, "saving info to `$(info_path)`")
+    print_info(saveInfo, @__FILE__, @__LINE__, "saving info to `$(info_path)`")
     @save info_path info
     return nothing
 end
@@ -132,7 +132,7 @@ Enables/Disables a debug error catcher for the SINDBAD framework. When enabled, 
 function setDebugErrorCatcher end
 
 function setDebugErrorCatcher(::DoCatchModelErrors)
-    showInfo(setDebugErrorCatcher, @__FILE__, @__LINE__, "setting up debug error catcher", n_m=1)
+    print_info(setDebugErrorCatcher, @__FILE__, @__LINE__, "setting up debug error catcher", n_m=1)
     SindbadTEM.eval(:(error_catcher = []))
     return nothing
 end

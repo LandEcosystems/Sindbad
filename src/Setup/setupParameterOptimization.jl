@@ -86,7 +86,7 @@ function getCostOptions(optim_info::NamedTuple, vars_info, tem_variables, number
     time_aggrs = []
     aggr_funcs = []
     all_costs = map(varlist) do v
-        getCombinedNamedTuple(optim_info.observations.default_cost, getfield(getfield(optim_info.observations.variables, v), :cost_options))
+        merge_namedtuple_prefer_nonempty(optim_info.observations.default_cost, getfield(getfield(optim_info.observations.variables, v), :cost_options))
     end
     all_options = []
     push!(all_options, varlist)
@@ -146,7 +146,7 @@ function getCostOptions(optim_info::NamedTuple, vars_info, tem_variables, number
         if startswith(_aggr_name, dates_helpers.temporal_resolution)
             skip_sampling = true
         end
-        aggInd = createTimeSampler(dates_helpers.range, toUpperCaseFirst(_aggr, "Time"), aggr_func, skip_sampling)
+        aggInd = create_TimeSampler(dates_helpers.range, to_uppercase_first(_aggr, "Time"), aggr_func, skip_sampling)
         push!(agg_indices, aggInd)
     end
     push!(all_options, obs_ind)
@@ -184,7 +184,7 @@ function getConstraintNames(optim::NamedTuple)
         vinfo = getproperty(optim.observations.variables, v)
         push!(model_vars, vinfo.model_full_var)
         vf, vvar = Symbol.(split(vinfo.model_full_var, "."))
-        optim_vars = setTupleField(optim_vars, (v, tuple(vf, vvar)))
+        optim_vars = set_namedtuple_field(optim_vars, (v, tuple(vf, vvar)))
     end
     store_vars = getVariableGroups(model_vars)
     return obs_vars, optim_vars, store_vars, model_vars
@@ -228,7 +228,7 @@ Prepares cost options for optimization by filtering variables with insufficient 
 - A filtered table of `cost_options` containing only valid variables with sufficient data points.
 
 # cost methods:
-$(methodsOf(CostMethod))
+$(methods_of(CostMethod))
 
 ---
 # Extended help
@@ -263,7 +263,7 @@ function prepCostOptions(observations, cost_options, ::CostModelObs)
         min_point = min_data_points[vi]
         y = observations[obs_ind_start]
         yσ = observations[obs_ind_start+1]
-        idxs = Array(.!isInvalid.(y .* yσ))
+        idxs = Array(.!is_invalid_number.(y .* yσ))
         total_point = sum(idxs)
         if total_point < min_point
             push!(is_valid, false)
@@ -272,9 +272,9 @@ function prepCostOptions(observations, cost_options, ::CostModelObs)
         end
         push!(valids, idxs)
     end
-    cost_options = setTupleField(cost_options, (:valids, valids))
-    cost_options = setTupleField(cost_options, (:is_valid, is_valid))
-    cost_options = dropFields(cost_options, (:min_data_points, :temporal_data_aggr, :aggr_func,))
+    cost_options = set_namedtuple_field(cost_options, (:valids, valids))
+    cost_options = set_namedtuple_field(cost_options, (:is_valid, is_valid))
+    cost_options = drop_namedtuple_fields(cost_options, (:min_data_points, :temporal_data_aggr, :aggr_func,))
     cost_option_table = Table(cost_options)
     cost_options_table_filtered = filter(row -> row.is_valid === true , cost_option_table)
     return cost_options_table_filtered
@@ -304,7 +304,7 @@ function setAlgorithmOptions(info, which_algorithm)
                 options_path = joinpath(info.temp.experiment.dirs.settings, options_path)
             end
             options = parsefile(options_path; dicttype=DataStructures.OrderedDict)
-            options = dictToNamedTuple(options)
+            options = dict_to_namedtuple(options)
             algo_method = options.package * "_" * options.method
             algo_method = getTypeInstanceForNamedOptions(algo_method)
             algo_options = options.options
@@ -317,11 +317,11 @@ function setAlgorithmOptions(info, which_algorithm)
         end
     end
     default_opt = sindbadDefaultOptions(getproperty(Setup, nameof(typeof(algo_method)))())
-    merged_options = mergeNamedTuple(default_opt, algo_options)
-    tmp_algorithm = setTupleField(tmp_algorithm, (:method, algo_method))
-    tmp_algorithm = setTupleField(tmp_algorithm, (:options, merged_options))
+    merged_options = merge_namedtuple(default_opt, algo_options)
+    tmp_algorithm = set_namedtuple_field(tmp_algorithm, (:method, algo_method))
+    tmp_algorithm = set_namedtuple_field(tmp_algorithm, (:options, merged_options))
     algo_field = which_algorithm == :algorithm_sensitivity_analysis ? :sensitivity_analysis : :optimizer
-    info = setTupleSubfield(info, :optimization, (algo_field, tmp_algorithm))
+    info = set_namedtuple_subfield(info, :optimization, (algo_field, tmp_algorithm))
     return info
 end
 
@@ -341,19 +341,19 @@ Sets up optimization-related fields in the experiment configuration.
 - Validates the parameters to be optimized against the model structure.
 """
 function setOptimization(info::NamedTuple)
-    showInfo(setOptimization, @__FILE__, @__LINE__, "setting ParameterOptimization and Observation Info...")
-    info = setTupleField(info, (:optimization, (;)))
+    print_info(setOptimization, @__FILE__, @__LINE__, "setting ParameterOptimization and Observation Info...")
+    info = set_namedtuple_field(info, (:optimization, (;)))
 
     # set information related to cost metrics for each variable
-    info = setTupleSubfield(info, :optimization, (:model_parameter_default, info.settings.optimization.model_parameter_default))
-    info = setTupleSubfield(info, :optimization, (:observational_constraints, info.settings.optimization.observational_constraints))
+    info = set_namedtuple_subfield(info, :optimization, (:model_parameter_default, info.settings.optimization.model_parameter_default))
+    info = set_namedtuple_subfield(info, :optimization, (:observational_constraints, info.settings.optimization.observational_constraints))
 
     n_threads_cost = 1
     if info.settings.optimization.optimization_cost_threaded > 0 && info.settings.experiment.flags.run_optimization
         n_threads_cost = info.settings.optimization.optimization_cost_threaded > 1 ? info.settings.optimization.optimization_cost_threaded : Threads.nthreads()
         # overwrite land array type when threaded optimization is set
         info = @set info.temp.helpers.run.land_output_type = PreAllocArrayMT()
-        # info = setTupleSubfield(info,
+        # info = set_namedtuple_subfield(info,
         # :optimization,
         # (:n_threads_cost, n_threads_cost))
     end
@@ -364,7 +364,7 @@ function setOptimization(info::NamedTuple)
     scaling_method = isnothing(info.settings.optimization.optimization_parameter_scaling) ? "scale_none" : info.settings.optimization.optimization_parameter_scaling
     parameter_scaling = getTypeInstanceForNamedOptions(scaling_method)
     optimization_types = (; cost_method, parameter_scaling, multi_constraint_method, n_threads_cost)
-    info = setTupleSubfield(info, :optimization, (:run_options, optimization_types))
+    info = set_namedtuple_subfield(info, :optimization, (:run_options, optimization_types))
         
     # check and set the list of parameters to be optimized
     
@@ -381,17 +381,17 @@ function setOptimization(info::NamedTuple)
     # get the variables to be used during optimization
     obs_vars, optim_vars, store_vars, model_vars = getConstraintNames(info.settings.optimization)
     vars_info = (;)
-    vars_info = setTupleField(vars_info, (:obs, obs_vars))
-    vars_info = setTupleField(vars_info, (:optimization, optim_vars))
-    vars_info = setTupleField(vars_info, (:store, store_vars))
-    vars_info = setTupleField(vars_info, (:model, model_vars))
-    info = setTupleSubfield(info, :optimization, (:variables, (vars_info)))
+    vars_info = set_namedtuple_field(vars_info, (:obs, obs_vars))
+    vars_info = set_namedtuple_field(vars_info, (:optimization, optim_vars))
+    vars_info = set_namedtuple_field(vars_info, (:store, store_vars))
+    vars_info = set_namedtuple_field(vars_info, (:model, model_vars))
+    info = set_namedtuple_subfield(info, :optimization, (:variables, (vars_info)))
     info = updateVariablesToStore(info)
     cost_options = getCostOptions(info.settings.optimization, vars_info, info.temp.output.variables, info.temp.helpers.numbers, info.temp.helpers.dates)
-    info = setTupleSubfield(info, :optimization, (:cost_options, cost_options))
-    info = setTupleSubfield(info, :optimization, (:parameter_table, parameter_table))
+    info = set_namedtuple_subfield(info, :optimization, (:cost_options, cost_options))
+    info = set_namedtuple_subfield(info, :optimization, (:parameter_table, parameter_table))
     optimization_info = info.optimization
-    optimization_info = dropFields(optimization_info, (:model_parameter_default, :model_parameters_to_optimize, :observational_constraints, :variables))
+    optimization_info = drop_namedtuple_fields(optimization_info, (:model_parameter_default, :model_parameters_to_optimize, :observational_constraints, :variables))
     info = (; info..., optimization = optimization_info)
     return info
 end

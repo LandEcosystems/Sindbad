@@ -18,7 +18,7 @@ Optimize model parameters using various optimization algorithms.
 
 # algorithm:
     
-    $(methodsOf(ParameterOptimizationMethod))
+    $(methods_of(ParameterOptimizationMethod))
 
 ---
 
@@ -71,7 +71,7 @@ function optimizer(::Any, default_values::Any, ::Any, ::Any, ::Any, x::Parameter
 end
 # function optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, ::BayesOptKMaternARD5)
 #     config = ConfigParameters()   # calls initialize_parameters_to_default of the C API
-#     config = mergeNamedTuple(config, algo_options)
+#     config = merge_namedtuple(config, algo_options)
 #     set_kernel!(config, "kMaternARD5")  # calls set_kernel of the C API
 #     config.sc_type = SC_MAP
 #     _, optimum = bayes_optimization(cost_function, lower_bounds, upper_bounds, config)

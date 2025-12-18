@@ -1,6 +1,6 @@
 using Revise
 using Sindbad
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 
 experiment_json = "../exp_plots/settings_plots/experiment.json"
 @time output_default = runExperimentForward(experiment_json);
@@ -10,7 +10,7 @@ using Colors
 Makie.inline!(false)
 lines(1:10)
 
-output_vars = valToSymbol(output_default.info.output.variables)
+output_vars = val_to_symbol(output_default.info.output.variables)
 names_pair = Dict(output_vars .=> 1:4)
 
 var_name = Observable(1)

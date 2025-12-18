@@ -1,10 +1,10 @@
 using Revise
 using Sindbad
 using Sindbad.DataLoaders
-using Plots
+
 using NLsolve
 # using Accessors
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 function plot_and_save(land, out_sp_exp, out_sp_exp_nl, out_sp_nl, xtname, plot_elem, plot_var, tj, model_array_type, out_path)
     plot_elem = string(plot_elem)
@@ -66,7 +66,7 @@ tjs = (1,)# 100, 1_000, 10_000)
 nLoop_pre_spin = 10
 # for model_array_type ∈ ("static_array",)
 # for model_array_type ∈ ("array",) #, "static_array")
-setLogLevel(:warn)
+set_log_level(:warn)
 model_array_type = "static_array"
 for model_array_type ∈ ("static_array",) #, "array") #, "static_array")
     replace_info = Dict("experiment.exe_rules.model_array_type" => model_array_type,
@@ -118,7 +118,7 @@ for model_array_type ∈ ("static_array",) #, "array") #, "static_array")
         println("..............................")
 
         # sel_pool = :TWS
-        sp_method = getfield(Types, toUpperCaseFirst("nlsolve_fixedpoint_trustregion_$(string(sel_pool))"))()
+        sp_method = getfield(Types, to_uppercase_first("nlsolve_fixedpoint_trustregion_$(string(sel_pool))"))()
         println("NL_solve: ")
         @time out_sp_nl = Sindbad.Simulation.spinup(spinup_models, theforcing, loc_forcing_t, deepcopy(land_for_s), tem_info, n_timesteps, sp_method)
         println("..............................")

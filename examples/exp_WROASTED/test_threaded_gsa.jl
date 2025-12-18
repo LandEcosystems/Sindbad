@@ -1,11 +1,11 @@
 using Revise
 using SindbadTEM
 using Sindbad
-using Plots
+
 using QuasiMonteCarlo
 using GlobalSensitivity
 using StableRNGs
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
 begin_year = "1999"
 end_year = "2010"
@@ -33,7 +33,7 @@ optimize_it = false
 optimize_it = true
 path_output = nothing
 
-setLogLevel(:info)
+set_log_level(:info)
 
 parallelization_lib = "threads"
 model_array_type = "static_array"

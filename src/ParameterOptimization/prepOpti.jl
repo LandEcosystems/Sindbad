@@ -98,7 +98,7 @@ Prepares optimization parameters, settings, and helper functions based on the pr
 
 
 # cost_method:
-$(methodsOf(CostMethod))
+$(methods_of(CostMethod))
 
 ---
 

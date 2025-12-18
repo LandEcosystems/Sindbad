@@ -98,7 +98,7 @@ function (TWS_spin::Spinup_TWS)(pout, p)
 
     TWS = land.pools.TWS
     for (lc, l) in enumerate(zix.TWS)
-        @rep_elem maxZero(p[l]) ⇒ (TWS, lc, :TWS)
+        @rep_elem at_least_zero(p[l]) ⇒ (TWS, lc, :TWS)
     end
     @pack_nt TWS ⇒ land.pools
     land = SindbadTEM.adjustPackPoolComponents(land, helpers, land.models.w_model)
@@ -124,7 +124,7 @@ Runs the spinup process for the SINDBAD Terrestrial Ecosystem Model (TEM) to ini
 # Returns:
 - `land`: The updated SINDBAD NamedTuple containing the final state of the model after the spinup process.
 
-$(methodsOf(SpinupMode))
+$(methods_of(SpinupMode))
 
 ---
 
@@ -265,7 +265,7 @@ function spinup(_, _, _, land, helpers, _, ::EtaScaleA0H)
     end
 
     for cVegZix ∈ helpers.pools.zix.cVeg
-        cLoss = maxZero(cEco[cVegZix] - c_remain)
+        cLoss = at_least_zero(cEco[cVegZix] - c_remain)
         cVegNew = cEco[cVegZix] - cLoss
         @rep_elem cVegNew ⇒ (cEco, cVegZix, :cEco)
     end
@@ -294,7 +294,7 @@ function spinup(_, _, _, land, helpers, _, ::EtaScaleA0HCWD)
     end
 
     for cVegZix ∈ helpers.pools.zix.cVeg
-        cLoss = maxZero(cEco[cVegZix] - c_remain)
+        cLoss = at_least_zero(cEco[cVegZix] - c_remain)
         cVegNew = cEco[cVegZix] - cLoss
         @rep_elem cVegNew ⇒ (cEco, cVegZix, :cEco)
     end

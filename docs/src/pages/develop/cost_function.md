@@ -6,7 +6,7 @@ This documentation provides a framework for adding new cost calculation methods 
 For a more detailed view of available cost methods and their purposes, use:
 ```julia
 using Sindbad.Simulation
-showMethodsOf(CostMethod)
+show_methods_of(CostMethod)
 ```
 This will display a formatted list of all cost methods and their descriptions.
 
@@ -27,7 +27,7 @@ In `src/Types/ParameterOptimizationTypes.jl`, add a new struct that subtypes `Co
 struct YourNewCostMethod <: CostMethod end
 ```
 
-For example, the existing cost methods are (but can change, use `showMethodsOf(CostMethod)` for current implementations):
+For example, the existing cost methods are (but can change, use `show_methods_of(CostMethod)` for current implementations):
 - `CostModelObs`: Basic cost calculation between model and observations
 - `CostModelObsMT`: Multi-threaded version of `CostModelObs`
 - `CostModelObsPriors`: Cost calculation including prior information

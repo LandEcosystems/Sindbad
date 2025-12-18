@@ -15,7 +15,7 @@ function compute(params::gppAirT_MOD17, forcing, land, helpers)
 
     ## calculate variables
     tsc = f_airT_day / ((o_one - Tmin) * (Tmax - Tmin)) #@needscheck: if the equation reflects the original implementation
-    gpp_f_airT = clampZeroOne(tsc)
+    gpp_f_airT = clamp_zero_one(tsc)
 
     ## pack land variables
     @pack_nt gpp_f_airT ⇒ land.diagnostics

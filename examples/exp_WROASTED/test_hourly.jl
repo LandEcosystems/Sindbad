@@ -1,8 +1,8 @@
 using Revise
 using SindbadTEM
 using Sindbad
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
 begin_year = "1999"
 end_year = "2010"

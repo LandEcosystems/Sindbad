@@ -1,6 +1,6 @@
 using Revise
 using Sindbad
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 
 domain = "Africa";
 optimize_it = true;
@@ -24,7 +24,7 @@ run_helpers = prepTEM(forcing, info);
 ds = forcing.data[1];
 plotdat = run_helpers.output_array;
 default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
-output_vars = valToSymbol(run_helpers.tem_info.vals.output_vars)
+output_vars = val_to_symbol(run_helpers.tem_info.vals.output_vars)
 for i ∈ eachindex(output_vars)
     v = output_vars[i]
     vinfo = getVariableInfo(v, info.experiment.basics.temporal_resolution)

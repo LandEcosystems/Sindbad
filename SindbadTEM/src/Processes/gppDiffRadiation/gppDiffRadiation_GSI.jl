@@ -37,7 +37,7 @@ function compute(params::gppDiffRadiation_GSI, forcing, land, helpers)
     f_prev = gpp_f_cloud_prev
     f_rg = f_rg * MJ_to_W # multiplied by a scalar to covert MJ/m2/day to W/m2
     fR = (o_one - fR_τ) * f_prev + fR_τ * (o_one / (o_one + exp(-fR_slope * (f_rg - fR_base))))
-    gpp_f_cloud = clampZeroOne(fR)
+    gpp_f_cloud = clamp_zero_one(fR)
     gpp_f_cloud_prev = gpp_f_cloud
 
     ## pack land variables

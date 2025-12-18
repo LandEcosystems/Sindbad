@@ -2,8 +2,8 @@ using Revise
 using Sindbad
 # using CairoMakie
 
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_OTB/settings_OTB/experiment.json"
 begin_year = "1979"
 end_year = "2017"

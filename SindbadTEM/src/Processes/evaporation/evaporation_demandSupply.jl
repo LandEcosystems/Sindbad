@@ -19,8 +19,8 @@ function compute(params::evaporation_demandSupply, forcing, land, helpers)
         z_zero ⇐ land.constants
     end
     # calculate potential soil evaporation
-    PET_evaporation = maxZero(PET * α)
-    evaporationSupply = maxZero(k_evaporation * (soilW[1] + ΔsoilW[1]))
+    PET_evaporation = at_least_zero(PET * α)
+    evaporationSupply = at_least_zero(k_evaporation * (soilW[1] + ΔsoilW[1]))
 
     # calculate the soil evaporation as a fraction of scaling parameter & PET
     evaporation = min(PET_evaporation, evaporationSupply)

@@ -60,12 +60,9 @@ module SindbadTEM
    @reexport using Pkg
    @reexport using CodeTracking
    @reexport using DataStructures: DataStructures
-   # @reexport using Dates
-   # @reexport using Flatten: flatten, metaflatten, fieldnameflatten, parentnameflatten
    @reexport using StaticArraysCore: StaticArray, SVector, MArray, SizedArray
    @reexport using Accessors: @set
    @reexport using StatsBase
-   # @reexport using NaNStatistics
    @reexport using InteractiveUtils
    @reexport using Crayons
    @reexport using Base.Docs: doc as base_doc
@@ -89,12 +86,7 @@ module SindbadTEM
    include("TEMUtils.jl")
    include("TEMVariableCatalog.jl")
    include("Processes/Processes.jl")
-   # include("generateCode.jl")
    @reexport using .Processes
-   # include("Utils/Utils.jl")
-   # @reexport using .Utils
-   # include("Metrics/Metrics.jl")
-   # @reexport using .Metrics
 
    # append the docstring of the LandEcosystem type to the docstring of the SindbadTEM module so that all the methods of the LandEcosystem type are included after the models have been described
    @doc """
@@ -140,7 +132,7 @@ module SindbadTEM
    ---
 
    # Extended help
-   $(methodsOf(LandEcosystem, purpose_function=purpose))
+   $(methods_of(LandEcosystem, purpose_function=purpose))
    """
    LandEcosystem
    

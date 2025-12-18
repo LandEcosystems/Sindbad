@@ -1,8 +1,8 @@
 using Revise
 using Sindbad.Simulation
 using Dates
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 
 forcing_set = "erai"
 site_info = CSV.File(
@@ -28,7 +28,7 @@ for site_index in 1:205
             path_site = joinpath(path_output, domain*"_"*exp_name)
             info_path = joinpath(path_site, "settings/info.jld2")
             info=load(info_path,"info");
-            setLogLevel(:warn)
+            set_log_level(:warn)
             forcing = getForcing(info);
 
             observations = getObservation(info, forcing.helpers);

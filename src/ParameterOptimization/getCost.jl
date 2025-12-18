@@ -62,7 +62,7 @@ function getDataWithoutNaN(y, yσ, ŷ, idxs)
 end
 
 function getDataWithoutNaN(y, yσ, ŷ)
-    @debug sum(isInvalid.(y)), sum(isInvalid.(yσ)), sum(isInvalid.(ŷ))
+    @debug sum(is_invalid_number.(y)), sum(is_invalid_number.(yσ)), sum(is_invalid_number.(ŷ))
     idxs = (.!isnan.(y .* yσ .* ŷ)) # TODO this has to be run because LandWrapper produces a vector. So, dispatch with the inefficient versions without idxs argument
     return y[idxs], yσ[idxs], ŷ[idxs]
 end

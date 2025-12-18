@@ -37,8 +37,8 @@ function compute(params::drainage_dos, forcing, land, helpers)
 
     ## calculate drainage
     for sl ∈ 1:(length(land.pools.soilW)-1)
-        soilW_sl = min(maxZero(soilW[sl] + ΔsoilW[sl]), w_sat[sl])
-        drain_fraction = clampZeroOne(((soilW_sl) / w_sat[sl])^(dos_exp * soil_β[sl]))
+        soilW_sl = min(at_least_zero(soilW[sl] + ΔsoilW[sl]), w_sat[sl])
+        drain_fraction = clamp_zero_one(((soilW_sl) / w_sat[sl])^(dos_exp * soil_β[sl]))
         drainage_tmp = drain_fraction * (soilW_sl)
         max_drain = w_sat[sl] - w_fc[sl]
         lossCap = min(soilW_sl, max_drain)

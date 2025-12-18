@@ -21,7 +21,7 @@ function compute(params::snowMelt_Tair, forcing, land, helpers)
     end
     # effect of temperature on snow melt = snowMeltRate * f_airT
     pRate = rate
-    Tterm = maxZero(pRate * f_airT)
+    Tterm = at_least_zero(pRate * f_airT)
 
     # snow melt [mm/day] is calculated as a simple function of temperature & scaled with the snow covered fraction
     snow_melt = min(totalS(snowW, ΔsnowW), Tterm * frac_snow)

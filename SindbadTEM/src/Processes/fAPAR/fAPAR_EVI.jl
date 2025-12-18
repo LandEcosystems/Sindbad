@@ -15,7 +15,7 @@ function compute(params::fAPAR_EVI, forcing, land, helpers)
 
     ## calculate variables
     fAPAR = EVI_to_fAPAR_m * EVI + EVI_to_fAPAR_c
-    fAPAR = clampZeroOne(fAPAR)
+    fAPAR = clamp_zero_one(fAPAR)
 
     ## pack land variables
     @pack_nt fAPAR ⇒ land.states

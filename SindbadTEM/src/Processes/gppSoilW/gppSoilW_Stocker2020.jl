@@ -28,12 +28,12 @@ function compute(params::gppSoilW_Stocker2020, forcing, land, helpers)
     end
     ## calculate variables
     SM = sum(soilW)
-    max_AWC = maxZero(∑w_fc - ∑w_wp)
-    actAWC = maxZero(SM - ∑w_wp)
-    SM_nor = minOne(actAWC / max_AWC)
+    max_AWC = at_least_zero(∑w_fc - ∑w_wp)
+    actAWC = at_least_zero(SM - ∑w_wp)
+    SM_nor = at_most_one(actAWC / max_AWC)
     tf_soilW = -q * (SM_nor - θstar)^t_two + o_one
     tmp_f_soilW = SM_nor <= θstar ? tf_soilW : one(tf_soilW)
-    gpp_f_soilW = clampZeroOne(tmp_f_soilW)
+    gpp_f_soilW = clamp_zero_one(tmp_f_soilW)
 
     ## pack land variables
     @pack_nt gpp_f_soilW ⇒ land.diagnostics

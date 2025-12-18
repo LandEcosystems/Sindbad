@@ -17,7 +17,7 @@ The function assumes input data and spatial parameters are in compatible formats
 """
 function getSpatialSubset(ss, v)
     if isa(ss, Dict)
-        ss = dictToNamedTuple(ss)
+        ss = dict_to_namedtuple(ss)
     end
     if !isnothing(ss)
         ssname = propertynames(ss)
@@ -45,7 +45,7 @@ Extracts a spatial subset of the input data `v` based on the specified range and
 # Returns:
 - A subset of the input data `v` corresponding to the specified spatial range and dimension.
 
-$(methodsOf(SpatialSubsetter))
+$(methods_of(SpatialSubsetter))
 
 ---
 

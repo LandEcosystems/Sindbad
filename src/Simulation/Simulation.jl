@@ -8,7 +8,7 @@ This module integrates various components and utilities required to execute the 
 
 # Dependencies
 ## Related (SINDBAD ecosystem)
-- `TimeSampler`: Temporal helpers used in time-loop workflows.
+- `TimeSamplers`: Temporal helpers used in time-loop workflows.
 - `UtilsKit`: Shared utilities used during simulation and output handling.
 
 ## External (third-party)
@@ -43,7 +43,7 @@ module Simulation
    using ComponentArrays
    using ProgressMeter
    using SindbadTEM
-   using TimeSampler
+   using TimeSamplers
    using ..Types
    using UtilsKit
    using ..Setup

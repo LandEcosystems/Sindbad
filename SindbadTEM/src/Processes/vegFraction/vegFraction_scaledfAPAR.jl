@@ -16,7 +16,7 @@ function compute(params::vegFraction_scaledfAPAR, forcing, land, helpers)
     end
 
     ## calculate variables
-    frac_vegetation = minOne(fAPAR * fAPAR_scalar)
+    frac_vegetation = at_most_one(fAPAR * fAPAR_scalar)
 
     ## pack land variables
     @pack_nt frac_vegetation ⇒ land.states

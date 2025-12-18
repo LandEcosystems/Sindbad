@@ -32,13 +32,13 @@ function convertRunFlagsToTypes(info)
             st = (;)
             for prs in propertynames(prf)
                 prsf = getfield(prf, prs)
-                st = setTupleField(st, (prs, getTypeInstanceForFlags(prs, prsf)))
+                st = set_namedtuple_field(st, (prs, getTypeInstanceForFlags(prs, prsf)))
             end
             prtoset = st
         else
             prtoset = getTypeInstanceForFlags(pr, prf)
         end
-        new_run = setTupleField(new_run, (pr, prtoset))
+        new_run = set_namedtuple_field(new_run, (pr, prtoset))
     end
     return new_run
 end
@@ -154,7 +154,7 @@ Retrieves the type instance for a given cost metric based on its name.
 - Used for dispatching cost metric calculations in SINDBAD.
 """
 function getTypeInstanceForCostMetric(source_module::Module, option_name::String)
-    opt_ss = toUpperCaseFirst(option_name)
+    opt_ss = to_uppercase_first(option_name)
     struct_instance = getfield(source_module, opt_ss)()
     return struct_instance
 end
@@ -182,9 +182,9 @@ Generates a type instance for boolean flags based on the flag name and value.
 """
 function getTypeInstanceForFlags(option_name::Symbol, option_value, opt_pref="Do")
     opt_s = string(option_name)
-    structname = toUpperCaseFirst(opt_s, opt_pref)
+    structname = to_uppercase_first(opt_s, opt_pref)
     if !option_value
-        structname = toUpperCaseFirst(opt_s, opt_pref*"Not")
+        structname = to_uppercase_first(opt_s, opt_pref*"Not")
     end
     struct_instance = getfield(Setup, structname)()
     return struct_instance
@@ -205,7 +205,7 @@ Retrieves a type instance for a named option based on its string or symbol repre
 - If the input is a `Symbol`, it is converted to a `String` before processing.
 - The function capitalizes the first letter of each word in the option name and removes underscores to match the type naming convention.
 - This is used for type-based dispatch in SINDBAD's configuration and execution.
-- The type for temporal aggregation is set using `getTimeSamplerInstance` in `Utils`. It uses a similar approach and prefixes `Time` to type.
+- The type for temporal aggregation is set using `get_TimeSampler` in `Utils`. It uses a similar approach and prefixes `Time` to type.
 
 # Example:
 - A named option for 
@@ -216,7 +216,7 @@ Retrieves a type instance for a named option based on its string or symbol repre
 function getTypeInstanceForNamedOptions end
 
 function getTypeInstanceForNamedOptions(option_name::String)
-    opt_ss = toUpperCaseFirst(option_name)
+    opt_ss = to_uppercase_first(option_name)
     struct_instance = getfield(Setup, opt_ss)()
     return struct_instance
 end

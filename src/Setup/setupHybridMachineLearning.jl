@@ -14,7 +14,7 @@ function replaceOptionsWithType(merged_options, field_name)
     if hasproperty(merged_options, field_name)
         field_value = getfield(merged_options, field_name)
         if isa(field_value, String) && !isempty(field_value)
-            merged_options = setTupleField(merged_options, (field_name, getTypeInstanceForNamedOptions(field_value)))
+            merged_options = set_namedtuple_field(merged_options, (field_name, getTypeInstanceForNamedOptions(field_value)))
         end
     end
     return merged_options
@@ -42,7 +42,7 @@ function replaceNumbersWithTypedValues(merged_options, num_type)
                 pp = num_type(pp)
             end
         end
-        merged_options = setTupleField(merged_options, (field_name, pp))
+        merged_options = set_namedtuple_field(merged_options, (field_name, pp))
     end
     return merged_options
 end
@@ -69,7 +69,7 @@ function setHybridOptions(info, which_option)
                     options_path = joinpath(info.temp.experiment.dirs.settings, options_path)
                 end
                 options = parsefile(options_path; dicttype=DataStructures.OrderedDict)
-                options = dictToNamedTuple(options)
+                options = dict_to_namedtuple(options)
                 field_method = options.package * "_" * options.method
                 field_method = getTypeInstanceForNamedOptions(field_method)
                 field_options = options.options
@@ -87,14 +87,14 @@ function setHybridOptions(info, which_option)
         end
     end
     default_opt = sindbadDefaultOptions(getproperty(Setup, nameof(typeof(field_method)))())
-    merged_options = mergeNamedTuple(default_opt, field_options)
+    merged_options = merge_namedtuple(default_opt, field_options)
     merged_options = replaceOptionsWithType(merged_options, :activation_out)
     merged_options = replaceOptionsWithType(merged_options, :activation_hidden)
     merged_options = replaceOptionsWithType(merged_options, :loss_function)
     merged_options = replaceNumbersWithTypedValues(merged_options, info.temp.helpers.numbers.num_type)
-    tmp_field = setTupleField(tmp_field, (:method, field_method))
-    tmp_field = setTupleField(tmp_field, (:options, merged_options))
-    info = setTupleSubfield(info, :hybrid, (which_option, tmp_field))
+    tmp_field = set_namedtuple_field(tmp_field, (:method, field_method))
+    tmp_field = set_namedtuple_field(tmp_field, (:options, merged_options))
+    info = set_namedtuple_subfield(info, :hybrid, (which_option, tmp_field))
     return info
 end
 
@@ -107,7 +107,7 @@ Processes and sets up the hybrid experiment information in the experiment config
 - The updated `info` NamedTuple with hybrid experiment information added.
 """
 function setHybridInfo(info::NamedTuple)
-    showInfo(setHybridInfo, @__FILE__, @__LINE__, "setting info for hybrid machine-learning + TEM experiment...", n_m=1)
+    print_info(setHybridInfo, @__FILE__, @__LINE__, "setting info for hybrid machine-learning + TEM experiment...", n_m=1)
     # hybrid_options = info.settings.hybrid
     # set
     info = setHybridOptions(info, :ml_model)
@@ -145,17 +145,17 @@ function setHybridInfo(info::NamedTuple)
     end
 
     fold_s = (; fold_path, which_fold, fold_type)
-    info = setTupleSubfield(info, :hybrid, (:fold, fold_s))
+    info = set_namedtuple_subfield(info, :hybrid, (:fold, fold_s))
 
     replace_value_for_gradient = hasproperty(info.settings.hybrid, :replace_value_for_gradient) ? info.settings.hybrid.replace_value_for_gradient : 0.0
 
-    info = setTupleSubfield(info, :hybrid, (:replace_value_for_gradient, info.temp.helpers.numbers.num_type(replace_value_for_gradient)))
+    info = set_namedtuple_subfield(info, :hybrid, (:replace_value_for_gradient, info.temp.helpers.numbers.num_type(replace_value_for_gradient)))
 
 
     covariates_path = getAbsDataPath(info.temp, info.settings.hybrid.covariates.path)
     covariates = (; path=covariates_path, variables=info.settings.hybrid.covariates.variables)
-    info = setTupleSubfield(info, :hybrid, (:covariates, covariates))
-    info = setTupleSubfield(info, :hybrid, (:random_seed, info.settings.hybrid.random_seed))
+    info = set_namedtuple_subfield(info, :hybrid, (:covariates, covariates))
+    info = set_namedtuple_subfield(info, :hybrid, (:random_seed, info.settings.hybrid.random_seed))
 
     return info
 end

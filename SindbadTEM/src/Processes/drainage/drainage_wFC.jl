@@ -26,7 +26,7 @@ function compute(params::drainage_wFC, forcing, land, helpers)
     for sl ∈ 1:(length(soilW)-1)
         holdCap = w_sat[sl+1] - (soilW[sl+1] + ΔsoilW[sl+1])
         lossCap = soilW[sl] + ΔsoilW[sl]
-        drainage[sl] = maxZero(soilW[sl] + ΔsoilW[sl] - w_fc[sl])
+        drainage[sl] = at_least_zero(soilW[sl] + ΔsoilW[sl] - w_fc[sl])
         drainage[sl] = min(drainage[sl], holdCap, lossCap)
         ΔsoilW[sl] = ΔsoilW[sl] - drainage[sl]
         ΔsoilW[sl+1] = ΔsoilW[sl+1] + drainage[sl]

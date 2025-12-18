@@ -21,7 +21,7 @@ function compute(params::gppVPD_expco2, forcing, land, helpers)
 
     ## calculate variables
     fVPD_VPD = exp(κ * -f_VPD_day * (ambient_CO2 / base_ambient_CO2)^-c_κ)
-    gpp_f_vpd = clampZeroOne(fVPD_VPD)
+    gpp_f_vpd = clamp_zero_one(fVPD_VPD)
 
     ## pack land variables
     @pack_nt gpp_f_vpd ⇒ land.diagnostics

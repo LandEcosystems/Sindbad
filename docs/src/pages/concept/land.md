@@ -31,7 +31,7 @@ Variables used exclusively by a single model are stored under the model name (e.
 To ensure proper organization and prevent potential issues, use the following command to examine the `land` structure:
 
 ```julia
-julia> tcPrint(land)
+julia> tc_print(land)
 ```
 
 ::: danger Important Considerations
@@ -51,7 +51,7 @@ julia> tcPrint(land)
    - Document any model-specific fields
 
 2. **Validation**
-   - Regularly check structure using `tcPrint`
+   - Regularly check structure using `tc_print`
    - Verify variable grouping
    - Ensure no unintended overwrites
 

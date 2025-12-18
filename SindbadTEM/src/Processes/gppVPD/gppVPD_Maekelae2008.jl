@@ -14,7 +14,7 @@ function compute(params::gppVPD_Maekelae2008, forcing, land, helpers)
 
     ## calculate variables
     gpp_f_vpd = exp(-k * f_VPD_day)
-    gpp_f_vpd = minOne(gpp_f_vpd)
+    gpp_f_vpd = at_most_one(gpp_f_vpd)
 
     ## pack land variables
     @pack_nt gpp_f_vpd ⇒ land.diagnostics

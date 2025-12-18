@@ -178,7 +178,7 @@ function unsatK(land, helpers, sl, ::kSaxton2006)
     ## calculate variables
     w_sat = w_sat[sl]
     θ_dos = (soilW[sl] + ΔsoilW[sl]) / w_sat
-    θ_dos = clampZeroOne(θ_dos)
+    θ_dos = clamp_zero_one(θ_dos)
     β = soil_β[sl]
     k_sat = k_sat[sl]
     λ = o_one / β

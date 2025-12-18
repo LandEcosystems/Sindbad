@@ -13,7 +13,7 @@ function compute(params::gppAirT_Wang2014, forcing, land, helpers)
     @unpack_nt (z_zero, o_one) ⇐ land.diagnostics
 
     ## calculate variables
-    gpp_f_airT = clampZeroOne(f_airT_day / Tmax)
+    gpp_f_airT = clamp_zero_one(f_airT_day / Tmax)
 
     ## pack land variables
     @pack_nt gpp_f_airT ⇒ land.diagnostics

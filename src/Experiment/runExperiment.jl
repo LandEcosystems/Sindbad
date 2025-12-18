@@ -27,16 +27,16 @@ This function initializes an experiment by:
 3. Preparing output settings
 """
 function prepExperiment(sindbad_experiment::String; replace_info=Dict())
-    displayBanner()
+    print_figlet_banner("SINDBAD")
 
     info = getExperimentInfo(sindbad_experiment; replace_info=replace_info)
 
-    showInfoSeparator()
+    print_info_separator()
 
     forcing = getForcing(info)
 
 
-    showInfo(prepExperiment, @__FILE__, @__LINE__, "plotting IO signatures in the selected model structure...", n_m=1)
+    print_info(prepExperiment, @__FILE__, @__LINE__, "plotting IO signatures in the selected model structure...", n_m=1)
 
     for model_func in (:define, :precompute, :compute,)                 
         plotIOModelStructure(info, model_func)
@@ -79,20 +79,20 @@ The function handles different spatial configurations and can operate on both si
 function runExperiment end
 
 function runExperiment(info::NamedTuple, forcing::NamedTuple, ::DoCalcCost)
-    showInfoSeparator(sep_text="Forward Simulation + Cost Calculation")
-    setLogLevel()
+    print_info_separator(sep_text="Forward Simulation + Cost Calculation")
+    set_log_level()
     observations = getObservation(info, forcing.helpers)
     obs_array = [Array(_o) for _o in observations.data]; # TODO: necessary now for performance because view of keyedarray is slow
-    showInfo(runExperiment, @__FILE__, @__LINE__, "do forward run...")
+    print_info(runExperiment, @__FILE__, @__LINE__, "do forward run...")
     output_array = runTEM!(forcing, info)
-    showInfo(runExperiment, @__FILE__, @__LINE__, "calculate cost...")
+    print_info(runExperiment, @__FILE__, @__LINE__, "calculate cost...")
     forward_output = (; Pair.(getUniqueVarNames(info.output.variables), output_array)...)
     cost_options = prepCostOptions(obs_array, info.optimization.cost_options)
     loss_vector = metricVector(forward_output, obs_array, cost_options)
     for _cp in Pair.(Pair.(cost_options.variable, nameof.(typeof.(cost_options.cost_metric))),  loss_vector)
         println(_cp)
     end
-    setLogLevel()
+    set_log_level()
     return (; forcing, info, loss=loss_vector, observation=obs_array, output=forward_output)
 end
 
@@ -108,7 +108,7 @@ function runExperiment(info::NamedTuple, forcing::NamedTuple, ::Union{DoRunForwa
         run_output = runTEM!(forcing, info)
         run_output = (; Pair.(getUniqueVarNames(info.output.variables), run_output)...)
     end
-    setLogLevel()
+    set_log_level()
     return (; forcing, info, output=run_output)
 end
 
@@ -118,18 +118,18 @@ function runExperiment(info::NamedTuple, forcing::NamedTuple, ::DoRunOptimizatio
     additionaldims = setdiff(keys(forcing.helpers.sizes), info.experiment.data_settings.forcing.data_dimension.time)
     run_output = nothing
     if isempty(additionaldims)
-        showInfo(runExperiment, @__FILE__, @__LINE__, "run optimization per pixel...")
+        print_info(runExperiment, @__FILE__, @__LINE__, "run optimization per pixel...")
         run_output = optimizeTEMYax(forcing, info.tem, info.optimization, observations; max_cache=info.settings.experiment.exe_rules.yax_max_cache)
     else
-        showInfo(runExperiment, @__FILE__, @__LINE__, "run optimization for spatial domain...")
+        print_info(runExperiment, @__FILE__, @__LINE__, "run optimization for spatial domain...")
         obs_array = [Array(_o) for _o in observations.data]; # TODO: necessary now for performance because view of keyedarray is slow
         optim_params = optimizeTEM(forcing, obs_array, info)
         optim_file_prefix = joinpath(info.output.dirs.optimization, info.experiment.basics.name * "_" * info.experiment.basics.domain)
-        showInfo(runExperiment, @__FILE__, @__LINE__, "saving optimized parameters to file: $(optim_file_prefix)_model_parameters_optimized.csv")
+        print_info(runExperiment, @__FILE__, @__LINE__, "saving optimized parameters to file: $(optim_file_prefix)_model_parameters_optimized.csv")
         CSV.write(optim_file_prefix * "_model_parameters_optimized.csv", optim_params)
         run_output = optim_params
     end
-    setLogLevel()
+    set_log_level()
     return (; forcing, info, observation=obs_array, parameters=run_output)
 end
 
@@ -148,13 +148,13 @@ Calculate cost for a given experiment through the `runExperiment` function in `D
 - A NamedTuple containing the experiment results including cost calculations
 """
 function runExperimentCost(sindbad_experiment::String; replace_info=Dict(), log_level=:info)
-    setLogLevel(log_level)
+    set_log_level(log_level)
     replace_info["experiment.flags.run_optimization"] = false
     replace_info["experiment.flags.calc_cost"] = true
     replace_info["experiment.flags.run_forward"] = true
     info, forcing = prepExperiment(sindbad_experiment; replace_info=replace_info)
     cost_output = runExperiment(info, forcing, info.helpers.run.calc_cost)
-    setLogLevel()
+    set_log_level()
     return cost_output
 end
 
@@ -173,8 +173,8 @@ Run forward simulation for a given experiment through the `runExperiment` functi
 - A NamedTuple containing the experiment results including model outputs
 """
 function runExperimentForward(sindbad_experiment::String; replace_info=Dict(), log_level=:info)
-    showInfoSeparator(sep_text="Forward Simulation")
-    setLogLevel(log_level)
+    print_info_separator(sep_text="Forward Simulation")
+    set_log_level(log_level)
     replace_info["experiment.flags.run_forward"] = true
     replace_info["experiment.flags.run_optimization"] = false
     replace_info["experiment.flags.calc_cost"] = false
@@ -182,7 +182,7 @@ function runExperimentForward(sindbad_experiment::String; replace_info=Dict(), l
     run_output = runExperiment(info, forcing, info.helpers.run.run_forward)
     output_dims = getOutDims(info, forcing.helpers)
     saveOutCubes(info, values(run_output.output), output_dims, info.output.variables)
-    setLogLevel()
+    set_log_level()
     return run_output
 end
 
@@ -203,9 +203,9 @@ Run forward simulation of the model with default as well as modified settings wi
 - A NamedTuple containing both default and optimized model outputs
 """
 function runExperimentForwardParams(params_vector::Vector, sindbad_experiment::String; replace_info=Dict(), log_level=:info)
-    showInfoSeparator(sep_text="Forward Simulation with Input/Optimized Parameters")
-    setLogLevel(log_level)
-    showInfo(runExperimentForwardParams, @__FILE__, @__LINE__, "running forward simulation with input/optimized parameters...", n_m=1)
+    print_info_separator(sep_text="Forward Simulation with Input/Optimized Parameters")
+    set_log_level(log_level)
+    print_info(runExperimentForwardParams, @__FILE__, @__LINE__, "running forward simulation with input/optimized parameters...", n_m=1)
     replace_info = deepcopy(replace_info)
     replace_info["experiment.flags.run_optimization"] = false
     replace_info["experiment.flags.calc_cost"] = true
@@ -224,7 +224,7 @@ function runExperimentForwardParams(params_vector::Vector, sindbad_experiment::S
     saveOutCubes(info, optimized_output, output_dims, info.output.variables)
     
     forward_output = (; optimized=(; Pair.(getUniqueVarNames(info.output.variables), optimized_output)...), default=(; Pair.(getUniqueVarNames(info.output.variables), default_output)...))
-    setLogLevel()
+    set_log_level()
     return (; forcing, info, output=forward_output)
 end
 
@@ -243,8 +243,8 @@ Run forward simulation of the model through `runExperiment` function in `DoRunFo
 - A NamedTuple containing the complete model outputs
 """
 function runExperimentFullOutput(sindbad_experiment::String; replace_info=Dict(), log_level=:info)
-    showInfoSeparator(sep_text="Forward Simulation + Output of All Variables")
-    setLogLevel(log_level)
+    print_info_separator(sep_text="Forward Simulation + Output of All Variables")
+    set_log_level(log_level)
     replace_info = deepcopy(replace_info)
     replace_info["experiment.flags.run_forward"] = true
     replace_info["experiment.flags.run_optimization"] = false
@@ -257,7 +257,7 @@ function runExperimentFullOutput(sindbad_experiment::String; replace_info=Dict()
     output_dims = run_helpers.output_dims
     run_output = run_helpers.output_array
     saveOutCubes(info, run_output, output_dims, run_helpers.output_vars)
-    setLogLevel()
+    set_log_level()
     return (; forcing, info, output=(; Pair.(getUniqueVarNames(run_helpers.output_vars), run_output)...))
 end
 
@@ -276,15 +276,15 @@ Run optimization experiment through `runExperiment` function in `DoRunOptimizati
 - A NamedTuple containing optimization results, model outputs, and cost metrics
 """
 function runExperimentOpti(sindbad_experiment::String; replace_info=Dict(), log_level=:warn)
-    showInfoSeparator(sep_text="ParameterOptimization Experiment")
-    setLogLevel(log_level)
+    print_info_separator(sep_text="ParameterOptimization Experiment")
+    set_log_level(log_level)
     replace_info["experiment.flags.run_optimization"] = true
     replace_info["experiment.flags.calc_cost"] = false
     replace_info["experiment.flags.run_forward"] = false
     info, forcing = prepExperiment(sindbad_experiment; replace_info=replace_info)
     run_helpers = prepTEM(info.models.forward, forcing, info)
     opti_output = runExperiment(info, forcing, info.helpers.run.run_optimization)
-    setLogLevel(:info)
+    set_log_level(:info)
     fp_output = runExperimentForwardParams(opti_output.parameters.optimized, sindbad_experiment; replace_info=replace_info)
     cost_options = prepCostOptions(opti_output.observation, info.optimization.cost_options)
     loss_vector = metricVector(fp_output.output.optimized, opti_output.observation, cost_options)
@@ -311,7 +311,7 @@ Run sensitivity analysis for a given experiment.
 - A NamedTuple containing sensitivity analysis results and related data
 """
 function runExperimentSensitivity(sindbad_experiment::String; replace_info=Dict(), batch=true, log_level=:warn)
-    showInfoSeparator(sep_text="Sensitivity Analysis Experiment")
+    print_info_separator(sep_text="Sensitivity Analysis Experiment")
     replace_info["experiment.flags.run_optimization"] = true
     replace_info["experiment.flags.calc_cost"] = false
     replace_info["experiment.flags.run_forward"] = false
@@ -329,13 +329,13 @@ function runExperimentSensitivity(sindbad_experiment::String; replace_info=Dict(
 
     # d_opt = getproperty(Setup, :GSAMorris)()
     method_options =info.optimization.sensitivity_analysis.options
-    setLogLevel(log_level)
+    set_log_level(log_level)
 
     sensitivity = globalSensitivity(cost_function, method_options, p_bounds, info.optimization.sensitivity_analysis.method, batch=batch)
     sensitivity_output = (; opti_helpers..., info=info, forcing=forcing, obs_array=obs_array, observations=observations,sensitivity=sensitivity, p_bounds=p_bounds)
-    setLogLevel(:info)
+    set_log_level(:info)
     sensitivity_output_file = joinpath(info.output.dirs.data, "sensitivity_analysis_$(nameof(typeof(info.optimization.sensitivity_analysis.method)))_$(length(opti_helpers.cost_vector))-cost_evals.jld2")
-    showInfo(runExperimentSensitivity, @__FILE__, @__LINE__, "saving sensitivity output to file: `$(sensitivity_output_file)`", n_m=1)
+    print_info(runExperimentSensitivity, @__FILE__, @__LINE__, "saving sensitivity output to file: `$(sensitivity_output_file)`", n_m=1)
     @save  sensitivity_output_file sensitivity_output
     return sensitivity_output
 end

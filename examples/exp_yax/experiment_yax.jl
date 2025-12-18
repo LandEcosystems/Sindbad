@@ -4,7 +4,7 @@ using SindbadTEM
 using Sindbad
 using Sindbad.YAXArrays
 using ProgressMeter
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 
 
 info = getExperimentInfo("../exp_yax/settings_yax/experiment.json");

@@ -238,10 +238,10 @@ models = getSindbadModels()
 
 :::
 
-### `getDefinitions`
+### `get_definitions`
 
 ```julia
-getDefinitions(sindbad_module, what_to_get; internal_only=true)
+get_definitions(sindbad_module, what_to_get; internal_only=true)
 ```
 
 Returns all defined (and optionally internal) objects in the SINDBAD framework.
@@ -257,18 +257,18 @@ An array of all defined things in the SINDBAD framework that match the specified
 **Usage**
 ```julia
 # Get all defined types in the SINDBAD framework
-defined_types = getDefinitions(SindbadTEM, Type)
+defined_types = get_definitions(SindbadTEM, Type)
 
 # Get all functions in a specific module
-functions = getDefinitions(SindbadTEM.Processes, Function)
+functions = get_definitions(SindbadTEM.Processes, Function)
 
 # Get all definitions including external ones
-all_definitions = getDefinitions(SindbadTEM, Any, internal_only=false)
+all_definitions = get_definitions(SindbadTEM, Any, internal_only=false)
 ```
 
 ::: tip
 
-`getDefinitions` is particularly useful for:
+`get_definitions` is particularly useful for:
 - Discovering available types and functions in SINDBAD modules
 - Understanding the structure of SINDBAD's codebase
 - Accessing internal implementations for debugging or development
@@ -302,9 +302,9 @@ io_structure = getInoutModels(experiment_info, :compute)
 ```
 
 ## Package Management Functions
-### `addPackage`
+### `add_package`
 ```julia
-addPackage(where_to_add, the_package_to_add)
+add_package(where_to_add, the_package_to_add)
 ```
 Adds a specified Julia package to the environment of a given module or project.
 
@@ -326,7 +326,7 @@ Adds a specified Julia package to the environment of a given module or project.
 
 Add the DataFrames package to `DataLoaders` module
 ```julia
-addPackage(DataLoaders, "DataFrames")
+add_package(DataLoaders, "DataFrames")
 ```
 
 **Notes**

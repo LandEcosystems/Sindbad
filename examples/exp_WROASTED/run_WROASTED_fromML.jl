@@ -1,8 +1,8 @@
 using Revise
 using Sindbad
 using Dates
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 
 site_index = 37
 # site_index = 68
@@ -178,7 +178,7 @@ parameter_table = info.optimization.parameter_table;
 
         # some plots for model simulations from JL and matlab versions
         opt_dat = outcubes
-        output_vars = valToSymbol(run_helpers.tem_info.vals.output_vars)
+        output_vars = val_to_symbol(run_helpers.tem_info.vals.output_vars)
         costOpt = prepCostOptions(obs_array, info.optimization.cost_options)
         default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
         foreach(costOpt) do var_row
@@ -251,7 +251,7 @@ parameter_table = info.optimization.parameter_table;
                 run_helpers.tem_info)
 
             default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
-            output_vars = valToSymbol(run_helpers.tem_info.vals.output_vars)
+            output_vars = val_to_symbol(run_helpers.tem_info.vals.output_vars)
             for (o, v) in enumerate(output_vars)
                 println("plot dbg-model => site: $domain, variable: $v")
                 def_var = run_helpers.output_array[o][:, :, 1, 1]

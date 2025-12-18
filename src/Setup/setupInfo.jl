@@ -15,13 +15,13 @@ Initializes the land state by creating a NamedTuple with pools, states, and sele
 - A NamedTuple containing initialized pools, states, fluxes, diagnostics, properties, models, and constants.
 """
 function createInitLand(pool_info, tem)
-    showInfo(createInitLand, @__FILE__, @__LINE__, "creating Initial Land...")
+    print_info(createInitLand, @__FILE__, @__LINE__, "creating Initial Land...")
     init_pools = createInitPools(pool_info, tem.helpers)
     initial_states = createInitStates(pool_info, tem.helpers)
     out = (; fluxes=(;), pools=(; init_pools..., initial_states...), states=(;), diagnostics=(;), properties=(;), models=(;), constants=(;))
     sortedModels = sort([_sm for _sm ∈ tem.models.selected_models.model])
     for model ∈ sortedModels
-        out = setTupleField(out, (model, (;)))
+        out = set_namedtuple_field(out, (model, (;)))
     end
     return out
 end
@@ -39,7 +39,7 @@ Parses and saves the code and structs of the selected model structure for the gi
 - Also writes the parameter structs for the models.
 """
 function parseSaveCode(info)
-    showInfo(parseSaveCode, @__FILE__, @__LINE__, "saving Selected Models Code...")
+    print_info(parseSaveCode, @__FILE__, @__LINE__, "saving Selected Models Code...")
     models = info.temp.models.forward
     outfile_define = joinpath(info.output.dirs.code, info.temp.experiment.basics.name * "_" * info.temp.experiment.basics.domain * "_model_definitions.jl")
     outfile_code = joinpath(info.output.dirs.code, info.temp.experiment.basics.name * "_" * info.temp.experiment.basics.domain * "_model_functions.jl")
@@ -200,7 +200,7 @@ Fills `info.temp.helpers.dates` with date and time-related fields needed in the 
 - The updated `info` NamedTuple with date-related fields added.
 """
 function setDatesInfo(info::NamedTuple)
-    showInfo(setDatesInfo, @__FILE__, @__LINE__, "setting Dates Helpers...")
+    print_info(setDatesInfo, @__FILE__, @__LINE__, "setting Dates Helpers...")
     tmp_dates = (;)
     time_info = getfield(info.settings.experiment.basics, :time)
     time_props = propertynames(time_info)
@@ -209,14 +209,14 @@ function setDatesInfo(info::NamedTuple)
         if prop_val isa Number
             prop_val = info.temp.helpers.numbers.num_type(prop_val)
         end
-        tmp_dates = setTupleField(tmp_dates, (time_prop, prop_val))
+        tmp_dates = set_namedtuple_field(tmp_dates, (time_prop, prop_val))
     end
     timestep = getfield(Dates, Symbol(titlecase(info.settings.experiment.basics.time.temporal_resolution)))(1)
     time_range = DateTime(info.settings.experiment.basics.time.date_begin):timestep:DateTime(info.settings.experiment.basics.time.date_end)
-    tmp_dates = setTupleField(tmp_dates, (:temporal_resolution, info.settings.experiment.basics.time.temporal_resolution))
-    tmp_dates = setTupleField(tmp_dates, (:timestep, timestep))
-    tmp_dates = setTupleField(tmp_dates, (:range, time_range))
-    tmp_dates = setTupleField(tmp_dates, (:size, length(time_range)))
+    tmp_dates = set_namedtuple_field(tmp_dates, (:temporal_resolution, info.settings.experiment.basics.time.temporal_resolution))
+    tmp_dates = set_namedtuple_field(tmp_dates, (:timestep, timestep))
+    tmp_dates = set_namedtuple_field(tmp_dates, (:range, time_range))
+    tmp_dates = set_namedtuple_field(tmp_dates, (:size, length(time_range)))
     info = (; info..., temp=(; info.temp..., helpers=(; info.temp.helpers..., dates=tmp_dates)))
     return info
 end
@@ -234,22 +234,22 @@ Sets up model run flags and output array types for the experiment.
 - The updated `info` NamedTuple with model run flags and output array types added.
 """
 function setModelRunInfo(info::NamedTuple)
-    showInfo(setModelRunInfo, @__FILE__, @__LINE__, "setting Model Run Flags...")
+    print_info(setModelRunInfo, @__FILE__, @__LINE__, "setting Model Run Flags...")
     if info.settings.experiment.flags.run_optimization
         info = @set info.settings.experiment.flags.catch_model_errors = false
     end
     run_vals = convertRunFlagsToTypes(info)
-    output_array_type = getfield(Types, toUpperCaseFirst(info.settings.experiment.model_output.output_array_type, "Output"))()
+    output_array_type = getfield(Types, to_uppercase_first(info.settings.experiment.model_output.output_array_type, "Output"))()
     run_info = (; run_vals..., output_array_type = output_array_type)
-    run_info = setTupleField(run_info, (:save_single_file, getTypeInstanceForFlags(:save_single_file, info.settings.experiment.model_output.save_single_file, "Do")))
-    run_info = setTupleField(run_info, (:use_forward_diff, run_vals.use_forward_diff))
-    run_info = setTupleField(run_info, (:input_data_backend, info.settings.experiment.exe_rules.input_data_backend))
-    run_info = setTupleField(run_info, (:input_array_type, info.settings.experiment.exe_rules.input_array_type))
+    run_info = set_namedtuple_field(run_info, (:save_single_file, getTypeInstanceForFlags(:save_single_file, info.settings.experiment.model_output.save_single_file, "Do")))
+    run_info = set_namedtuple_field(run_info, (:use_forward_diff, run_vals.use_forward_diff))
+    run_info = set_namedtuple_field(run_info, (:input_data_backend, info.settings.experiment.exe_rules.input_data_backend))
+    run_info = set_namedtuple_field(run_info, (:input_array_type, info.settings.experiment.exe_rules.input_array_type))
 
     parallelization = titlecase(info.settings.experiment.exe_rules.parallelization)
-    run_info = setTupleField(run_info, (:parallelization, getfield(Types, Symbol(parallelization*"Parallelization"))()))
-    land_output_type = getfield(Types, toUpperCaseFirst(info.settings.experiment.exe_rules.land_output_type, "PreAlloc"))()
-    run_info = setTupleField(run_info, (:land_output_type, land_output_type))
+    run_info = set_namedtuple_field(run_info, (:parallelization, getfield(Types, Symbol(parallelization*"Parallelization"))()))
+    land_output_type = getfield(Types, to_uppercase_first(info.settings.experiment.exe_rules.land_output_type, "PreAlloc"))()
+    run_info = set_namedtuple_field(run_info, (:land_output_type, land_output_type))
     info = (; info..., temp=(; info.temp..., helpers=(; info.temp.helpers..., run=run_info)))
     return info
 end
@@ -267,7 +267,7 @@ Prepares numeric helpers for maintaining consistent data types across models.
 - The updated `info` NamedTuple with numeric helpers added.
 """
 function setNumericHelpers(info::NamedTuple, ttype=info.settings.experiment.exe_rules.model_number_type)
-    showInfo(setNumericHelpers, @__FILE__, @__LINE__, "setting Numeric Helpers...")
+    print_info(setNumericHelpers, @__FILE__, @__LINE__, "setting Numeric Helpers...")
     num_type = getNumberType(ttype)
     tolerance = num_type(info.settings.experiment.exe_rules.tolerance)
     num_helpers = (; tolerance=tolerance, num_type=num_type)
@@ -328,7 +328,7 @@ function getSpinupSequenceWithTypes(seqq, helpers_dates)
                 if startswith(kk, helpers_dates.temporal_resolution)
                     skip_sampling = true
                 end
-                aggregator = createTimeSampler(helpers_dates.range, toUpperCaseFirst(seq[kk], "Time"), mean, skip_sampling)
+                aggregator = create_TimeSampler(helpers_dates.range, to_uppercase_first(seq[kk], "Time"), mean, skip_sampling)
                 seq["aggregator"] = aggregator
                 seq["aggregator_type"] = TimeNoDiff()
                 seq["aggregator_indices"] = [_ind for _ind in vcat(aggregator[1].indices...)]
@@ -364,14 +364,14 @@ Processes the spinup configuration and prepares the spinup sequence.
 - The updated `info` NamedTuple with spinup-related fields added.
 """
 function setSpinupInfo(info)
-    showInfo(setSpinupInfo, @__FILE__, @__LINE__, "setting Spinup Info...")
+    print_info(setSpinupInfo, @__FILE__, @__LINE__, "setting Spinup Info...")
     info = setRestartFilePath(info)
     infospin = info.settings.experiment.model_spinup
     # change spinup sequence dispatch variables to Val, get the temporal aggregators
     seqq = infospin.sequence
     seqq_typed = getSpinupSequenceWithTypes(seqq, info.temp.helpers.dates)
-    infospin = setTupleField(infospin, (:sequence, [_s for _s in seqq_typed]))
-    info = setTupleSubfield(info, :temp, (:spinup, infospin))
+    infospin = set_namedtuple_field(infospin, (:sequence, [_s for _s in seqq_typed]))
+    info = set_namedtuple_subfield(info, :temp, (:spinup, infospin))
     return info
 end
 
@@ -388,15 +388,15 @@ Copies basic experiment information into the temporary experiment configuration.
 - The updated `info` NamedTuple with basic experiment information added.
 """
 function setExperimentBasics(info)
-    showInfo(setExperimentBasics, @__FILE__, @__LINE__, "setting Basic Experiment Info...")
+    print_info(setExperimentBasics, @__FILE__, @__LINE__, "setting Basic Experiment Info...")
     ex_basics = info.settings.experiment.basics
     ex_basics_sel = (;)
     for k in propertynames(ex_basics)
         if k !== :config_files
             if k == :time
-                ex_basics_sel = setTupleField(ex_basics_sel, (:temporal_resolution, getfield(ex_basics[:time], :temporal_resolution)))
+                ex_basics_sel = set_namedtuple_field(ex_basics_sel, (:temporal_resolution, getfield(ex_basics[:time], :temporal_resolution)))
             else
-                ex_basics_sel = setTupleField(ex_basics_sel, (k, getfield(ex_basics, k)))
+                ex_basics_sel = set_namedtuple_field(ex_basics_sel, (k, getfield(ex_basics, k)))
             end 
         end
     end
@@ -418,7 +418,7 @@ Processes the experiment configuration and sets up all necessary fields for mode
 - The updated `info` NamedTuple with all necessary fields for model simulation.
 """
 function setupInfo(info::NamedTuple)
-    showInfo(setupInfo, @__FILE__, @__LINE__, "Setting and consolidating Experiment Info...")
+    print_info(setupInfo, @__FILE__, @__LINE__, "Setting and consolidating Experiment Info...")
     # @show info.settings.model_structure.parameter_table.optimized
     info = setExperimentBasics(info)
     # @info "  setupInfo: setting Output Basics..."
@@ -463,18 +463,18 @@ function setupInfo(info::NamedTuple)
     end
 
     if !isnothing(info.settings.experiment.exe_rules.longtuple_size)
-        selected_approach_forward = makeLongTuple(info.temp.models.forward, info.settings.experiment.exe_rules.longtuple_size)
+        selected_approach_forward = to_longtuple(info.temp.models.forward, info.settings.experiment.exe_rules.longtuple_size)
         info = @set info.temp.models.forward = selected_approach_forward
     end
 
-    showInfo(setupInfo, @__FILE__, @__LINE__, "Cleaning Info Fields...")
+    print_info(setupInfo, @__FILE__, @__LINE__, "Cleaning Info Fields...")
     data_settings = (; forcing = info.settings.forcing, optimization = info.settings.optimization)
     exe_rules = info.settings.experiment.exe_rules
-    info = dropFields(info, (:model_structure, :experiment, :output, :pools))
+    info = drop_namedtuple_fields(info, (:model_structure, :experiment, :output, :pools))
     info = (; info..., info.temp...)
-    info = setTupleSubfield(info, :experiment, (:data_settings, data_settings))
-    info = setTupleSubfield(info, :experiment, (:exe_rules, exe_rules))
-    info = dropFields(info, (:temp, :settings,))
+    info = set_namedtuple_subfield(info, :experiment, (:data_settings, data_settings))
+    info = set_namedtuple_subfield(info, :experiment, (:exe_rules, exe_rules))
+    info = drop_namedtuple_fields(info, (:temp, :settings,))
     return info
 end
 

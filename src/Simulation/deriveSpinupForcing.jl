@@ -17,7 +17,7 @@ function getAllSpinupForcing(forcing, spin_sequences::Vector{SpinupSequenceWithA
         forc_name = forc
         if forc_name ∉ keys(spinup_forcing)
             seq_forc = getSpinupForcing(forcing, seq, tem_helpers.vals.forcing_types)
-            spinup_forcing = setTupleField(spinup_forcing, (forc_name, seq_forc))
+            spinup_forcing = set_namedtuple_field(spinup_forcing, (forc_name, seq_forc))
         end
     end
     return spinup_forcing
@@ -84,7 +84,7 @@ aggregate the forcing variable with time where an aggregation/collection is need
 - `ag_type::TimeNoDiff`: a type dispatch to indicate that the variable has to be aggregated in time
 """
 function timeAggregateForcingV(v, _, aggregator, ag_type::TimeNoDiff)
-    vt=doTimeSampling(v, aggregator, ag_type)
+    vt=do_time_sampling(v, aggregator, ag_type)
     vt[:]
 end
 

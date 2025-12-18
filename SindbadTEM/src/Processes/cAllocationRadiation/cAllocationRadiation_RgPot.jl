@@ -5,7 +5,7 @@ struct cAllocationRadiation_RgPot <: cAllocationRadiation end
 
 function define(params::cAllocationRadiation_RgPot, forcing, land, helpers)
     @unpack_nt f_rg_pot ⇐ forcing
-	rg_pot_max = maxZero(f_rg_pot)
+	rg_pot_max = at_least_zero(f_rg_pot)
     @pack_nt (rg_pot_max) ⇒ land.cAllocationRadiation
 	return land
 end

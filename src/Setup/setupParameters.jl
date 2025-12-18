@@ -47,7 +47,7 @@ Parameters information for the selected models based on the specified settings.
 function getParameters end
 
 function getParameters(selected_models::LongTuple, num_type, model_timestep; return_table=true, show_info=false)
-    selected_models = getTupleFromLongTuple(selected_models)
+    selected_models = to_tuple(selected_models)
     return getParameters(selected_models, num_type, model_timestep; return_table=return_table, show_info=show_info)
 end
 
@@ -199,11 +199,15 @@ function getOptimizationParametersTable(parameter_table_all::Table, model_parame
             p_field = model_parameter_default
         end
         if !isnothing(p_field)
-            ml_json = getproperty(p_field, :is_ml)
-            nd_json = getproperty(p_field, :distribution)
-            is_ml[p_ind] = ml_json
-            dist[p_ind] = nd_json[1]
-            p_dist[p_ind] = [num_type.(nd_json[2])...]
+            if hasproperty(p_field, :is_ml)
+                ml_json = getproperty(p_field, :is_ml)
+                is_ml[p_ind] = ml_json
+            end
+            if hasproperty(p_field, :distribution)
+                nd_json = getproperty(p_field, :distribution)
+                dist[p_ind] = nd_json[1]
+                p_dist[p_ind] = [num_type.(nd_json[2])...]
+            end
         end
     end
     return parameter_table_all_filtered
@@ -256,7 +260,7 @@ A Tuple of Pair of Name and Indices corresponding to the model parameters in the
 function getModelParameterIndices end
 
 function getParameterIndices(selected_models::LongTuple, parameter_table::Table)
-    selected_models_tuple = getTupleFromLongTuple(selected_models)
+    selected_models_tuple = to_tuple(selected_models)
     return getParameterIndices(selected_models_tuple, parameter_table)
 end
 
@@ -376,7 +380,7 @@ Updates input parameters by comparing an original table with an updated table fr
 a merged table with updated parameters
 """
 function setInputParameters(original_table::Table, input_table::Table, model_timestep)
-    showInfo(setInputParameters, @__FILE__, @__LINE__, "→→→    override the default parameters and merge tables.")
+    print_info(setInputParameters, @__FILE__, @__LINE__, "→→→    override the default parameters and merge tables.")
     merged_table = copy(original_table)
     done_parameter_input = []
     skip_property = (:model_id, :initial, :default, :optimized, :approach_func, :lower, :upper)

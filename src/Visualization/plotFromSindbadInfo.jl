@@ -119,7 +119,7 @@ plotIOModelStructure(info, :compute, [:input, :output])
 
 """
 function plotIOModelStructure(info, which_function=:compute, which_field=[:input, :output])
-    showInfo(plotIOModelStructure, @__FILE__, @__LINE__, "plotting IO model structure for $(which_function) with fields $(which_field)", n_f=4)
+    print_info(plotIOModelStructure, @__FILE__, @__LINE__, "plotting IO model structure for $(which_function) with fields $(which_field)", n_f=4)
 
     in_out_models = getInOutModels(info.models.forward, which_function);
     unique_variables = getAllVariables(in_out_models, which_field)
@@ -204,7 +204,7 @@ function plotIOModelStructure(info, which_function=:compute, which_field=[:input
     if isempty(model_names) || isempty(unique_variables)
         field_tag = isa(which_field, AbstractString) ? which_field : string(which_field)
         title_str = "IO Visualization: $field_tag of $(which_function) of Models in $(info.experiment.basics.id)"
-        showInfo(plotIOModelStructure, @__FILE__, @__LINE__,
+        print_info(plotIOModelStructure, @__FILE__, @__LINE__,
                  "No IO variables/models found for $(which_function) ($(field_tag)); writing placeholder plot.", n_f=4)
         ax = plots_scatter([0.0], [0.0], markersize=0, label="", legend=false, grid=false,
                            size=(900, 400), title=title_str, xlims=(-1, 1), ylims=(-1, 1), widen=false)

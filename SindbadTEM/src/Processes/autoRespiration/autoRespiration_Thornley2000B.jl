@@ -49,7 +49,7 @@ function compute(params::autoRespiration_Thornley2000B, forcing, land, helpers)
 
         # scalars of maintenance respiration for models A; B & C
         # km is the maintenance respiration coefficient [d-1]
-        k_respiration_maintain_ix = minOne(one(eltype(C_to_N_cVeg)) / C_to_N_cVeg[ix] * RMN * auto_respiration_f_airT)
+        k_respiration_maintain_ix = at_most_one(one(eltype(C_to_N_cVeg)) / C_to_N_cVeg[ix] * RMN * auto_respiration_f_airT)
         k_respiration_maintain_su_ix = k_respiration_maintain[ix] * YG
 
         # growth respiration: R_g = (1.0 - YG) * (GPP * allocationToPool - R_m)
@@ -59,8 +59,8 @@ function compute(params::autoRespiration_Thornley2000B, forcing, land, helpers)
         RA_M_ix = k_respiration_maintain_ix * (cEco[ix] + YG * gpp * c_allocation[ix])
 
         # no negative growth or maintenance respiration
-        RA_G_ix = maxZero(RA_G_ix)
-        RA_M_ix = maxZero(RA_M_ix)
+        RA_G_ix = at_least_zero(RA_G_ix)
+        RA_M_ix = at_least_zero(RA_M_ix)
 
         # total respiration per pool: R_a = R_m + R_g
         cEcoEfflux_ix = RA_M_ix + RA_G_ix

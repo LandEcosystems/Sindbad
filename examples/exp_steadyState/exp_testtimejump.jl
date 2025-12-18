@@ -1,7 +1,7 @@
 using Revise
 using Sindbad
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 
 tjs = (1_000, 2_000, 5_000)#, 50_000, 100_000, 200_000)
 # tjs = (1, 10, 20, 30, 40, 50, 100, 500, 1000)#, 10000)

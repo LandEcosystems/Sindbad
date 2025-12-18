@@ -3,7 +3,7 @@ using ForwardDiff
 using Sindbad.Simulation
 using SindbadTEM.Metrics
 using Random
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 
 
 experiment_json = "../exp_gradWroasted/settings_gradWroasted/experiment.json"

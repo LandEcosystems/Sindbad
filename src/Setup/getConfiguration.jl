@@ -167,11 +167,11 @@ function getConfiguration(sindbad_experiment::String; replace_info=Dict())
     end
     # @show keys(info)
     if !endswith(sindbad_experiment, ".jld2")
-        infoTuple = dictToNamedTuple(new_info)
+        infoTuple = dict_to_namedtuple(new_info)
     end
     infoTuple = (; infoTuple..., temp=(; experiment=(; dirs=roots)))
 
-    showInfoSeparator()
+    print_info_separator()
 
     return infoTuple
     # return info
@@ -221,10 +221,10 @@ Reads the experiment configuration files (JSON or CSV) and returns a dictionary.
 """
 function readConfiguration(info_exp::AbstractDict, base_path::String)
     info = DataStructures.OrderedDict()
-    showInfo(readConfiguration, @__FILE__, @__LINE__, "reading configuration files")
+    print_info(readConfiguration, @__FILE__, @__LINE__, "reading configuration files")
     for (k, v) ∈ info_exp["experiment"]["basics"]["config_files"]
         config_path = joinpath(base_path, v)
-        showInfo(nothing, @__FILE__, @__LINE__, "→→→    `$(k)` ::: `$(config_path)`")
+        print_info(nothing, @__FILE__, @__LINE__, "→→→    `$(k)` ::: `$(config_path)`")
         info_exp["experiment"]["basics"]["config_files"][k] = config_path
         if endswith(v, ".json")
             tmp = parsefile(config_path; dicttype=DataStructures.OrderedDict)

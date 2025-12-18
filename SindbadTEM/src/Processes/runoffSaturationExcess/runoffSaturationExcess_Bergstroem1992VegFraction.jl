@@ -23,7 +23,7 @@ function compute(params::runoffSaturationExcess_Bergstroem1992VegFraction, forci
     # get the berg parameters according the vegetation fraction
     β_veg = max(β_min, β * frac_vegetation) # do this?
     # calculate land runoff from incoming water & current soil moisture
-    tmp_sat_exc_frac = clampZeroOne((tmp_soilW_total / tmp_smax_veg)^β_veg)
+    tmp_sat_exc_frac = clamp_zero_one((tmp_soilW_total / tmp_smax_veg)^β_veg)
     sat_excess_runoff = WBP * tmp_sat_exc_frac
     # update water balance pool
     WBP = WBP - sat_excess_runoff

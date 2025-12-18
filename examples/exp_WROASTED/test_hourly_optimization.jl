@@ -1,8 +1,8 @@
 using Revise
 using SindbadTEM
 using Sindbad
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
 begin_year = "1999"
 end_year = "2010"
@@ -30,7 +30,7 @@ optimize_it = false
 optimize_it = true
 path_output = nothing
 
-setLogLevel(:info)
+set_log_level(:info)
 
 parallelization_lib = "threads"
 model_array_type = "static_array"
@@ -74,7 +74,7 @@ observations = getObservation(info, forcing.helpers);
 obs_array = [Array(_o) for _o in observations.data]; # TODO: necessary now for performance because view of keyedarray is slow
 cost_options = prepCostOptions(obs_array, info.optimization.cost_options);
 
-# setLogLevel(:debug)
+# set_log_level(:debug)
 # @profview metricVector(run_helpers.output_array, obs_array, cost_options) # |> sum
 # set
 @time metricVector(run_helpers.output_array, obs_array, cost_options) # |> sum

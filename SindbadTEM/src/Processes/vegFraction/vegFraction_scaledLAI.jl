@@ -16,7 +16,7 @@ function compute(params::vegFraction_scaledLAI, forcing, land, helpers)
     end
 
     ## calculate variables
-    frac_vegetation = minOne(LAI * LAIscale)
+    frac_vegetation = at_most_one(LAI * LAIscale)
 
     ## pack land variables
     @pack_nt frac_vegetation ⇒ land.states

@@ -227,8 +227,8 @@ struct SpinupSequenceWithAggregator <: SpinupTypes
     spinup_mode::SpinupMode
     options::NamedTuple
     aggregator_indices::Vector{Int}
-    aggregator::Vector{TimeSampler.TimeSample}
-    aggregator_type::TimeSampler.TimeSampleMethod
+    aggregator::Vector{TimeSample}
+    aggregator_type::TimeSamplerMethod
 end
 purpose(::Type{SpinupSequenceWithAggregator}) = "Spinup sequence with time aggregation for corresponding forcingtime series"
 

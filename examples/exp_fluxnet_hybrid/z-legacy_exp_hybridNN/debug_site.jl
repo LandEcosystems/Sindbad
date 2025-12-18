@@ -2,7 +2,7 @@ using Sindbad.Simulation
 using JLD2
 using Sindbad.MachineLearning
 
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
 begin_year = "2000"
 end_year = "2017"
@@ -72,6 +72,6 @@ new_models = updateModelParameters(parameter_to_index, models, new_params)
 
 
 op = run_helpers.space_output[1];
-ov = valToSymbol(run_helpers.tem_info.vals.output_vars)
+ov = val_to_symbol(run_helpers.tem_info.vals.output_vars)
 
 lines(op[6][:,1])

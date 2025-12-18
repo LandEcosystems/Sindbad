@@ -369,15 +369,15 @@ variables = output_tuple.variables
 ```
 """
 function prepTEMOut(info::NamedTuple, forcing_helpers::NamedTuple)
-    showInfo(prepTEMOut, @__FILE__, @__LINE__, "preparing output helpers for Terrestrial Ecosystem Model (TEM)", n_f=4)
+    print_info(prepTEMOut, @__FILE__, @__LINE__, "preparing output helpers for Terrestrial Ecosystem Model (TEM)", n_f=4)
     land = info.helpers.land_init
     output_tuple = (;)
-    output_tuple = setTupleField(output_tuple, (:land_init, land))
+    output_tuple = set_namedtuple_field(output_tuple, (:land_init, land))
     @debug "     prepTEMOut: getting out variables, dimension and arrays..."
     outdims, outarray = getOutDimsArrays(info, forcing_helpers, info.helpers.run.output_array_type)
-    output_tuple = setTupleField(output_tuple, (:dims, outdims))
-    output_tuple = setTupleField(output_tuple, (:data, outarray))
-    output_tuple = setTupleField(output_tuple, (:variables, info.output.variables))
+    output_tuple = set_namedtuple_field(output_tuple, (:dims, outdims))
+    output_tuple = set_namedtuple_field(output_tuple, (:data, outarray))
+    output_tuple = set_namedtuple_field(output_tuple, (:variables, info.output.variables))
 
     output_tuple = setupOptiOutput(info, output_tuple, info.helpers.run.run_optimization)
     @debug "\n----------------------------------------------\n"
@@ -430,7 +430,7 @@ function setupOptiOutput(info::NamedTuple, output::NamedTuple, ::DoRunOptimizati
         backend=backend,
         overwrite=true)
     # list of parameter
-    output = setTupleField(output, (:parameter_dim, od))
+    output = set_namedtuple_field(output, (:parameter_dim, od))
     return output
 end
 

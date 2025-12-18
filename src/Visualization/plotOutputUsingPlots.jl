@@ -43,10 +43,10 @@ function plotPerformanceHistograms(out_opti)
         (obs_var_no_nan, obs_σ_no_nan, opt_var_no_nan) = getDataWithoutNaN(obs_var, obs_σ, opt_var);
 
         loss_space = map([run_helpers.space_ind...]) do lsi
-            opt_pix = getArrayView(opt_var, lsi)
-            def_pix = getArrayView(def_var, lsi)
-            obs_pix = getArrayView(obs_var, lsi)
-            obs_σ_pix = getArrayView(obs_σ, lsi)
+            opt_pix = view_at_trailing_indices(opt_var, lsi)
+            def_pix = view_at_trailing_indices(def_var, lsi)
+            obs_pix = view_at_trailing_indices(obs_var, lsi)
+            obs_σ_pix = view_at_trailing_indices(obs_σ, lsi)
             (obs_pix_no_nan, obs_σ_pix_no_nan, opt_pix_no_nan) = getDataWithoutNaN(obs_pix, obs_σ_pix, opt_pix)
             (_, _, def_pix_no_nan) = getDataWithoutNaN(obs_pix, obs_σ_pix, def_pix)
             [metric(lossMetric, def_pix_no_nan, obs_pix_no_nan, obs_σ_pix_no_nan), metric(lossMetric, opt_pix_no_nan, obs_pix_no_nan, obs_σ_pix_no_nan)]

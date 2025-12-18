@@ -188,7 +188,7 @@ end
 """
 function getLocData(output_array::AbstractArray, loc_ind)
     loc_output = map(output_array) do a
-        getArrayView(a, loc_ind)
+        view_at_trailing_indices(a, loc_ind)
     end
     return loc_output
 end
@@ -205,7 +205,7 @@ end
 """
 function getLocData(forcing::NamedTuple, loc_ind)
     loc_forcing = map(forcing) do a
-        getArrayView(a, loc_ind) |> Array
+        view_at_trailing_indices(a, loc_ind) |> Array
     end
     return loc_forcing
 end

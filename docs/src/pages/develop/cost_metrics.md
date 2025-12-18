@@ -16,7 +16,7 @@ To view the list of available metrics:
 To list all available cost metrics and their purposes, use:
 ```julia
 using Sindbad.Simulation
-showMethodsOf(PerfMetric)
+show_methods_of(PerfMetric)
 ```
 This will display a formatted list of all cost metrics and their descriptions, including:
 - The metric's purpose

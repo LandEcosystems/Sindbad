@@ -23,7 +23,7 @@ using Sindbad: OptimizationBBOxnes, OptimizationBBOadaptive, OptimizationBFGS, O
 
 function optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, ::OptimizationBBOxnes)
     default_options = (; maxiters = 100)
-    opt_options = mergeNamedTuple(default_options, algo_options)
+    opt_options = merge_namedtuple(default_options, algo_options)
     optim_cost = (p, tmp=nothing) -> cost_function(p)
     optim_prob = OptimizationProblem(optim_cost, default_values; lb=lower_bounds, ub=upper_bounds)
     optim_para = solve(optim_prob, BBO_xnes(); opt_options...)

@@ -29,7 +29,7 @@ Calculate the cost for a parameter vector.
 Cost value representing the difference between model outputs and observations
 
 # sindbad\\_cost\\_method:
-$(methodsOf(CostMethod))
+$(methods_of(CostMethod))
 
 """
 function cost end

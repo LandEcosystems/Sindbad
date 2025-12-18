@@ -18,13 +18,13 @@ function compute(params::gppSoilW_Keenan2009, forcing, land, helpers)
         soilW ⇐ land.pools
     end
 
-    max_AWC = maxZero(∑w_sat - ∑w_wp)
+    max_AWC = at_least_zero(∑w_sat - ∑w_wp)
     s_max = f_s_max * max_AWC
     s_min = f_s_min * s_max
 
     SM = max(sum(soilW), s_min)
     smsc = ((SM - s_min) / (s_max - s_min))^q
-    gpp_f_soilW = clampZeroOne(smsc)
+    gpp_f_soilW = clamp_zero_one(smsc)
 
     ## pack land variables
     @pack_nt gpp_f_soilW ⇒ land.diagnostics

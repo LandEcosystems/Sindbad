@@ -1,7 +1,7 @@
 using Revise
 using Sindbad
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_landWrapper/settings_landWrapper/experiment.json"
 begin_year = "1979"
 end_year = "2017"
@@ -45,7 +45,7 @@ forcing = getForcing(info);
 observations = getObservation(info, forcing.helpers);
 obs_array = [Array(_o) for _o in observations.data]; # TODO: necessary now for performance because view of keyedarray is slow
 
-info = dropFields(info, (:settings,));
+info = drop_namedtuple_fields(info, (:settings,));
 
 run_helpers = prepTEM(forcing, info);
 
