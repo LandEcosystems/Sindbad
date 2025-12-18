@@ -51,10 +51,10 @@ Add two vectors element-wise. This function is optimized for vectorized operatio
 ### `repVec`
 Replace the values of a vector with a new vector. Also available as the `@rep_vec` macro for vectors in `land.pools`.
 
-### `cumSum!`
+### `cumulative_sum!`
 Compute the cumulative sum of elements in an input vector and store the result in an output vector. This function is optimized for in-place operations.
 
-### `getFrac`
+### `safe_divide`
 Return either a ratio or numerator depending on whether the denominator is zero. This function is useful for handling division operations safely.
 
 ### `getZix`
@@ -64,7 +64,7 @@ A helper function to get the indices of certain components (e.g., cVeg) within a
 
 1. **Memory Efficiency**
    - Functions like `repElem` and `addToElem` avoid unnecessary array copies
-   - In-place operations are used where possible (e.g., `cumSum!`)
+   - In-place operations are used where possible (e.g., `cumulative_sum!`)
    - Views are created instead of copies when appropriate
 
 2. **Vectorization**
@@ -109,12 +109,12 @@ v = repElem(v, 10.0, nothing, nothing, 2)
 # In-place cumulative sum
 v = [1.0, 2.0, 3.0]
 out = similar(v)
-cumSum!(out, v)
+cumulative_sum!(out, v)
 
 # Safe division
 numerator = 10.0
 denominator = 2.0
-result = getFrac(numerator, denominator)
+result = safe_divide(numerator, denominator)
 
 # Component indexing
 cEco = [1.0, 2.0, 3.0, 4.0, 5.0]

@@ -19,7 +19,7 @@ and visualization workflows.
 ## Related (SINDBAD ecosystem)
 - `ErrorMetrics`: Model–observation metrics used across cost/diagnostics.
 - `TimeSampler`: Temporal sampling/aggregation helpers.
-- `UtilsKit`: Shared utilities used across modules.
+- `OmniTools`: Shared utilities used across modules.
 
 ## External (third-party)
 - `CSV`: Input/output of tabular forcing and calibration datasets.
@@ -71,10 +71,14 @@ and visualization workflows.
   - `CMAEvolutionStrategy` → `SindbadCMAEvolutionStrategyExt`
 
 # Examples:
-```julia
-using Sindbad
+```jldoctest
+julia> using Sindbad
 
-out = Sindbad.Experiment.runExperimentForward("experiment_config.json")
+julia> # Prepare an experiment from a configuration file
+julia> # info, forcing = prepExperiment("path/to/experiment_config.json")
+
+julia> # Run a forward simulation
+julia> # out = runExperimentForward("path/to/experiment_config.json")
 ```
 """
 module Sindbad
@@ -83,7 +87,7 @@ module Sindbad
   @reexport using SindbadTEM
   @reexport using SindbadTEM.StatsBase
   @reexport using NaNStatistics
-  @reexport using TimeSampler
+  @reexport using TimeSamplers
   @reexport using ErrorMetrics
 
   include("Types/Types.jl")
@@ -114,6 +118,6 @@ module Sindbad
   function addExtensionToSindbad(function_to_extend::Function, external_package::String)
     root_pkg = Base.moduleroot(parentmodule(function_to_extend))
     nameof(root_pkg) == :Sindbad || error("Expected a Sindbad function; got root package $(root_pkg).")
-    return addExtensionToFunction(function_to_extend, external_package; extension_location=:Folder)
+    return add_extension_to_function(function_to_extend, external_package; extension_location=:Folder)
   end
 end # module Sindbad

@@ -18,8 +18,8 @@ using Sindbad.Simulation
 To view available model approaches and their implementations:
 
 ```julia
-using Sindbad.Simulation: showMethodsOf
-showMethodsOf(LandEcosystem)
+using Sindbad.Simulation: show_methods_of
+show_methods_of(LandEcosystem)
 ```
 
 This will display all available model approaches that are subtypes of `LandEcosystem`.

@@ -29,32 +29,24 @@ Key processes include:
 - The module provides `getModelDocString` and `getApproachDocString` functions for automatic documentation generation.
 
 # Examples:
-1. **Defining a new process**:
-```julia
-using SindbadTEM.Processes
+```jldoctest
+julia> using SindbadTEM.Processes
 
-abstract type MyProcess <: LandEcosystem end
-purpose(::Type{MyProcess}) = "Description of my process."
-```
+julia> # Define a new process
+julia> abstract type MyProcess <: LandEcosystem end
 
-2. **Defining an approach with parameters**:
-```julia
-@bounds @describe @units @timescale @with_kw struct MyProcess_v1{T} <: MyProcess
-    param1::T = 1.0 | (0.0, 2.0) | "Description" | "units" | "timescale"
-end
-```
+julia> purpose(::Type{MyProcess}) = "Description of my process."
 
-3. **Implementing required methods**:
-```julia
-function define(params::MyProcess_v1, forcing, land, helpers)
-    # Initialize arrays and variables
-    return land
-end
+julia> # Define an approach with parameters (example structure)
+julia> # @bounds @describe @units @timescale @with_kw struct MyProcess_v1{T} <: MyProcess
+julia> #     param1::T = 1.0 | (0.0, 2.0) | "Description" | "units" | "timescale"
+julia> # end
 
-function compute(params::MyProcess_v1, forcing, land, helpers)
-    # Perform process calculations
-    return land
-end
+julia> # Implement required methods (example)
+julia> # function define(params::MyProcess_v1, forcing, land, helpers)
+julia> #     # Initialize arrays and variables
+julia> #     return land
+julia> # end
 ```
 
 """

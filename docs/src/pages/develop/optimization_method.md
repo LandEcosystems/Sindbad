@@ -81,7 +81,7 @@ Using a JSON file for `algorithm_optimization` allows for:
 To list all available optimization methods and their purposes, use:
 ```julia
 using Sindbad.Simulation
-showMethodsOf(ParameterOptimizationMethod)
+show_methods_of(ParameterOptimizationMethod)
 ```
 This will display a formatted list of all optimization methods and their descriptions.
 
@@ -143,7 +143,7 @@ Current methods include:
 In `src/Types/ParameterOptimizationTypes.jl`, add a new struct that subtypes `ParameterOptimizationMethod`:
 
 ```julia
-import UtilsKit: purpose
+import OmniTools: purpose
 
 # Define the new optimization type
 struct YourNewOptimizationMethod <: ParameterOptimizationMethod end

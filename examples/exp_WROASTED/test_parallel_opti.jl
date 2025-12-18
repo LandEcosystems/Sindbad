@@ -1,9 +1,10 @@
 using Revise
 using Sindbad
+using CMAEvolutionStrategy
 # using CairoMakie
 
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
 begin_year = "2000"
 end_year = "2017"
@@ -59,7 +60,7 @@ observation = out_opti.observation
 def_dat = out_opti.output.default;
 opt_dat = out_opti.output.optimized;
 costOpt = prepCostOptions(observation, info.optimization.cost_options);
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 foreach(costOpt) do var_row
     v = var_row.variable
     println("plot obs::", v)

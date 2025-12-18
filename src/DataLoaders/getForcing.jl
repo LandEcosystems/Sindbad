@@ -52,14 +52,14 @@ Generates a NamedTuple of helper information for forcing data.
 """
 function collectForcingHelpers(info, f_sizes, f_dimensions)
     f_helpers = (;)
-    f_helpers = setTupleField(f_helpers, (:dimensions, info.experiment.data_settings.forcing.data_dimension))
-    f_helpers = setTupleField(f_helpers, (:axes, f_dimensions))
+    f_helpers = set_namedtuple_field(f_helpers, (:dimensions, info.experiment.data_settings.forcing.data_dimension))
+    f_helpers = set_namedtuple_field(f_helpers, (:axes, f_dimensions))
     if hasproperty(info.experiment.data_settings.forcing, :subset)
-        f_helpers = setTupleField(f_helpers, (:subset, info.experiment.data_settings.forcing.subset))
+        f_helpers = set_namedtuple_field(f_helpers, (:subset, info.experiment.data_settings.forcing.subset))
     else
-        f_helpers = setTupleField(f_helpers, (:subset, nothing))
+        f_helpers = set_namedtuple_field(f_helpers, (:subset, nothing))
     end
-    f_helpers = setTupleField(f_helpers, (:sizes, f_sizes))
+    f_helpers = set_namedtuple_field(f_helpers, (:sizes, f_sizes))
     return f_helpers
 end
 
@@ -87,13 +87,13 @@ Creates a NamedTuple containing forcing data and metadata.
 - Helper information is generated using `collectForcingHelpers`.
 """
 function createForcingNamedTuple(incubes, f_sizes, f_dimensions, info)
-    showInfo(getForcing, @__FILE__, @__LINE__, "processing forcing helpers...")
+    print_info(getForcing, @__FILE__, @__LINE__, "processing forcing helpers...")
     @debug "     ::dimensions::"
     indims = getDataDims.(incubes, Ref(Symbol.(info.experiment.data_settings.forcing.data_dimension.space)))
     @debug "     ::variable names::"
     forcing_vars = keys(info.experiment.data_settings.forcing.variables)
     f_helpers = collectForcingHelpers(info, f_sizes, f_dimensions)
-    input_array_type = getfield(Types, toUpperCaseFirst(info.helpers.run.input_array_type, "Input"))()
+    input_array_type = getfield(Types, to_uppercase_first(info.helpers.run.input_array_type, "Input"))()
     typed_cubes = getInputArrayOfType(incubes, input_array_type)
     data_ts_type=[]
     for incube in typed_cubes
@@ -105,7 +105,7 @@ function createForcingNamedTuple(incubes, f_sizes, f_dimensions, info)
     end
     data_ts_type = [_dt for _dt in data_ts_type]
     f_types =  Tuple(Tuple.(Pair.(forcing_vars, data_ts_type)))
-    showInfoSeparator()
+    print_info_separator()
     forcing = (;
         data=typed_cubes,
         dims=indims,
@@ -132,6 +132,14 @@ Reads forcing data from the `data_path` specified in the experiment configuratio
   - `f_types`: The types of the forcing data (e.g., `ForcingWithTime` or `ForcingWithoutTime`).
   - `helpers`: Helper information for the forcing data.
 
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Load forcing data from experiment configuration
+julia> # forcing = getForcing(info)
+```
+
 # Notes:
 - Reads forcing data from the specified data path and processes it using the SINDBAD framework.
 - Handles spatiotemporal and spatial-only forcing data.
@@ -144,38 +152,38 @@ function getForcing(info::NamedTuple)
     data_path = forcing_data_settings.default_forcing.data_path
     if !isnothing(data_path)
         data_path = getAbsDataPath(info, data_path)
-        showInfo(getForcing, @__FILE__, @__LINE__, "default_data_path: `$(data_path)`")
+        print_info(getForcing, @__FILE__, @__LINE__, "default_data_path: `$(data_path)`")
         nc_default = loadDataFile(data_path)
     end
-    data_backend = getfield(Types, toUpperCaseFirst(info.helpers.run.input_data_backend, "Backend"))()
+    data_backend = getfield(Types, to_uppercase_first(info.helpers.run.input_data_backend, "Backend"))()
 
     forcing_mask = nothing
     if :sel_mask ∈ keys(forcing_data_settings)
         if !isnothing(forcing_data_settings.forcing_mask.data_path)
             mask_path = getAbsDataPath(info, forcing_data_settings.forcing_mask.data_path)
             _, forcing_mask = getYaxFromSource(nothing, mask_path, nothing, forcing_data_settings.forcing_mask.source_variable, info, data_backend)
-            forcing_mask = booleanizeArray(forcing_mask)
+            forcing_mask = positive_mask(forcing_mask)
         end
     end
 
     default_info = info.experiment.data_settings.forcing.default_forcing
     forcing_vars = keys(forcing_data_settings.variables)
     tar_dims = getTargetDimensionOrder(info)
-    showInfo(getForcing, @__FILE__, @__LINE__, "getting forcing variables. Units given in forcing settings are not strictly enforced but shown for reference. Bounds are applied after unit conversion...", n_m=1)
+    print_info(getForcing, @__FILE__, @__LINE__, "getting forcing variables. Units given in forcing settings are not strictly enforced but shown for reference. Bounds are applied after unit conversion...", n_m=1)
     vinfo = nothing
     f_sizes = nothing
     f_dimension = nothing
     num_type = Val{info.helpers.numbers.num_type}()
     incubes = map(forcing_vars) do k
         nc = nc_default
-        vinfo = getCombinedNamedTuple(default_info, forcing_data_settings.variables[k])
+        vinfo = merge_namedtuple_prefer_nonempty(default_info, forcing_data_settings.variables[k])
         data_path_v = getAbsDataPath(info, getfield(vinfo, :data_path))
         nc, yax = getYaxFromSource(nc, data_path, data_path_v, vinfo.source_variable, info, data_backend)
         incube = subsetAndProcessYax(yax, forcing_mask, tar_dims, vinfo, info, num_type)
         v_op = vinfo.additive_unit_conversion ? " + " : " * "
         v_op = v_op * "$(vinfo.source_to_sindbad_unit)"
         v_string = "`$(k)` ($(vinfo.sindbad_unit), $(vinfo.bounds)) = <$(vinfo.space_time_type)> `$(vinfo.source_variable)` ($(vinfo.source_unit)) $(v_op)"
-        showInfo(nothing, @__FILE__, @__LINE__, v_string, n_m=4)
+        print_info(nothing, @__FILE__, @__LINE__, v_string, n_m=4)
         if vinfo.space_time_type == "spatiotemporal" && isnothing(f_sizes)
             f_sizes = collectForcingSizes(info, incube)
             f_dimension = getSindbadDims(incube)

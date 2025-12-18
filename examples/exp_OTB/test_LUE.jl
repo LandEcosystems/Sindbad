@@ -2,8 +2,8 @@ using Revise
 using Sindbad
 # using CairoMakie
 
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_OTB/settings_OTB/experiment.json"
 begin_year = "1979"
 end_year = "2017"
@@ -93,7 +93,7 @@ costOpt = prepCostOptions(observation, info.optimization.cost_options)
 # some plots
 def_dat = out_opti.output.default;
 opt_dat = out_opti.output.optimized;
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 foreach(costOpt) do var_row
     v = var_row.variable
     println("plot obs::", v)

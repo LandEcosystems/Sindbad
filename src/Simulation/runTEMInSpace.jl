@@ -66,15 +66,15 @@ Parallelizes the SINDBAD Terrestrial Ecosystem Model (TEM) across multiple locat
 - **Data Safety**:
     - The function ensures data safety by replicating forcing, output, and land data for each location, avoiding data races during parallel execution.
 
-# Examples:
-1. **Parallelizing TEM using threads**:
-```julia
-parallelizeTEM!(selected_models, space_forcing, space_spinup_forcing, loc_forcing_t, space_output, space_land, tem_info, ThreadsParallelization())
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Parallelizing TEM using qbmap**:
-```julia
-parallelizeTEM!(selected_models, space_forcing, space_spinup_forcing, loc_forcing_t, space_output, space_land, tem_info, QbmapParallelization())
+julia> # Parallelize TEM using threads
+julia> # parallelizeTEM!(selected_models, space_forcing, space_spinup_forcing, loc_forcing_t, space_output, space_land, tem_info, ThreadsParallelization())
+
+julia> # Parallelize TEM using qbmap
+julia> # parallelizeTEM!(selected_models, space_forcing, space_spinup_forcing, loc_forcing_t, space_output, space_land, tem_info, QbmapParallelization())
 ```
 """
 function parallelizeTEM! end
@@ -150,20 +150,18 @@ Runs the SINDBAD Terrestrial Ecosystem Model (TEM) for all locations and time st
 - **Data Safety**:
     - The function ensures data safety by replicating forcing, output, and land data for each location, avoiding data races during parallel execution.
 
-# Examples:
-1. **Running TEM with preallocated arrays**:
-```julia
-output_array = runTEM!(selected_models, forcing, info)
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Running TEM with parallelization**:
-```julia
-output_array = runTEM!(forcing, info)
-```
+julia> # Run TEM with preallocated arrays (shorthand)
+julia> # output_array = runTEM!(forcing, info)
 
-3. **Running TEM with precomputed helpers**:
-```julia
-runTEM!(selected_models, space_forcing, space_spinup_forcing, loc_forcing_t, space_output, space_land, tem_info)
+julia> # Run TEM with preallocated arrays (detailed)
+julia> # output_array = runTEM!(selected_models, forcing, info)
+
+julia> # Run TEM with precomputed helpers
+julia> # runTEM!(selected_models, space_forcing, space_spinup_forcing, loc_forcing_t, space_output, space_land, tem_info)
 ```
 """
 function runTEM! end
@@ -241,18 +239,18 @@ end
 
 
 function timeLoopTEM!(selected_models, loc_forcing, loc_forcing_t, loc_output, land, forcing_types, model_helpers, output_vars, _, ::DoDebugModel) # debug the models
-    showInfo(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------forcing--------------------------------------------------------------`\n", display_color=(214,39,82))
+    print_info(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------forcing--------------------------------------------------------------`\n", display_color=(214,39,82))
     @time f_ts = getForcingForTimeStep(loc_forcing, loc_forcing_t, 1, forcing_types)
-    showInfoSeparator()
-    showInfo(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------each model--------------------------------------------------------------`\n", display_color=(214,39,82))
+    print_info_separator()
+    print_info(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------each model--------------------------------------------------------------`\n", display_color=(214,39,82))
     @time land = computeTEM(selected_models, f_ts, land, model_helpers, DoDebugModel())
-    showInfo(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------all models--------------------------------------------------------------`\n", display_color=(214,39,82))
+    print_info(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------all models--------------------------------------------------------------`\n", display_color=(214,39,82))
     @info "\nall models\n"
     @time land = computeTEM(selected_models, f_ts, land, model_helpers)
-    showInfo(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------set output--------------------------------------------------------------`\n", display_color=(214,39,82))
+    print_info(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------set output--------------------------------------------------------------`\n", display_color=(214,39,82))
     @info "\n\n"
     @time setOutputForTimeStep!(loc_output, land, 1, output_vars)
-    showInfo(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------each model--------------------------------------------------------------`\n", display_color=(214,39,82))
+    print_info(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------each model--------------------------------------------------------------`\n", display_color=(214,39,82))
     return nothing
 end
 

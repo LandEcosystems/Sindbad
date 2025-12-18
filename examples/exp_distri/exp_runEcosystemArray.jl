@@ -1,6 +1,6 @@
 using Revise
 using Sindbad
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_distri/settings_distri/experiment.json"
 info = getConfiguration(experiment_json);
 info = setupInfo(info);

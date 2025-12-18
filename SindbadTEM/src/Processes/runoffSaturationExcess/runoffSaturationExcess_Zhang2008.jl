@@ -21,7 +21,7 @@ function compute(params::runoffSaturationExcess_Zhang2008, forcing, land, helper
     end
     # a supply - demand limit concept cf Budyko
     # calc demand limit [X0]
-    res_sat = maxZero(sum(w_sat) - sum(soilW + ΔsoilW))
+    res_sat = at_least_zero(sum(w_sat) - sum(soilW + ΔsoilW))
     X0 = PET + res_sat
 
     # set sat_excess_runoff

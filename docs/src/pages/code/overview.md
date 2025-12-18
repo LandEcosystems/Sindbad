@@ -12,9 +12,7 @@ This page provides an overview of all SINDBAD packages and their main modules an
 | | [Visualization](visuals.md) | Visualization tools | Plotting and data visualization helpers |
 | [SindbadTEM](sindbadTEM.md) | - | Core terrestrial ecosystem models and types `Sindbad` | Main package for model processes, types, and utils |
 | | [Processes](models.md) | Model implementations | Ecosystem model processes and approaches |
-| | [Metrics](metrics.md) | Performance metrics | Cost functions, evaluation metrics, and validation tools |
 | | [Types](types.md) | SINDBAD Types | Definition of all SINDBAD types and purposes |
-| | [UtilsKit](utils.md) | Utility functions | Helper functions and common utilities for all packages |
 
 
 ::: tip `Exported` and `Internal` Sections
@@ -36,10 +34,8 @@ These remain accessible but require qualification with the module name (e.g., `M
 
 ### Core Package
 - **SindbadTEM**: The main package that provides the core of SINDBAD.
-  - **Models**: Module that implements various ecosystem model components and approaches.
-  - **Metrics**: Implements performance metrics and cost functions.
+  - **Processes**: Module that implements various ecosystem model components and approaches.
   - **Types**: Module that defines various types for dispatching on methods ranging from setup to cost computation.
-  - **UtilsKit**: Provides helper functions and common utilities used across packages.
 
 ### MDI Package
 #### Modeling Modules
@@ -62,9 +58,17 @@ Package Dependency
 ::: info Package Usage
 
 - Most application packages can be used independently for specific tasks
-- The core `Sindbad` and `UtilsKit` are required
+- The core `Sindbad` and `SindbadTEM` are required
 
-::: 
+:::
+
+## Related Packages
+
+SINDBAD integrates with several related packages that provide specialized functionality:
+
+- **[ErrorMetrics.jl](https://landecosystems.github.io/ErrorMetrics.jl)**: Performance metrics and error calculations for model evaluation and parameter optimization
+- **[TimeSamplers.jl](https://landecosystems.github.io/TimeSamplers.jl)**: Temporal sampling, aggregation, and resampling of time series data
+- **[OmniTools.jl](https://landecosystems.github.io/OmniTools.jl)**: Foundational utility functions for arrays, collections, display formatting, and type introspection 
 
 
 ```mermaid
@@ -79,41 +83,40 @@ graph TD
     SindbadTEM --> ArrayTypes[ArrayTypes]
     
     %% Lib packages
-    UtilsKit[UtilsKit] --> Sindbad
+    OmniTools[OmniTools] --> Sindbad
     DataLoaders[DataLoaders] --> Sindbad
-    DataLoaders --> UtilsKit
+    DataLoaders --> OmniTools
     
     Setup[Setup] --> Sindbad
-    Setup --> UtilsKit
+    Setup --> OmniTools
     Setup --> DataLoaders
     
-    SindbadMetrics[SindbadMetrics] --> Sindbad
-    SindbadMetrics --> UtilsKit
+    ErrorMetrics[ErrorMetrics] --> Sindbad
     
     Simulation[Simulation] --> SindbadTEM
-    Simulation --> UtilsKit
+    Simulation --> OmniTools
     Simulation --> Sindbad.DataLoaders
     Simulation --> Sindbad.Setup
-    Simulation --> SindbadTEM.Metrics
+    Simulation --> ErrorMetrics
     
     Sindbad.ParameterOptimization[Sindbad.ParameterOptimization] --> Sindbad
-    Sindbad.ParameterOptimization --> UtilsKit
-    Sindbad.ParameterOptimization --> SindbadMetrics
+    Sindbad.ParameterOptimization --> OmniTools
+    Sindbad.ParameterOptimization --> ErrorMetrics
     Sindbad.ParameterOptimization --> Setup
     Sindbad.ParameterOptimization --> SindbadTEM
     
     MachineLearning[MachineLearning] --> Sindbad
-    MachineLearning --> UtilsKit
-    MachineLearning --> SindbadMetrics
+    MachineLearning --> OmniTools
+    MachineLearning --> ErrorMetrics
     
     Visualization[Visualization] --> Sindbad
-    Visualization --> UtilsKit
+    Visualization --> OmniTools
     
     Sindbad.Simulation[Sindbad.Simulation] --> Sindbad
-    Sindbad.Simulation --> UtilsKit
+    Sindbad.Simulation --> OmniTools
     Sindbad.Simulation --> DataLoaders
     Sindbad.Simulation --> Setup
     Sindbad.Simulation --> SindbadTEM
     Sindbad.Simulation --> Sindbad.ParameterOptimization
-    Sindbad.Simulation --> SindbadMetrics    
+    Sindbad.Simulation --> ErrorMetrics    
 ```

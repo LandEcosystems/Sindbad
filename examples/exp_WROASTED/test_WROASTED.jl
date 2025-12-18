@@ -4,8 +4,8 @@ using CMAEvolutionStrategy
 # Simulation
 # using CairoMakie
 
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
 begin_year = "2000"
 end_year = "2017"
@@ -56,7 +56,7 @@ observation = out_opti.observation
 def_dat = out_opti.output.default;
 opt_dat = out_opti.output.optimized;
 costOpt = prepCostOptions(observation, info.optimization.cost_options);
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 foreach(costOpt) do var_row
     v = var_row.variable
     println("plot obs::", v)
@@ -89,8 +89,8 @@ foreach(costOpt) do var_row
     obs_var_n, obs_σ_n, opt_var_n = getDataWithoutNaN(obs_var, obs_σ, opt_var)
     metr_def = metric(lossMetric, def_var_n, obs_var_n, obs_σ_n)
     metr_opt = metric(lossMetric, opt_var_n, obs_var_n, obs_σ_n)
-    plot(xdata, obs_var; label="obs", seriestype=:scatter, mc=:black, ms=4, lw=0, ma=0.65, left_margin=1plots_cm)
-    plot!(xdata, def_var, color=:steelblue2, lw=1.5, ls=:dash, left_margin=1plots_cm, legend=:outerbottom, legendcolumns=3, label="def ($(round(metr_def, digits=2)))", size=(2000, 1000), title="$(vinfo["long_name"]) ($(vinfo["units"])) -> $(nameof(typeof(lossMetric)))")
-    plot!(xdata, opt_var; color=:seagreen3, label="opt ($(round(metr_opt, digits=2)))", lw=1.5, ls=:dash)
-    savefig(joinpath(info.output.dirs.figure, "wroasted_$(domain)_$(v).png"))
+    plots_plot(xdata, obs_var; label="obs", seriestype=:scatter, mc=:black, ms=4, lw=0, ma=0.65, left_margin=1plots_cm)
+    plots_plot!(xdata, def_var, color=:steelblue2, lw=1.5, ls=:dash, left_margin=1plots_cm, legend=:outerbottom, legendcolumns=3, label="def ($(round(metr_def, digits=2)))", size=(2000, 1000), title="$(vinfo["long_name"]) ($(vinfo["units"])) -> $(nameof(typeof(lossMetric)))")
+    plots_plot!(xdata, opt_var; color=:seagreen3, label="opt ($(round(metr_opt, digits=2)))", lw=1.5, ls=:dash)
+    plots_savefig(joinpath(info.output.dirs.figure, "wroasted_$(domain)_$(v).png"))
 end

@@ -78,6 +78,25 @@ end
 """
     prepOpti(forcing, observations, info, cost_method::CostModelObs)
 
+Prepares optimization setup including cost functions, parameter bounds, and initial values.
+
+# Arguments:
+- `forcing`: Forcing data for the simulation
+- `observations`: Observation data for cost calculation
+- `info`: Experiment configuration NamedTuple
+- `cost_method`: Cost calculation method type
+
+# Returns:
+- A NamedTuple containing optimization helpers including cost function, parameter bounds, and default values
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Prepare optimization setup
+julia> # opti_helpers = prepOpti(forcing, observations, info, CostModelObs())
+```
+
 Prepares optimization parameters, settings, and helper functions based on the provided inputs.
 
 # Arguments:
@@ -98,7 +117,7 @@ Prepares optimization parameters, settings, and helper functions based on the pr
 
 
 # cost_method:
-$(methodsOf(CostMethod))
+$(methods_of(CostMethod))
 
 ---
 

@@ -14,7 +14,7 @@ via `Plots.jl`, with hooks prepared for future interactive Makie support.
 # Dependencies
 ## Related (SINDBAD ecosystem)
 - `ErrorMetrics`: Metric helpers used in plot annotations and summaries.
-- `UtilsKit`: Shared helper utilities.
+- `OmniTools`: Shared helper utilities.
 
 ## External (third-party)
 - `Plots`: Default backend for static visualizations.
@@ -44,7 +44,7 @@ plotIOModelStructure(info)
 """
 module Visualization
     using SindbadTEM
-    using UtilsKit
+    using OmniTools
     using ..Types
     using Sindbad.ErrorMetrics
     # using GLMakie

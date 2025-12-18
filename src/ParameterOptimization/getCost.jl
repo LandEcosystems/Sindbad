@@ -19,6 +19,26 @@ combines the metric from all constraints based on the type of combination.
 - `::MetricMaximum`: return the maximum of the `metric_vector` as the metric.
 - `percentile_value::T`: `percentile_value^th` percentile of metric of each constraint as the overall metric
 
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> metric_vec = [0.5, 0.7, 0.3]
+3-element Vector{Float64}:
+ 0.5
+ 0.7
+ 0.3
+
+julia> combineMetric(metric_vec, MetricSum())
+1.5
+
+julia> combineMetric(metric_vec, MetricMinimum())
+0.3
+
+julia> combineMetric(metric_vec, MetricMaximum())
+0.7
+```
+
 """
 function combineMetric end
 
@@ -50,7 +70,36 @@ return model and obs data excluding for the common `NaN` or for the valid pixels
 - `y`: observation data
 - `yσ`: observational uncertainty data
 - `ŷ`: model simulation data/estimate
-- `idxs`: indices of valid data points    
+- `idxs`: indices of valid data points
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> y = [1.0, NaN, 3.0, 4.0]
+4-element Vector{Float64}:
+   1.0
+ NaN
+   3.0
+   4.0
+
+julia> yσ = [0.1, 0.2, 0.1, 0.1]
+4-element Vector{Float64}:
+ 0.1
+ 0.2
+ 0.1
+ 0.1
+
+julia> ŷ = [1.1, 2.0, 2.9, 4.1]
+4-element Vector{Float64}:
+ 1.1
+ 2.0
+ 2.9
+ 4.1
+
+julia> y_clean, yσ_clean, ŷ_clean = getDataWithoutNaN(y, yσ, ŷ)
+([1.0, 3.0, 4.0], [0.1, 0.1, 0.1], [1.1, 2.9, 4.1])
+```
 """
 function getDataWithoutNaN end
 
@@ -62,7 +111,7 @@ function getDataWithoutNaN(y, yσ, ŷ, idxs)
 end
 
 function getDataWithoutNaN(y, yσ, ŷ)
-    @debug sum(isInvalid.(y)), sum(isInvalid.(yσ)), sum(isInvalid.(ŷ))
+    @debug sum(is_invalid_number.(y)), sum(is_invalid_number.(yσ)), sum(is_invalid_number.(ŷ))
     idxs = (.!isnan.(y .* yσ .* ŷ)) # TODO this has to be run because LandWrapper produces a vector. So, dispatch with the inefficient versions without idxs argument
     return y[idxs], yσ[idxs], ŷ[idxs]
 end
@@ -77,7 +126,15 @@ returns a vector of metrics for variables in cost_options.variable.
 # Arguments:
 - `observations`: a NT or a vector of arrays of observations, their uncertainties, and mask to use for calculation of performance metric/loss
 - `model_output`: a collection of SINDBAD model output time series as a time series of stacked land NT
-- `cost_options`: a table listing each observation constraint and how it should be used to calculate the loss/metric of model performance    
+- `cost_options`: a table listing each observation constraint and how it should be used to calculate the loss/metric of model performance
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Calculate metrics for all cost options
+julia> # metric_vec = metricVector(model_output, observations, cost_options)
+```
 """
 function metricVector end
 

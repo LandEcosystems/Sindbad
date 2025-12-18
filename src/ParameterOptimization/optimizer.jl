@@ -18,7 +18,7 @@ Optimize model parameters using various optimization algorithms.
 
 # algorithm:
     
-    $(methodsOf(ParameterOptimizationMethod))
+    $(methods_of(ParameterOptimizationMethod))
 
 ---
 
@@ -31,20 +31,18 @@ Optimize model parameters using various optimization algorithms.
 - The `algo_options` argument allows fine-tuning of the optimization process for each algorithm.
 - Some algorithms (e.g., `BayesOptKMaternARD5`, `OptimizationBBOxnes`) require additional configuration steps, such as setting kernels or merging default and user-defined options.
 
-# Examples:
-1. **Using CMAES from CMAEvolutionStrategy.jl**:
-```julia
-optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, CMAEvolutionStrategyCMAES())
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Using BFGS from Optim.jl**:
-```julia
-optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, OptimBFGS())
-```
+julia> # Optimize using CMA-ES algorithm
+julia> # optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, CMAEvolutionStrategyCMAES())
 
-3. **Using Black Box Optimization (xNES) from Optimization.jl**:
-```julia
-optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, OptimizationBBOxnes())
+julia> # Optimize using BFGS algorithm
+julia> # optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, OptimBFGS())
+
+julia> # Optimize using Black Box Optimization (xNES)
+julia> # optim_para = optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, OptimizationBBOxnes())
 ```
 
 # Implementation Details:
@@ -71,7 +69,7 @@ function optimizer(::Any, default_values::Any, ::Any, ::Any, ::Any, x::Parameter
 end
 # function optimizer(cost_function, default_values, lower_bounds, upper_bounds, algo_options, ::BayesOptKMaternARD5)
 #     config = ConfigParameters()   # calls initialize_parameters_to_default of the C API
-#     config = mergeNamedTuple(config, algo_options)
+#     config = merge_namedtuple(config, algo_options)
 #     set_kernel!(config, "kMaternARD5")  # calls set_kernel of the C API
 #     config.sc_type = SC_MAP
 #     _, optimum = bayes_optimization(cost_function, lower_bounds, upper_bounds, config)

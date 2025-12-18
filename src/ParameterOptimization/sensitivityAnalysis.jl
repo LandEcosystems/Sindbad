@@ -19,7 +19,7 @@ Performs global sensitivity analysis using the specified method.
 
 # algorithm:
     
-    $(methodsOf(GSAMethod))
+    $(methods_of(GSAMethod))
 
 ---
 

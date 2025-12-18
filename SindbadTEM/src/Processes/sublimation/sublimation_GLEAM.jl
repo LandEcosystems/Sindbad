@@ -59,7 +59,7 @@ function compute(params::sublimation_GLEAM, forcing, land, helpers)
     #PTterm = (fei.Δ / (fei.Δ+fei.γ)) / fei.λ
     tmp = α * f_rn * (Δ / (Δ + γ)) / λ
 
-    PTtermSub = maxZero(tmp)
+    PTtermSub = at_least_zero(tmp)
 
     # Then sublimation [mm/day] is calculated in GLEAM using a P.T. equation
     sublimation = min(snowW[1] + ΔsnowW[1], PTtermSub * frac_snow) # assumes that sublimation occurs from the 1st snow layer if there is multilayered snow model

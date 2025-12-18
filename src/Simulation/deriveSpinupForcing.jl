@@ -9,6 +9,17 @@ prepare the spinup forcing all forcing setups in the spinup sequence
 - `forcing`: a forcing NT that contains the forcing time series set for ALL locations
 - `spin_seq`: a sequence of information to carry out spinup at different steps with information on models to use, forcing, stopping critera, etc.
 - `tem_helpers`: helper NT with necessary objects for model run and type consistencies
+
+# Returns:
+- `spinup_forcing::NamedTuple`: A NamedTuple containing aggregated forcing data for each spinup sequence
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Prepare spinup forcing for all sequences
+julia> # spinup_forcing = getAllSpinupForcing(forcing, spin_sequences, tem_helpers)
+```
 """
 function getAllSpinupForcing(forcing, spin_sequences::Vector{SpinupSequenceWithAggregator}, tem_helpers)
     spinup_forcing = (;)
@@ -17,7 +28,7 @@ function getAllSpinupForcing(forcing, spin_sequences::Vector{SpinupSequenceWithA
         forc_name = forc
         if forc_name ∉ keys(spinup_forcing)
             seq_forc = getSpinupForcing(forcing, seq, tem_helpers.vals.forcing_types)
-            spinup_forcing = setTupleField(spinup_forcing, (forc_name, seq_forc))
+            spinup_forcing = set_namedtuple_field(spinup_forcing, (forc_name, seq_forc))
         end
     end
     return spinup_forcing
@@ -84,7 +95,7 @@ aggregate the forcing variable with time where an aggregation/collection is need
 - `ag_type::TimeNoDiff`: a type dispatch to indicate that the variable has to be aggregated in time
 """
 function timeAggregateForcingV(v, _, aggregator, ag_type::TimeNoDiff)
-    vt=doTimeSampling(v, aggregator, ag_type)
+    vt=do_time_sampling(v, aggregator, ag_type)
     vt[:]
 end
 

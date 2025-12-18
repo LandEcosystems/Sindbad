@@ -31,11 +31,11 @@ function compute(params::rootWaterUptake_proportion, forcing, land, helpers)
     # get the transpiration
     # to_uptake = o_one * transpiration
     PAWTotal = sum(PAW)
-    to_uptake = maxZero(oftype(PAWTotal, transpiration))
+    to_uptake = at_least_zero(oftype(PAWTotal, transpiration))
 
     # extract from top to bottom
     for sl ∈ eachindex(land.pools.soilW)
-        uptake_proportion = to_uptake * getFrac(PAW[sl], PAWTotal)
+        uptake_proportion = to_uptake * safe_divide(PAW[sl], PAWTotal)
         @rep_elem uptake_proportion ⇒ (root_water_uptake, sl, :soilW)
         @add_to_elem -root_water_uptake[sl] ⇒ (ΔsoilW, sl, :soilW)
     end

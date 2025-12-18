@@ -3,8 +3,8 @@ using Sindbad.DataLoaders
 using Sindbad.Simulation
 using SindbadTEM.Metrics
 using Sindbad.ParameterOptimization
-#using Plots
-toggleStackTraceNT()
+#
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_hack_gradient/settings_gradient/experiment.json"
 begin_year = "2000"
 end_year = "2017"
@@ -55,7 +55,7 @@ observations = getObservation(info, forcing.helpers);
 obs_array = [Array(_o) for _o in observations.data]; # TODO: necessary now for performance because view of keyedarray is slow
 cost_options = prepCostOptions(obs_array, info.optimization.cost_options);
 
-# setLogLevel(:debug)
+# set_log_level(:debug)
 # @profview metricVector(run_helpers.output_array, obs_array, cost_options) # |> sum
 @time metricVector(run_helpers.output_array, obs_array, cost_options) # |> sum
 

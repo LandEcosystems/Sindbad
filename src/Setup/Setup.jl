@@ -10,8 +10,8 @@ This module is designed to produce the SINDBAD `info` object, which contains all
 # Dependencies
 ## Related (SINDBAD ecosystem)
 - `ErrorMetrics`: Metric type construction for cost options.
-- `TimeSampler`: Temporal setup helpers.
-- `UtilsKit`: Shared utilities (e.g. `Table`).
+- `TimeSamplers`: Temporal setup helpers.
+- `OmniTools`: Shared utilities (e.g. `Table`).
 
 ## External (third-party)
 - `CSV`, `JLD2`, `JSON`: Configuration and persistence tooling.
@@ -46,8 +46,8 @@ This module is designed to produce the SINDBAD `info` object, which contains all
 module Setup
 
    using SindbadTEM
-   @reexport using UtilsKit: Table
-   using TimeSampler
+   @reexport using OmniTools.ForCollections: Table
+   using TimeSamplers
    using ErrorMetrics
    using ..Types
    using ConstructionBase

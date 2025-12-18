@@ -1,9 +1,9 @@
 using Revise
 using Sindbad
 
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 
-setLogLevel(:warn)
+set_log_level(:warn)
 
 # site_index = Base.parse(Int, ENV["SLURM_ARRAY_TASK_ID"])
 for site_index in 1:205
@@ -149,7 +149,7 @@ for site_index in 1:205
             output_vars = info.output.variables
             output_dims = getOutDims(info, out_forw.forcing.helpers)
 
-            setLogLevel(:warn)
+            set_log_level(:warn)
             saveOutCubes(info.output.file_info.file_prefix, info.output.file_info.global_metadata, output_array_forw, output_dims, output_vars, "zarr", info.experiment.basics.temporal_resolution, DoSaveSingleFile())
             saveOutCubes(info.output.file_info.file_prefix, info.output.file_info.global_metadata, output_array_forw, output_dims, output_vars, "zarr", info.experiment.basics.temporal_resolution, DoNotSaveSingleFile())
 

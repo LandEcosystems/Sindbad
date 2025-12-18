@@ -17,6 +17,17 @@ Filters a parameter table based on a specified property and values.
 
 # Returns
 A filtered parameter table.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Filter parameter table by model
+julia> # filtered_table = filterParameterTable(parameter_table; prop_name=:model, prop_values=(:gpp,))
+
+julia> # Return all parameters
+julia> # all_params = filterParameterTable(parameter_table; prop_values=:all)
+```
 """
 function filterParameterTable(parameter_table::Table; prop_name::Symbol=:model, prop_values::Union{Vector{Symbol},Symbol}=:all)
     if prop_values == :all
@@ -43,11 +54,19 @@ Retrieves parameters for the specified models with given numerical type and time
 
 # Returns
 Parameters information for the selected models based on the specified settings.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Get parameters for selected models
+julia> # param_table = getParameters(selected_models, Float64, model_timestep)
+```
 """
 function getParameters end
 
 function getParameters(selected_models::LongTuple, num_type, model_timestep; return_table=true, show_info=false)
-    selected_models = getTupleFromLongTuple(selected_models)
+    selected_models = to_tuple(selected_models)
     return getParameters(selected_models, num_type, model_timestep; return_table=return_table, show_info=show_info)
 end
 
@@ -199,11 +218,15 @@ function getOptimizationParametersTable(parameter_table_all::Table, model_parame
             p_field = model_parameter_default
         end
         if !isnothing(p_field)
-            ml_json = getproperty(p_field, :is_ml)
-            nd_json = getproperty(p_field, :distribution)
-            is_ml[p_ind] = ml_json
-            dist[p_ind] = nd_json[1]
-            p_dist[p_ind] = [num_type.(nd_json[2])...]
+            if hasproperty(p_field, :is_ml)
+                ml_json = getproperty(p_field, :is_ml)
+                is_ml[p_ind] = ml_json
+            end
+            if hasproperty(p_field, :distribution)
+                nd_json = getproperty(p_field, :distribution)
+                dist[p_ind] = nd_json[1]
+                p_dist[p_ind] = [num_type.(nd_json[2])...]
+            end
         end
     end
     return parameter_table_all_filtered
@@ -256,7 +279,7 @@ A Tuple of Pair of Name and Indices corresponding to the model parameters in the
 function getModelParameterIndices end
 
 function getParameterIndices(selected_models::LongTuple, parameter_table::Table)
-    selected_models_tuple = getTupleFromLongTuple(selected_models)
+    selected_models_tuple = to_tuple(selected_models)
     return getParameterIndices(selected_models_tuple, parameter_table)
 end
 
@@ -376,7 +399,7 @@ Updates input parameters by comparing an original table with an updated table fr
 a merged table with updated parameters
 """
 function setInputParameters(original_table::Table, input_table::Table, model_timestep)
-    showInfo(setInputParameters, @__FILE__, @__LINE__, "→→→    override the default parameters and merge tables.")
+    print_info(setInputParameters, @__FILE__, @__LINE__, "→→→    override the default parameters and merge tables.")
     merged_table = copy(original_table)
     done_parameter_input = []
     skip_property = (:model_id, :initial, :default, :optimized, :approach_func, :lower, :upper)

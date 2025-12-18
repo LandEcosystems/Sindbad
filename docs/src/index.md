@@ -22,7 +22,7 @@ hero:
       link: pages/code/overview
     - theme: alt
       text: Repository
-      link: https://github.com/EarthyScience/SINDBAD
+      link: https://github.com/LandEcosystems/Sindbad
 features:
   - icon: <img width="64" height="64" src="https://img.icons8.com/?size=100&id=B1TKpLjVCRyp&format=png&color=000000" alt="modular-icon"/>
     title: Challenge

@@ -11,7 +11,7 @@ This module defines the `LandEcosystem` supertype, which serves as the base for 
 # Dependencies
 Key dependencies used/re-exported by the module include:
 - `Reexport`: Re-export helpers (`@reexport`).
-- `UtilsKit`: Shared utilities and `purpose` integration.
+- `OmniTools`: Shared utilities and `purpose` integration.
 - `CodeTracking`: Development/debug helpers.
 - `DataStructures`: Collection types used across TEM utilities.
 - `StaticArraysCore`: Fixed-size and sized array types for performance.
@@ -32,40 +32,29 @@ Key dependencies used/re-exported by the module include:
 - Designed to be lightweight and modular, allowing seamless integration with other SINDBAD modules in the top src directory of the repository.
 
 # Examples
-1. **Defining a new SINDBAD model**:
-```julia
-struct MyProcess <: LandEcosystem
-    # Define model-specific fields
-end
-```
+```jldoctest
+julia> using SindbadTEM
 
-2. **Using utilities from the package**:
-```julia
-using Sindbad.Simulation
-# Access utilities or models
-flattened_data = flatten(nested_data)
-```
+julia> # Define a new SINDBAD model
+julia> struct MyProcess <: LandEcosystem
+           # Define model-specific fields
+       end
 
-3. **Querying the variable catalog**:
-```julia
-using Sindbad.Simulation
-catalog = getVariableCatalog()
+julia> # Query the variable catalog
+julia> # catalog = getVariableCatalog()
 ```
 """
 module SindbadTEM
    using Reexport: @reexport
-   @reexport using UtilsKit
-   import UtilsKit: purpose
+   @reexport using OmniTools
+   import OmniTools: purpose
    @reexport using Reexport
    @reexport using Pkg
    @reexport using CodeTracking
    @reexport using DataStructures: DataStructures
-   # @reexport using Dates
-   # @reexport using Flatten: flatten, metaflatten, fieldnameflatten, parentnameflatten
    @reexport using StaticArraysCore: StaticArray, SVector, MArray, SizedArray
    @reexport using Accessors: @set
    @reexport using StatsBase
-   # @reexport using NaNStatistics
    @reexport using InteractiveUtils
    @reexport using Crayons
    @reexport using Base.Docs: doc as base_doc
@@ -89,12 +78,7 @@ module SindbadTEM
    include("TEMUtils.jl")
    include("TEMVariableCatalog.jl")
    include("Processes/Processes.jl")
-   # include("generateCode.jl")
    @reexport using .Processes
-   # include("Utils/Utils.jl")
-   # @reexport using .Utils
-   # include("Metrics/Metrics.jl")
-   # @reexport using .Metrics
 
    # append the docstring of the LandEcosystem type to the docstring of the SindbadTEM module so that all the methods of the LandEcosystem type are included after the models have been described
    @doc """
@@ -110,37 +94,39 @@ module SindbadTEM
    - `update`: Update pools within a single time step
 
 
-   # Example
-   ```julia
-   # Define a new model type
-   struct MyProcess <: LandEcosystem end
+   # Examples
+   ```jldoctest
+   julia> using SindbadTEM
 
-   # Implement required methods
-   function define(params::MyProcess, forcing, land, helpers)
-   # Initialize arrays and variables
-   return land
-   end
+   julia> # Define a new model type
+   julia> struct MyProcess <: LandEcosystem end
 
-   function precompute(params::MyProcess, forcing, land, helpers)
-   # Update variables with new realizations
-   return land
-   end
+   julia> # Implement required methods
+   julia> function define(params::MyProcess, forcing, land, helpers)
+              # Initialize arrays and variables
+              return land
+          end
 
-   function compute(params::MyProcess, forcing, land, helpers)
-   # Update model state in time
-   return land
-   end
+   julia> function precompute(params::MyProcess, forcing, land, helpers)
+              # Update variables with new realizations
+              return land
+          end
 
-   function update(params::MyProcess, forcing, land, helpers)
-   # Update pools within a single time step
-   return land
-   end
+   julia> function compute(params::MyProcess, forcing, land, helpers)
+              # Update model state in time
+              return land
+          end
+
+   julia> function update(params::MyProcess, forcing, land, helpers)
+              # Update pools within a single time step
+              return land
+          end
    ```
 
    ---
 
    # Extended help
-   $(methodsOf(LandEcosystem, purpose_function=purpose))
+   $(methods_of(LandEcosystem, purpose_function=purpose))
    """
    LandEcosystem
    

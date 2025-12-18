@@ -40,7 +40,8 @@ using Sindbad.Types
 """
 module Types
     import Sindbad: purpose
-    using Sindbad: getTypeDocString, SindbadTypes, TimeSampler
+    using Sindbad: get_type_docstring, SindbadTypes
+    using TimeSamplers
 
     # ------------------------- SindbadTypes ------------------------------------------------------------
     include("LandTypes.jl")
@@ -53,7 +54,7 @@ module Types
 
     # append the docstring of the SindbadTypes type to the docstring of the Sindbad module so that all the methods of the SindbadTypes type are included after the models have been described
     @doc """
-    $(getTypeDocString(SindbadTypes, purpose_function=purpose))
+    $(get_type_docstring(SindbadTypes, purpose_function=purpose))
     """
     SindbadTypes
 end

@@ -52,7 +52,7 @@ end
 
 # Custom Join layers
 # from
-# https://fluxml.ai/Flux.jl/stable/tutorials/custom_layers/
+# https://fluxml.ai/Flux.jl/dev/tutorials/custom_layers/
 
 struct Join{T, F}
     combine::F
@@ -100,7 +100,7 @@ end
 # ? multiple outputs and one input
 # We would also like to have multiple outputs, so that different predictors can be evaluated independently in the loss function.
 # from
-# https://fluxml.ai/Flux.jl/stable/tutorials/custom_layers/#Multiple-outputs:-a-custom-Split-layer
+# https://fluxml.ai/Flux.jl/dev/tutorials/custom_layers/#Multiple-outputs:-a-custom-Split-layer
 
 # custom split layer
 struct SplitNN{T}

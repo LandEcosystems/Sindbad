@@ -65,7 +65,7 @@ function getLocDataObsN(outcubes, forcing, obs_array, loc_space_map)
     ar_inds = last.(loc_space_map)
 
     loc_output = map(outcubes) do a
-        return getArrayView(a, ar_inds)
+        return view_at_trailing_indices(a, ar_inds)
     end
     return loc_forcing, loc_output, loc_obs
 end

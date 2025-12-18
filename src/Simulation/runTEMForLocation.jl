@@ -68,15 +68,18 @@ Runs the SINDBAD Terrestrial Ecosystem Model (TEM) for a single location, with o
 - If spinup is disabled (`DoNotSpinupTEM`), the function directly runs the main simulation.
 - The function prepares the necessary inputs and configurations using `prepTEM` before executing the simulation.
 
-# Examples:
-1. **Running TEM with spinup**:
-```julia
-land_time_series = runTEM(selected_models, forcing, loc_spinup_forcing, loc_forcing_t, loc_land, tem_info)
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Running TEM without spinup**:
-```julia
-land_time_series = runTEM(selected_models, forcing, nothing, loc_forcing_t, loc_land, tem_info)
+julia> # Run TEM with spinup (shorthand version)
+julia> # land_time_series = runTEM(forcing, info)
+
+julia> # Run TEM with spinup (detailed version)
+julia> # land_time_series = runTEM(selected_models, forcing, loc_spinup_forcing, loc_forcing_t, loc_land, tem_info)
+
+julia> # Run TEM without spinup
+julia> # land_time_series = runTEM(selected_models, forcing, nothing, loc_forcing_t, loc_land, tem_info)
 ```
 """
 function runTEM end
@@ -166,12 +169,12 @@ function timeLoopTEM(selected_models, loc_forcing, loc_forcing_t, land, tem_info
 end
 
 function timeLoopTEM(selected_models, loc_forcing, loc_forcing_t, land, tem_info, ::DoDebugModel) # debug the models
-    showInfo(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------forcing--------------------------------------------------------------`\n", display_color=(214,39,82))
+    print_info(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------forcing--------------------------------------------------------------`\n", display_color=(214,39,82))
     @time f_ts = getForcingForTimeStep(loc_forcing, loc_forcing_t, 1, tem_info.vals.forcing_types)
-    showInfo(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------each model--------------------------------------------------------------`\n", display_color=(214,39,82))
+    print_info(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------each model--------------------------------------------------------------`\n", display_color=(214,39,82))
     @time land = computeTEM(selected_models, f_ts, land, tem_info.model_helpers, tem_info.run.debug_model)
-    showInfo(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------all models--------------------------------------------------------------`\n", display_color=(214,39,82))
+    print_info(nothing, @__FILE__, @__LINE__, "\n`----------------------------------------all models--------------------------------------------------------------`\n", display_color=(214,39,82))
     @time land = computeTEM(selected_models, f_ts, land, tem_info.model_helpers)
-    showInfoSeparator()
+    print_info_separator()
     return [land]
 end

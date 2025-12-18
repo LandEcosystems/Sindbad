@@ -77,7 +77,7 @@ Applies a series of cleaning steps to the data, including replacing invalid data
 Cleaned data according to the specified type parameter T
 """
 function cleanData(_data, _data_fill, _data_info, ::Val{T}) where {T}
-    _data = replaceInvalid(_data, _data_fill)
+    _data = replace_invalid_number(_data, _data_fill)
     _data = applyUnitConversion(_data, _data_info.source_to_sindbad_unit,
         _data_info.additive_unit_conversion)
     bounds = _data_info.bounds
@@ -438,8 +438,8 @@ function subsetAndProcessYax(yax, forcing_mask, tar_dims, _data_info, info, ::Va
     if clean_data
         yax = mapCleanData(yax, yax_qc, vfill, bounds_qc, _data_info, vNT)
     else
-        yax = map(yax_point -> replaceInvalid(yax_point, vfill), yax)
-        yax = num_type.(yax)
+        yax = map(yax_point -> replace_invalid_number(yax_point, vfill), yax)
+        # yax = num_type.(yax)
     end
     return yax
 end

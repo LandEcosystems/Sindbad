@@ -69,7 +69,7 @@ function compute(params::PET_Lu2005, forcing, land, helpers)
     G = G_base * (ΔTair) / Δt
     G = zero(G) #@needscheck: current G is set to zero because the original formula looked at tomorrow's temperature, and we only have today and yesterday's data available during a model run
     PET = (α * (Δ / (Δ + γ)) * (f_rn - G)) / λ
-    PET = maxZero(PET)
+    PET = at_least_zero(PET)
 
     Tair_prev = f_airT
 

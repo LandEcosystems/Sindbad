@@ -5,7 +5,7 @@ using Sindbad
 using PyCall
 pickle = pyimport("pickle")
 
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 
 forcing_set = "erai"
 site_info = CSV.File(
@@ -58,7 +58,7 @@ for site_index in site_range
     base_path_site = joinpath(base_path_output, domain * "_" * base_exp_name)
     info_path = joinpath(base_path_site, "settings/info.jld2")
     info = load(info_path, "info")
-    setLogLevel(:warn)
+    set_log_level(:warn)
     forcing = getForcing(info)
 
     observations = getObservation(info, forcing.helpers)

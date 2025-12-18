@@ -48,13 +48,13 @@ function compute(params::autoRespiration_Thornley2000A, forcing, land, helpers)
 
         # scalars of maintenance respiration for models A; B & C
         # km is the maintenance respiration coefficient [d-1]
-        k_respiration_maintain_ix = minOne(one(eltype(C_to_N_cVeg)) / C_to_N_cVeg[ix] * RMN * auto_respiration_f_airT)
+        k_respiration_maintain_ix = at_most_one(one(eltype(C_to_N_cVeg)) / C_to_N_cVeg[ix] * RMN * auto_respiration_f_airT)
         k_respiration_maintain_su_ix = k_respiration_maintain[ix] * YG
 
         # maintenance respiration first: R_m = km * C
         RA_M_ix = k_respiration_maintain_ix * cEco[ix]
         # no negative maintenance respiration
-        RA_M_ix = maxZero(RA_M_ix)
+        RA_M_ix = at_least_zero(RA_M_ix)
 
         #TODO: check if this is correct
         # if helpers.pools.components.cEco[ix] == :cVegReserve
@@ -68,7 +68,7 @@ function compute(params::autoRespiration_Thornley2000A, forcing, land, helpers)
         RA_G_ix = (one(YG) - YG) * (gpp * c_allocation[ix] - RA_M_ix)
 
         # no negative growth respiration
-        RA_G_ix = maxZero(RA_G_ix)
+        RA_G_ix = at_least_zero(RA_G_ix)
 
         # total respiration per pool: R_a = R_m + R_g
         cEcoEfflux_ix = RA_M_ix + RA_G_ix

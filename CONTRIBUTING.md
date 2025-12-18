@@ -13,7 +13,7 @@ Thank you for your interest in contributing to SINDBAD! This guide will help you
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/EarthyScience/SINDBAD.git
+   git clone https://github.com/LandEcosystems/Sindbad.git
    cd SINDBAD
    ```
 

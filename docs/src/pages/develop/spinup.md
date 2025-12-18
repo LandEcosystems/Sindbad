@@ -49,7 +49,7 @@ using Sindbad.Simulation
 To list all available spinup methods and their purposes, use:
 ```julia
 using Sindbad.Simulation
-showMethodsOf(SpinupMode)
+show_methods_of(SpinupMode)
 ```
 This will display a formatted list of all spinup methods and their descriptions.
 
@@ -82,7 +82,7 @@ SINDBAD uses a type-based dispatch system for spinup methods. To add a new spinu
 In `src/Types/SpinupTypes.jl`, add a new struct and its purpose function:
 
 ```julia
-import UtilsKit: purpose
+import OmniTools: purpose
 
 # Define the new spinup type
 struct YourNewSpinupMode <: SpinupMode end

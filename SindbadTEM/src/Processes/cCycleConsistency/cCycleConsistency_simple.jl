@@ -12,8 +12,8 @@ function define(params::cCycleConsistency_simple, forcing, land, helpers)
     end
     # make list of indices which give carbon to other pools during the flow, and separate them if 
     # they are above or below the diagonal in flow vector
-    giver_upper = Tuple([ind[2] for ind ∈ findall(>(0), flagUpper(c_flow_A_array) .* c_flow_A_array)])
-    giver_lower = Tuple([ind[2] for ind ∈ findall(>(0), flagUpper(c_flow_A_array) .* c_flow_A_array)])
+giver_upper = Tuple([ind[2] for ind ∈ findall(>(0), upper_triangle_mask(c_flow_A_array) .* c_flow_A_array)])
+giver_lower = Tuple([ind[2] for ind ∈ findall(>(0), lower_triangle_mask(c_flow_A_array) .* c_flow_A_array)])
     giver_upper_unique = unique(giver_upper)
     giver_lower_unique = unique(giver_lower)
     giver_upper_indices = []
@@ -37,7 +37,7 @@ throwError(land, msg)
 display and error msg and stop when there is inconsistency
 """
 function throwError(land, msg)
-    tcPrint(land)
+    tc_print(land)
     if hasproperty(SindbadTEM, :error_catcher)
         push!(SindbadTEM.error_catcher, land)
     end

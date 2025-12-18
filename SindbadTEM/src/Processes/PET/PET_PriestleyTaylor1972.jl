@@ -26,7 +26,7 @@ function compute(params::PET_PriestleyTaylor1972, forcing, land, helpers)
     Lhv = (Lhv_1 * exp(Lhv_2 * f_airT) - Lhv_3) # MJ kg-1
     γ = γ_1 / γ_2 # hPa C-1 [psychometric constant]
     PET = PET_1 * Δ / (Δ + γ) * f_rn / Lhv
-    PET = maxZero(PET)
+    PET = at_least_zero(PET)
 
     ## pack land variables
     @pack_nt PET ⇒ land.fluxes

@@ -43,7 +43,7 @@ function compute(params::cCycleDisturbance_cFlow, forcing, land, helpers)
         for zixVeg ∈ zix_veg_all
             cLoss = z_zero# do not lose carbon if reserve pool
             if helpers.pools.components.cEco[zixVeg] !== :cVegReserve
-                cLoss = maxZero(cEco[zixVeg] - c_remain) * f_dist_intensity
+                cLoss = at_least_zero(cEco[zixVeg] - c_remain) * f_dist_intensity
             end
             @add_to_elem -cLoss ⇒ (cEco, zixVeg, :cEco)
             c_lose_to_zix = c_lose_to_zix_vec[zixVeg]

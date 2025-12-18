@@ -133,10 +133,16 @@ Retrieves forcing values for a specific time step or returns constant forcing va
 - The forcing value for the specified time step (if time-dependent) or the constant forcing value.
 
 # Extended help
-# Examples:
-1. **Time-dependent forcing**:
-```julia
-forcing = [1.0, 2.0, 3.0]  # Forcing values for time steps
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Get forcing for a specific time step (time-dependent)
+julia> # forcing_ts = getForcingForTimeStep(forcing, loc_forcing_t, 5, Val(forcing_types))
+
+julia> # Get constant forcing (time-independent)
+julia> # constant_forcing = getForcingV(constant_data, 1, ForcingWithoutTime())
+```
 ts = 2                     # Time step
 value = getForcingV(forcing, ts, ForcingWithTime())
 # value = 2.0
@@ -188,7 +194,7 @@ end
 """
 function getLocData(output_array::AbstractArray, loc_ind)
     loc_output = map(output_array) do a
-        getArrayView(a, loc_ind)
+        view_at_trailing_indices(a, loc_ind)
     end
     return loc_output
 end
@@ -205,7 +211,7 @@ end
 """
 function getLocData(forcing::NamedTuple, loc_ind)
     loc_forcing = map(forcing) do a
-        getArrayView(a, loc_ind) |> Array
+        view_at_trailing_indices(a, loc_ind) |> Array
     end
     return loc_forcing
 end

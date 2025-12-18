@@ -219,13 +219,13 @@ function prepHybrid(forcing, observations, info, ::MachineLearningTrainingType)
 
     run_helpers = prepTEM(info.models.forward, forcing, observations, info)
     sites_forcing = forcing.data[1].site;
-    showInfo(prepHybrid, @__FILE__, @__LINE__, "preparing hybridMachine Learninghelpers for $(length(sites_forcing)) sites", n_f=2)
-    showInfo(nothing, @__FILE__, @__LINE__, "Building loss function handles for every site", n_m=4)
+    print_info(prepHybrid, @__FILE__, @__LINE__, "preparing hybridMachine Learninghelpers for $(length(sites_forcing)) sites", n_f=2)
+    print_info(nothing, @__FILE__, @__LINE__, "Building loss function handles for every site", n_m=4)
     loss_functions, loss_component_functions = getLossFunctionHandles(info, run_helpers, sites_forcing)
 
     ## split the sites
 
-    showInfo(prepHybrid, @__FILE__, @__LINE__, "Getting indices and sites for training, validation and testing", n_f=2)
+    print_info(prepHybrid, @__FILE__, @__LINE__, "Getting indices and sites for training, validation and testing", n_f=2)
     indices_training, indices_validation, indices_testing = getIndicesSplit(info, sites_forcing, info.hybrid.fold.fold_type)
 
     sites_training = sites_forcing[indices_training]
@@ -235,28 +235,28 @@ function prepHybrid(forcing, observations, info, ::MachineLearningTrainingType)
     sites = (; training = sites_training, validation = sites_validation, testing = sites_testing)
     indices = (; training = indices_training, validation = indices_validation, testing = indices_testing)
 
-    showInfo(nothing, @__FILE__, @__LINE__, "Total sites: $(length(sites_forcing))", n_m=4)
-    showInfo(nothing, @__FILE__, @__LINE__, "Training sites: $(length(sites.training))", n_m=4)
-    showInfo(nothing, @__FILE__, @__LINE__, "Validation sites: $(length(sites.validation))", n_m=4)
-    showInfo(nothing, @__FILE__, @__LINE__, "Testing sites: $(length(sites.testing))", n_m=4)
+    print_info(nothing, @__FILE__, @__LINE__, "Total sites: $(length(sites_forcing))", n_m=4)
+    print_info(nothing, @__FILE__, @__LINE__, "Training sites: $(length(sites.training))", n_m=4)
+    print_info(nothing, @__FILE__, @__LINE__, "Validation sites: $(length(sites.validation))", n_m=4)
+    print_info(nothing, @__FILE__, @__LINE__, "Testing sites: $(length(sites.testing))", n_m=4)
 
     ## get covariates
 
-    showInfo(prepHybrid, @__FILE__, @__LINE__, "Loading covariates for hybridMachine Learningmodel", n_f=2)
-    showInfo(nothing, @__FILE__, @__LINE__, "variables: $(info.hybrid.covariates.variables)", n_m=4)
-    showInfo(nothing, @__FILE__, @__LINE__, "path: $(info.hybrid.covariates.path)", n_m=4)
+    print_info(prepHybrid, @__FILE__, @__LINE__, "Loading covariates for hybridMachine Learningmodel", n_f=2)
+    print_info(nothing, @__FILE__, @__LINE__, "variables: $(info.hybrid.covariates.variables)", n_m=4)
+    print_info(nothing, @__FILE__, @__LINE__, "path: $(info.hybrid.covariates.path)", n_m=4)
     xfeatures = loadCovariates(sites_forcing; kind=info.hybrid.covariates.variables, cube_path=info.hybrid.covariates.path)
-    showInfo(nothing, @__FILE__, @__LINE__, "Min/Max of features: [$(minimum(xfeatures)), $(maximum(xfeatures))]", n_m=4)
+    print_info(nothing, @__FILE__, @__LINE__, "Min/Max of features: [$(minimum(xfeatures)), $(maximum(xfeatures))]", n_m=4)
     n_features = length(xfeatures.features)
 
     features = (; n_features=n_features, data=xfeatures)
 
 
     ## buildMachine Learningmodel and get init predictions
-    showInfo(prepHybrid, @__FILE__, @__LINE__, "Preparing machine learning model", n_f=2)
+    print_info(prepHybrid, @__FILE__, @__LINE__, "Preparing machine learning model", n_f=2)
     ml_model = mlModel(info, n_features, info.hybrid.ml_model.method)
 
-    showInfo(prepHybrid, @__FILE__, @__LINE__, "Preparing loss arrays", n_f=2)
+    print_info(prepHybrid, @__FILE__, @__LINE__, "Preparing loss arrays", n_f=2)
     n_epochs = info.hybrid.ml_training.options.n_epochs
     loss_array_training = fill(zero(Float32), length(sites.training), n_epochs)
     loss_array_validation = fill(zero(Float32), length(sites.validation), n_epochs)
@@ -280,14 +280,14 @@ function prepHybrid(forcing, observations, info, ::MachineLearningTrainingType)
         validation=loss_array_validation, 
         testing=loss_array_testing
     )
-    showInfo(nothing, @__FILE__, @__LINE__, "Number of sites: $(length(sites_forcing))", n_m=4)
-    showInfo(nothing, @__FILE__, @__LINE__, "Loss array shape (training | validation | testing): $(size(loss_array.training)) | $(size(loss_array.validation)) | $(size(loss_array.testing))", n_m=4)
-    showInfo(nothing, @__FILE__, @__LINE__, "Loss array components shape (training | validation | testing): $(size(loss_array_components.training)) | $(size(loss_array_components.validation)) | $(size(loss_array_components.testing))", n_m=4)
-    showInfo(nothing, @__FILE__, @__LINE__, "Number of constraints: $num_constraints", n_m=4)
+    print_info(nothing, @__FILE__, @__LINE__, "Number of sites: $(length(sites_forcing))", n_m=4)
+    print_info(nothing, @__FILE__, @__LINE__, "Loss array shape (training | validation | testing): $(size(loss_array.training)) | $(size(loss_array.validation)) | $(size(loss_array.testing))", n_m=4)
+    print_info(nothing, @__FILE__, @__LINE__, "Loss array components shape (training | validation | testing): $(size(loss_array_components.training)) | $(size(loss_array_components.validation)) | $(size(loss_array_components.testing))", n_m=4)
+    print_info(nothing, @__FILE__, @__LINE__, "Number of constraints: $num_constraints", n_m=4)
 
     
-    showInfo(prepHybrid, @__FILE__, @__LINE__, "Preparing training optimizer", n_f=2)
-    showInfo(nothing, @__FILE__, @__LINE__, "Method: $(nameof(typeof(info.hybrid.ml_optimizer.method)))", n_m=4)
+    print_info(prepHybrid, @__FILE__, @__LINE__, "Preparing training optimizer", n_f=2)
+    print_info(nothing, @__FILE__, @__LINE__, "Method: $(nameof(typeof(info.hybrid.ml_optimizer.method)))", n_m=4)
     training_optimizer = mlOptimizer(info.hybrid.ml_optimizer.options, info.hybrid.ml_optimizer.method)
     metadata_global = info.output.file_info.global_metadata
 

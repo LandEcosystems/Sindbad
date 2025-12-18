@@ -62,7 +62,7 @@ The algorithm configuration file specifies detailed optimization settings:
 To list all implemented optimization methods:
 ```julia
 using Sindbad.ParameterOptimization
-showMethodsOf(ParameterOptimizationMethod)
+show_methods_of(ParameterOptimizationMethod)
 ```
 :::
 
@@ -144,7 +144,7 @@ This section configures observational constraints and cost combination methods.
 :::
 
 ::: tip Available Methods
-- Use `showMethodsOf(SpatialMetricAggr)` for supported `multi_constraint_method` options
+- Use `show_methods_of(SpatialMetricAggr)` for supported `multi_constraint_method` options
 :::
 
 ## Observational Constraints
@@ -165,9 +165,17 @@ This section configures observational constraints and cost combination methods.
     "spatial_data_aggr": "Spatial data aggregation method",
     "spatial_cost_aggr": "Spatial cost aggregation method",
     "spatial_weight": "Enable area-based weighting",
-    "temporal_data_aggr": "Temporal aggregation method"
+    "temporal_data_aggr": "Temporal aggregation method (from TimeSamplers.jl)"
 }
 ```
+
+::: info Temporal Aggregation
+
+The `temporal_data_aggr` field uses temporal sampling methods from [TimeSamplers.jl](https://landecosystems.github.io/TimeSamplers.jl). Common values include:
+- `"day"`, `"month"`, `"year"` for basic time aggregation
+- See [TimeSamplers.jl documentation](https://landecosystems.github.io/TimeSamplers.jl) for the complete list of available temporal sampling methods
+
+:::
 
 == Example
 ```json
@@ -210,9 +218,9 @@ This section configures observational constraints and cost combination methods.
 :::
 
 ::: tip Available Methods
-- Use `showMethodsOf(PerfMetric)` for cost metrics
-- Use `showMethodsOf(SpatialMetricAggr)` for spatial aggregation
-- Use `showMethodsOf(TimeSampleMethod)` for temporal methods
+- Use `show_methods_of(PerfMetric)` for cost metrics
+- Use `show_methods_of(SpatialMetricAggr)` for spatial aggregation
+- Use `show_methods_of(TimeSampleMethod)` for temporal methods
 :::
 
 ### Default Observation Settings

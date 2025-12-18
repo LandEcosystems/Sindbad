@@ -29,8 +29,15 @@ Calculate the cost for a parameter vector.
 Cost value representing the difference between model outputs and observations
 
 # sindbad\\_cost\\_method:
-$(methodsOf(CostMethod))
+$(methods_of(CostMethod))
 
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Calculate cost for a parameter vector
+julia> # cost_value = cost(parameter_vector, default_values, selected_models, space_forcing, space_spinup_forcing, loc_forcing_t, output_array, space_output, space_land, tem_info, observations, parameter_updater, cost_options, multi_constraint_method, parameter_scaling_type, CostModelObs())
+```
 """
 function cost end
 

@@ -1,8 +1,8 @@
 using Revise
 using SindbadTEM
 using Sindbad
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
 begin_year = "1999"
 end_year = "2010"
@@ -64,7 +64,7 @@ output_data = values(output_all.output)
 info = output_all.info
 output_vars = info.output.variables
 # plot the debug figures
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 fig_prefix = joinpath(info.output.dirs.figure, "debug_" * info.experiment.basics.name * "_" * info.experiment.basics.domain)
 for (o, v) in enumerate(output_vars)
     def_var = output_data[o][:, :, 1, 1]
@@ -85,7 +85,7 @@ for (o, v) in enumerate(output_vars)
     end
 end
 
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 forc_vars = forcing.variables
 for (o, v) in enumerate(forc_vars)
     println("plot forc-model => domain: $domain, variable: $v")

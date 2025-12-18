@@ -44,7 +44,7 @@ function compute(params::cCycleDisturbance_WROASTED, forcing, land, helpers)
         c_model ⇐ land.models
     end
     for zixVeg ∈ zix_veg_all
-        cLoss = maxZero(cEco[zixVeg] - c_remain) * f_dist_intensity
+        cLoss = at_least_zero(cEco[zixVeg] - c_remain) * f_dist_intensity
         @add_to_elem -cLoss ⇒ (cEco, zixVeg, :cEco)
         c_lose_to_zix = c_lose_to_zix_vec[zixVeg]
         for tZ ∈ eachindex(c_lose_to_zix)

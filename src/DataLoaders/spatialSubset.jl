@@ -14,10 +14,18 @@ Spatially subset data according to the specified parameters
 
 # Note
 The function assumes input data and spatial parameters are in compatible formats
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Get spatial subset from configuration
+julia> # subset_data = getSpatialSubset(spatial_subset_config, data_cube)
+```
 """
 function getSpatialSubset(ss, v)
     if isa(ss, Dict)
-        ss = dictToNamedTuple(ss)
+        ss = dict_to_namedtuple(ss)
     end
     if !isnothing(ss)
         ssname = propertynames(ss)
@@ -26,7 +34,7 @@ function getSpatialSubset(ss, v)
             if !isnothing(ss_r)
                 ss_range = collect(ss_r)
                 ss_typeName = Symbol("Space" * string(ssn))
-                v = spatialSubset(v, ss_range, getfield(Utils, ss_typeName)())
+                v = spatialSubset(v, ss_range, getfield(Types, ss_typeName)())
             end
         end
     end
@@ -45,7 +53,7 @@ Extracts a spatial subset of the input data `v` based on the specified range and
 # Returns:
 - A subset of the input data `v` corresponding to the specified spatial range and dimension.
 
-$(methodsOf(SpatialSubsetter))
+$(methods_of(SpatialSubsetter))
 
 ---
 
@@ -55,20 +63,18 @@ $(methodsOf(SpatialSubsetter))
 - The function dynamically selects the appropriate field in `v` based on the spatial type provided.
 - The spatial type determines the field name (e.g., `site`, `lat`, `longitude`, `id`, etc.) used for subsetting.
 
-# Examples:
-1. **Subsetting by latitude**:
-```julia
-subset = spatialSubset(data, 10:20, Spacelat())
-```
+# Examples
+```jldoctest
+julia> using Sindbad
 
-2. **Subsetting by longitude**:
-```julia
-subset = spatialSubset(data, 30:40, Spacelongitude())
-```
+julia> # Subset data by latitude
+julia> # subset = spatialSubset(data, 10:20, Spacelat())
 
-3. **Subsetting by site ID**:
-```julia
-subset = spatialSubset(data, 1:5, Spaceid())
+julia> # Subset data by longitude
+julia> # subset = spatialSubset(data, 30:40, Spacelongitude())
+
+julia> # Subset data by site ID
+julia> # subset = spatialSubset(data, 1:5, Spaceid())
 ```
 """
 function spatialSubset end

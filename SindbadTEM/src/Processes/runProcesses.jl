@@ -17,7 +17,7 @@ debug the compute function of SINDBAD TEM processes
 """
 function computeTEM(tem_processes::Tuple, forcing, land, model_helpers, ::DoDebugModel) # debug the tem_processes
     otype = typeof(land)
-    return foldlUnrolled(tem_processes; init=land) do _land, model
+    return foldl_tuple_unrolled(tem_processes; init=land) do _land, model
         println("compute: $(typeof(model))")
         @time _land = Processes.compute(model, forcing, _land, model_helpers)::otype
     end
@@ -53,7 +53,7 @@ run the compute function of SINDBAD TEM processes
 - `model_helpers`: helper NT with necessary objects for model run and type consistencies
 """
 function computeTEM(tem_processes::LongTuple, forcing, _land, model_helpers) 
-    return foldlLongTuple(tem_processes, init=_land) do model, _land
+    return foldl_longtuple(tem_processes, init=_land) do model, _land
         Processes.compute(model, forcing, _land, model_helpers)
     end
 end
@@ -71,7 +71,7 @@ run the compute function of SINDBAD TEM processes
 - `model_helpers`: helper NT with necessary objects for model run and type consistencies
 """
 function computeTEM(tem_processes::Tuple, forcing, land, model_helpers) 
-    return foldlUnrolled(tem_processes; init=land) do _land, model
+    return foldl_tuple_unrolled(tem_processes; init=land) do _land, model
         _land = Processes.compute(model, forcing, _land, model_helpers)
     end
 end
@@ -88,7 +88,7 @@ run the define and precompute functions of SINDBAD TEM processes to instantiate 
 - `model_helpers`: helper NT with necessary objects for model run and type consistencies
 """
 function defineTEM(tem_processes::Tuple, forcing, land, model_helpers)
-    return foldlUnrolled(tem_processes; init=land) do _land, model
+    return foldl_tuple_unrolled(tem_processes; init=land) do _land, model
         _land = Processes.define(model, forcing, _land, model_helpers)
     end
 end
@@ -105,7 +105,7 @@ run the precompute function of SINDBAD TEM processes to instantiate all fields o
 - `model_helpers`: helper NT with necessary objects for model run and type consistencies
 """
 function defineTEM(tem_processes::LongTuple, forcing, _land, model_helpers)
-    return foldlLongTuple(tem_processes, init=_land) do model, _land
+    return foldl_longtuple(tem_processes, init=_land) do model, _land
         _land = Processes.define(model, forcing, _land, model_helpers)
     end
 end
@@ -123,7 +123,7 @@ run the define and precompute functions of SINDBAD TEM processes to instantiate 
 - `model_helpers`: helper NT with necessary objects for model run and type consistencies
 """
 function definePrecomputeTEM(tem_processes::Tuple, forcing, land, model_helpers)
-    return foldlUnrolled(tem_processes; init=land) do _land, model
+    return foldl_tuple_unrolled(tem_processes; init=land) do _land, model
         _land = Processes.define(model, forcing, _land, model_helpers)
         _land = Processes.precompute(model, forcing, _land, model_helpers)
     end
@@ -141,7 +141,7 @@ run the precompute function of SINDBAD TEM processes to instantiate all fields o
 - `model_helpers`: helper NT with necessary objects for model run and type consistencies
 """
 function definePrecomputeTEM(tem_processes::LongTuple, forcing, _land, model_helpers)
-    return foldlLongTuple(tem_processes, init=_land) do model, _land
+    return foldl_longtuple(tem_processes, init=_land) do model, _land
         _land = Processes.define(model, forcing, _land, model_helpers)
         _land = Processes.precompute(model, forcing, _land, model_helpers)
     end
@@ -162,7 +162,7 @@ debug the precompute function of SINDBAD TEM processes
 """
 function precomputeTEM(tem_processes::Tuple, forcing, land, model_helpers, ::DoDebugModel) # debug the tem_processes
     otype = typeof(land)
-    return foldlUnrolled(tem_processes; init=land) do _land, model
+    return foldl_tuple_unrolled(tem_processes; init=land) do _land, model
         println("precompute: $(typeof(model))")
         @time _land = Processes.precompute(model, forcing, _land, model_helpers)::otype
     end
@@ -198,7 +198,7 @@ run the precompute function of SINDBAD TEM processes to instantiate all fields o
 - `model_helpers`: helper NT with necessary objects for model run and type consistencies
 """
 function precomputeTEM(tem_processes::LongTuple, forcing, _land, model_helpers)
-    return foldlLongTuple(tem_processes, init=_land) do model, _land
+    return foldl_longtuple(tem_processes, init=_land) do model, _land
         Processes.precompute(model, forcing, _land, model_helpers)
     end
 end
@@ -215,7 +215,7 @@ run the precompute function of SINDBAD TEM processes to instantiate all fields o
 - `model_helpers`: helper NT with necessary objects for model run and type consistencies
 """
 function precomputeTEM(tem_processes::Tuple, forcing, land, model_helpers)
-    return foldlUnrolled(tem_processes; init=land) do _land, model
+    return foldl_tuple_unrolled(tem_processes; init=land) do _land, model
         _land = Processes.precompute(model, forcing, _land, model_helpers)
     end
 end

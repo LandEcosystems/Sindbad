@@ -41,11 +41,11 @@ function compute(params::gppAirT_GSI, forcing, land, helpers)
     ## calculate variables
     f_c_prev = gpp_f_airT_c
     f_airT_c = f_smooth(f_c_prev, f_airT, f_airT_c_τ, f_airT_c_slope, f_airT_c_base)
-    cScGPP = clampZeroOne(f_airT_c)
+    cScGPP = clamp_zero_one(f_airT_c)
 
     f_h_prev = gpp_f_airT_h
     f_airT_h = f_smooth(f_h_prev, f_airT, f_airT_h_τ, -f_airT_h_slope, f_airT_h_base)
-    hScGPP = clampZeroOne(f_airT_h)
+    hScGPP = clamp_zero_one(f_airT_h)
 
     gpp_f_airT = min(cScGPP, hScGPP)
 

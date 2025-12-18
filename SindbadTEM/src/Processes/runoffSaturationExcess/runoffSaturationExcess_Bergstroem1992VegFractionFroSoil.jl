@@ -24,7 +24,7 @@ function compute(params::runoffSaturationExcess_Bergstroem1992VegFractionFroSoil
     end
 
     # scale the input frozen soil fraction; maximum is 1
-    frac_frozen = minOne(frac_frozen_soil * frozen_frac_scalar)
+    frac_frozen = at_most_one(frac_frozen_soil * frozen_frac_scalar)
     tmp_smax_veg = sum(w_sat) * (o_one - frac_frozen + tolerance)
     tmp_soilW_total = sum(soilW + ΔsoilW)
 
@@ -32,7 +32,7 @@ function compute(params::runoffSaturationExcess_Bergstroem1992VegFractionFroSoil
     β_veg = max(β_min, β * frac_vegetation) # do this?
 
     # calculate land runoff from incoming water & current soil moisture
-    tmp_sat_exc_frac = clampZeroOne((tmp_soilW_total / tmp_smax_veg)^β_veg)
+    tmp_sat_exc_frac = clamp_zero_one((tmp_soilW_total / tmp_smax_veg)^β_veg)
     sat_excess_runoff = WBP * tmp_sat_exc_frac
 
     # update water balance pool

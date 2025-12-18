@@ -1,9 +1,9 @@
 using Revise
 using Sindbad
 using Dates
-using Plots
+
 using NetCDF
-toggleStackTraceNT()
+toggle_type_abbrev_in_stacktrace()
 experiment_json = "../exp_WROASTED/settings_WROASTED/experiment.json"
 begin_year = "1979"
 end_year = "2017"

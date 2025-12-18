@@ -98,7 +98,7 @@ function (TWS_spin::Spinup_TWS)(pout, p)
 
     TWS = land.pools.TWS
     for (lc, l) in enumerate(zix.TWS)
-        @rep_elem maxZero(p[l]) ⇒ (TWS, lc, :TWS)
+        @rep_elem at_least_zero(p[l]) ⇒ (TWS, lc, :TWS)
     end
     @pack_nt TWS ⇒ land.pools
     land = SindbadTEM.adjustPackPoolComponents(land, helpers, land.models.w_model)
@@ -124,7 +124,7 @@ Runs the spinup process for the SINDBAD Terrestrial Ecosystem Model (TEM) to ini
 # Returns:
 - `land`: The updated SINDBAD NamedTuple containing the final state of the model after the spinup process.
 
-$(methodsOf(SpinupMode))
+$(methods_of(SpinupMode))
 
 ---
 
@@ -265,7 +265,7 @@ function spinup(_, _, _, land, helpers, _, ::EtaScaleA0H)
     end
 
     for cVegZix ∈ helpers.pools.zix.cVeg
-        cLoss = maxZero(cEco[cVegZix] - c_remain)
+        cLoss = at_least_zero(cEco[cVegZix] - c_remain)
         cVegNew = cEco[cVegZix] - cLoss
         @rep_elem cVegNew ⇒ (cEco, cVegZix, :cEco)
     end
@@ -294,7 +294,7 @@ function spinup(_, _, _, land, helpers, _, ::EtaScaleA0HCWD)
     end
 
     for cVegZix ∈ helpers.pools.zix.cVeg
-        cLoss = maxZero(cEco[cVegZix] - c_remain)
+        cLoss = at_least_zero(cEco[cVegZix] - c_remain)
         cVegNew = cEco[cVegZix] - cLoss
         @rep_elem cVegNew ⇒ (cEco, cVegZix, :cEco)
     end
@@ -444,6 +444,17 @@ The main spinup function that handles the spinup method based on inputs from spi
 - `spinup_mode`: A type dispatch that determines whether spinup is included or excluded:
     - `::DoSpinupTEM`: Runs the spinup process before the main simulation. Set `spinup_TEM` to `true` in the flag section of experiment_json.
     - `::DoNotSpinupTEM`: Skips the spinup process and directly runs the main simulation. Set `spinup_TEM` to `false` in the flag section of experiment_json.
+
+# Examples
+```jldoctest
+julia> using Sindbad
+
+julia> # Run spinup with DoSpinupTEM
+julia> # land_spinup = spinupTEM(selected_models, forcing, loc_forcing_t, land, tem_info, DoSpinupTEM())
+
+julia> # Skip spinup with DoNotSpinupTEM
+julia> # land = spinupTEM(selected_models, forcing, loc_forcing_t, land, tem_info, DoNotSpinupTEM())
+```
 
 # Notes:
 - When `DoSpinupTEM` is used:

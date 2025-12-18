@@ -31,11 +31,11 @@ function compute(params::gppSoilW_GSI, forcing, land, helpers)
         (gpp_f_soilW_prev) ⇐ land.diagnostics
     end
 
-    actAWC = maxZero(totalS(soilW) - ∑w_wp)
-    SM_nor = minOne(actAWC / ∑w_awc)
+    actAWC = at_least_zero(totalS(soilW) - ∑w_wp)
+    SM_nor = at_most_one(actAWC / ∑w_awc)
     o_one = one(f_soilW_τ)
     gpp_f_soilW = (o_one - f_soilW_τ) * gpp_f_soilW_prev + f_soilW_τ * (o_one / (o_one + exp(-f_soilW_slope * (SM_nor - f_soilW_base))))
-    gpp_f_soilW = clampZeroOne(gpp_f_soilW)
+    gpp_f_soilW = clamp_zero_one(gpp_f_soilW)
     gpp_f_soilW_prev = gpp_f_soilW
 
     ## pack land variables

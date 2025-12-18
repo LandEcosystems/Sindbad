@@ -6,7 +6,7 @@ This file is included from the extension module and can use `DifferentialEquatio
 
 # Bring the target function into scope for adding methods.
 import Sindbad.Simulation: spinup
-using Sindbad: ODEAutoTsit5Rodas5, ODEDP5, ODETsit5, SSPDynamicSSTsit5, SSPSSRootfind, getSpinupInfo, getDeltaPool, setTupleSubfield
+using Sindbad: ODEAutoTsit5Rodas5, ODEDP5, ODETsit5, SSPDynamicSSTsit5, SSPSSRootfind, getSpinupInfo, getDeltaPool, set_namedtuple_subfield
 
 # Example methods (for reference):
 # - spinup(::Any, ::Any, ::Any, ::Any, ::Any, ::Any, ::AllForwardModels) @ Sindbad.Simulation src/Simulation/spinupTEM.jl:239
@@ -48,13 +48,13 @@ helper function to create a NamedTuple with all the variables needed to run the 
 """
 function getSpinupInfo(spinup_models, spinup_forcing, loc_forcing_t, land, spinup_pool_name, tem_info, n_timesteps)
     spinup_info = (;)
-    spinup_info = setTupleField(spinup_info, (:pool, spinup_pool_name))
-    spinup_info = setTupleField(spinup_info, (:land, land))
-    spinup_info = setTupleField(spinup_info, (:spinup_forcing, spinup_forcing))
-    spinup_info = setTupleField(spinup_info, (:spinup_models, spinup_models))
-    spinup_info = setTupleField(spinup_info, (:tem_info, tem_info))
-    spinup_info = setTupleField(spinup_info, (:loc_forcing_t, loc_forcing_t))
-    spinup_info = setTupleField(spinup_info, (:n_timesteps, n_timesteps))
+    spinup_info = set_namedtuple_field(spinup_info, (:pool, spinup_pool_name))
+    spinup_info = set_namedtuple_field(spinup_info, (:land, land))
+    spinup_info = set_namedtuple_field(spinup_info, (:spinup_forcing, spinup_forcing))
+    spinup_info = set_namedtuple_field(spinup_info, (:spinup_models, spinup_models))
+    spinup_info = set_namedtuple_field(spinup_info, (:tem_info, tem_info))
+    spinup_info = set_namedtuple_field(spinup_info, (:loc_forcing_t, loc_forcing_t))
+    spinup_info = set_namedtuple_field(spinup_info, (:n_timesteps, n_timesteps))
     return spinup_info
 end
 
@@ -76,7 +76,7 @@ function getDeltaPool(pool_dat::AbstractArray, spinup_info, _)
     spinup_forcing = spinup_info.spinup_forcing
     loc_forcing_t = spinup_info.loc_forcing_t
     n_timesteps = spinup_info.n_timesteps
-    land = setTupleSubfield(land, :pools, (spinup_info.pool, pool_dat))
+    land = set_namedtuple_subfield(land, :pools, (spinup_info.pool, pool_dat))
 
     land = timeLoopTEMSpinup(spinup_models, spinup_forcing, loc_forcing_t, deepcopy(land), tem_info, n_timesteps)
     tmp = getfield(land.pools, spinup_info.pool)
@@ -95,7 +95,7 @@ function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_
         # maxIter = max(ceil(tem_spinup.differential_eqn.time_jump) / 100, 100)
         ode_sol = solve(ode_prob, AutoVern7(Rodas5()); maxiters=maxIter)
         # ode_sol = solve(ode_prob, Tsit5(), reltol=tem_spinup.differential_eqn.relative_tolerance, abstol=tem_spinup.differential_eqn.absolute_tolerance, maxiters=maxIter)
-        land = setTupleSubfield(land, :pools, (p_info.pool, ode_sol.u[end]))
+        land = set_namedtuple_subfield(land, :pools, (p_info.pool, ode_sol.u[end]))
     end
     return land
 end
@@ -110,7 +110,7 @@ function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_
         maxIter = max(ceil(tem_spinup.differential_eqn.time_jump) / 100, 100)
         ode_sol = solve(ode_prob, DP5(); maxiters=maxIter)
         # ode_sol = solve(ode_prob, Tsit5(), reltol=tem_spinup.differential_eqn.relative_tolerance, abstol=tem_spinup.differential_eqn.absolute_tolerance, maxiters=maxIter)
-        land = setTupleSubfield(land, :pools, (p_info.pool, ode_sol.u[end]))
+        land = set_namedtuple_subfield(land, :pools, (p_info.pool, ode_sol.u[end]))
     end
     return land
 end
@@ -126,7 +126,7 @@ function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_
         maxIter = max(ceil(tem_spinup.differential_eqn.time_jump) / 100, 100)
         ode_sol = solve(ode_prob, Tsit5(); maxiters=maxIter)
         # ode_sol = solve(ode_prob, Tsit5(), reltol=tem_spinup.differential_eqn.relative_tolerance, abstol=tem_spinup.differential_eqn.absolute_tolerance, maxiters=maxIter)
-        land = setTupleSubfield(land, :pools, (p_info.pool, ode_sol.u[end]))
+        land = set_namedtuple_subfield(land, :pools, (p_info.pool, ode_sol.u[end]))
     end
     return land
 end
@@ -139,7 +139,7 @@ function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_
         init_pool = deepcopy(getfield(p_info.land[:pools], p_info.pool))
         ssp_prob = SteadyStateProblem(getDeltaPool, init_pool, p_info)
         ssp_sol = solve(ssp_prob, DynamicSS(Tsit5()))
-        land = setTupleSubfield(land, :pools, (p_info.pool, ssp_sol.u))
+        land = set_namedtuple_subfield(land, :pools, (p_info.pool, ssp_sol.u))
     end
     return land
 end
@@ -152,7 +152,7 @@ function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_
         init_pool = deepcopy(getfield(p_info.land[:pools], p_info.pool))
         ssp_prob = SteadyStateProblem(getDeltaPool, init_pool, p_info)
         ssp_sol = solve(ssp_prob, SSRootfind())
-        land = setTupleSubfield(land, :pools, (p_info.pool, ssp_sol.u))
+        land = set_namedtuple_subfield(land, :pools, (p_info.pool, ssp_sol.u))
     end
     return land
 end

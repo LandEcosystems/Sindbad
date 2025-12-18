@@ -1,13 +1,12 @@
 using Sindbad
 using SindbadTEM
-using UtilsKit
-using SindbadTEM.Metrics
+using OmniTools  # Needed for get_definitions function used in this script
 using Sindbad.Simulation
 using Sindbad.Setup
 using Sindbad.DataLoaders
 using Sindbad.MachineLearning
 
-packages_list = (:Sindbad, :UtilsKit, :SindbadTEM, :Setup, :DataLoaders, :ParameterOptimization, :Simulation, :MachineLearning, :ErrorMetrics)
+packages_list = (:Sindbad, :SindbadTEM, :Setup, :DataLoaders, :ParameterOptimization, :Simulation, :MachineLearning)
 mkpath("./src/pages/code_gen")
 lib_path = joinpath(@__DIR__, "../lib")
 
@@ -18,7 +17,7 @@ foreach(packages_list) do package_name
         write(o_file, "```@docs\n$(package_name)\n```\n")
         write(o_file, "## Functions\n\n")
         the_package = getfield(Main, package_name)
-        lib_functions = getDefinitions(the_package, Function)
+        lib_functions = get_definitions(the_package, Function)
         if !isempty(lib_functions)
             foreach(lib_functions) do function_name
                 write(o_file, "### $(function_name)\n")
@@ -26,7 +25,7 @@ foreach(packages_list) do package_name
                 write(o_file, "\n----\n\n")
             end
         end
-        lib_methods = getDefinitions(the_package, Method)
+        lib_methods = get_definitions(the_package, Method)
         if !isempty(lib_methods)
             write(o_file, "## Methods\n\n")
             foreach(lib_methods) do method_name
@@ -36,7 +35,7 @@ foreach(packages_list) do package_name
             end
         end
 
-        lib_types = getDefinitions(the_package, Type)
+        lib_types = get_definitions(the_package, Type)
         if !isempty(lib_types)
             write(o_file, "## Types\n\n")
             foreach(lib_types) do type_name

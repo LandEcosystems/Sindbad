@@ -1,23 +1,26 @@
-# SINDBAD Metrics
+# SINDBAD Cost Metrics
 
-This document provides comprehensive documentation for the metrics used to evaluate and optimize SINDBAD models.
-
+This document describes how to use metrics in SINDBAD's parameter optimization and model evaluation workflows.
 
 ## Overview
 
-The SINDBAD metrics are implemented in the `SindbadMetrics` library package located in the `lib` directory. The metrics system is designed to be modular and extensible, allowing users to define custom metrics for specific use cases while maintaining compatibility with SINDBAD's optimization and evaluation workflows.
+SINDBAD uses [ErrorMetrics.jl](https://landecosystems.github.io/ErrorMetrics.jl) for performance metrics and error calculations. The metrics system is designed to be modular and extensible, allowing users to define custom metrics for specific use cases while maintaining compatibility with SINDBAD's optimization and evaluation workflows.
 
 ## Available Metrics
 
-To view the list of available metrics:
+For a complete list of available metrics, their descriptions, and implementation details, see the [ErrorMetrics.jl documentation](https://landecosystems.github.io/ErrorMetrics.jl).
 
+To list all available cost metrics and their purposes in your Julia session:
 
 :::tip
-To list all available cost metrics and their purposes, use:
 ```julia
-using Sindbad.Simulation
-showMethodsOf(PerfMetric)
+using ErrorMetrics
+using OmniTools: show_methods_of
+
+# List all available metrics
+show_methods_of(ErrorMetric)
 ```
+
 This will display a formatted list of all cost metrics and their descriptions, including:
 - The metric's purpose
 - Required parameters
@@ -26,201 +29,160 @@ This will display a formatted list of all cost metrics and their descriptions, i
 
 :::
 
-The following metrics are currently supported:
+## Using Metrics in SINDBAD
 
-### Error-based Metrics
+### In Cost Options
 
-- `MSE`: Mean squared error - Measures the average squared difference between predicted and observed values
-- `NAME1R`: Normalized Absolute Mean Error with 1/R scaling - Measures the absolute difference between means normalized by the range of observations
-- `NMAE1R`: Normalized Mean Absolute Error with 1/R scaling - Measures the average absolute error normalized by the range of observations
-
-### Nash-Sutcliffe Efficiency Metrics
-
-- `NSE`: Nash-Sutcliffe Efficiency - Measures model performance relative to the mean of observations
-- `NSEInv`: Inverse Nash-Sutcliffe Efficiency - Inverse of NSE for minimization problems
-- `NSEσ`: Nash-Sutcliffe Efficiency with uncertainty - Incorporates observation uncertainty in the performance measure
-- `NSEσInv`: Inverse Nash-Sutcliffe Efficiency with uncertainty - Inverse of NSEσ for minimization problems
-- `NNSE`: Normalized Nash-Sutcliffe Efficiency - Measures model performance relative to the mean of observations, normalized to [0,1] range
-- `NNSEInv`: Inverse Normalized Nash-Sutcliffe Efficiency - Inverse of NNSE for minimization problems, normalized to [0,1] range
-- `NNSEσ`: Normalized Nash-Sutcliffe Efficiency with uncertainty - Incorporates observation uncertainty in the normalized performance measure
-- `NNSEσInv`: Inverse Normalized Nash-Sutcliffe Efficiency with uncertainty - Inverse of NNSEσ for minimization problems
-
-### Correlation-based Metrics
-
-- `Pcor`: Pearson Correlation - Measures linear correlation between predictions and observations
-- `PcorInv`: Inverse Pearson Correlation - Inverse of Pcor for minimization problems
-- `Pcor2`: Squared Pearson Correlation - Measures the strength of linear relationship between predictions and observations
-- `Pcor2Inv`: Inverse Squared Pearson Correlation - Inverse of Pcor2 for minimization problems
-- `NPcor`: Normalized Pearson Correlation - Measures linear correlation between predictions and observations, normalized to [0,1] range
-- `NPcorInv`: Inverse Normalized Pearson Correlation - Inverse of NPcor for minimization problems
-
-### Rank Correlation Metrics
-
-- `Scor`: Spearman Correlation - Measures monotonic relationship between predictions and observations
-- `ScorInv`: Inverse Spearman Correlation - Inverse of Scor for minimization problems
-- `Scor2`: Squared Spearman Correlation - Measures the strength of monotonic relationship between predictions and observations
-- `Scor2Inv`: Inverse Squared Spearman Correlation - Inverse of Scor2 for minimization problems
-- `NScor`: Normalized Spearman Correlation - Measures monotonic relationship between predictions and observations, normalized to [0,1] range
-- `NScorInv`: Inverse Normalized Spearman Correlation - Inverse of NScor for minimization problems
-
-## Adding a New Metric
-
-### 1. Define the Metric Type
-
-Create a new metric type in `lib/SindbadMetrics/src/metricTypes.jl`:
+Metrics from ErrorMetrics.jl are used in `cost_options` for parameter optimization. Temporal aggregation uses [TimeSamplers.jl](https://landecosystems.github.io/TimeSamplers.jl):
 
 ```julia
-export NewMetric
-struct NewMetric <: PerfMetric end
-```
+using ErrorMetrics
+using Sindbad
 
-Requirements:
-- Use PascalCase for the type name
-- Make it a subtype of `PerfMetric`
-- Export the type
-- Add a purpose function describing the metric's role
-
-### 2. Implement the Metric Function
-
-Implement the metric calculation in `lib/SindbadMetrics/src/metrics.jl`:
-
-```julia
-function metric(::NewMetric, ŷ::AbstractArray, y::AbstractArray, yσ::AbstractArray)
-    # Your metric calculation here
-    return metric_value
-end
-```
-
-Requirements:
-- Function must be named `metric`
-- Must take four arguments:
-  - `ŷ`: Model simulation data/estimate
-  - `y`: Observation data
-  - `yσ`: Observational uncertainty data
-  - The metric type
-- Must return a scalar value
-
-### 3. Using the New Metric
-
-To use your new metric in an experiment:
-
-```julia
+# Define cost options for a single variable
 cost_options = (
-    variable = :your_variable,
-    cost_metric = NewMetric(),
-    # other options...
+    variable = :gpp,
+    cost_metric = MSE(),  # From ErrorMetrics.jl
+    cost_weight = 1.0,
+    # ... other options
 )
+
+# Define cost options for multiple variables
+cost_options = [
+    (
+        variable = :gpp,
+        cost_metric = MSE(),
+        cost_weight = 1.0
+    ),
+    (
+        variable = :npp,
+        cost_metric = NSE(),
+        cost_weight = 0.5
+    )
+]
 ```
 
-### 4. Testing
+### Metric Combination
 
-Test your new metric by:
-- Running it on sample data
-- Comparing results with existing metrics
-- Verifying it works in the optimization process
+SINDBAD provides methods to combine metrics from multiple variables:
 
-## Metric Implementation Details
+```julia
+using Sindbad.ParameterOptimization
 
-### Data Handling
+# Calculate metrics for all cost options
+cost_vector = metricVector(model_output, observations, cost_options)
 
-The metrics system includes several helper functions for data handling:
+# Combine metrics using different methods
+combined_metric = combineMetric(cost_vector, MetricSum())
+combined_metric = combineMetric(cost_vector, MetricMinimum())
+combined_metric = combineMetric(cost_vector, MetricMaximum())
+```
+
+Available combination methods:
+- `MetricSum`: Returns the total sum as the metric
+- `MetricMinimum`: Returns the minimum value as the metric
+- `MetricMaximum`: Returns the maximum value as the metric
+
+### Data Handling in SINDBAD
+
+SINDBAD's cost calculation includes several helper functions for data handling:
 
 - `getDataWithoutNaN`: Returns model and observation data excluding NaN values
 - `aggregateData`: Aggregates data based on specified order (TimeSpace or SpaceTime)
 - `applySpatialWeight`: Applies area weights to the data
 - `getHarmonizedData`: Harmonizes model and observation data for comparison
 
-### Metric Combination
-
-Metrics can be combined using various methods:
-
-- `MetricSum`: Returns the total sum as the metric
-- `MetricMinimum`: Returns the minimum value as the metric
-- `MetricMaximum`: Returns the maximum value as the metric
-- `percentile_value`: Returns the specified percentile as the metric
+These functions are automatically used during the cost calculation process.
 
 ## Examples
 
-### Calculating a Simple Metric
+### Using Metrics in Parameter Optimization
 
 ```julia
-using SindbadTEM.Metrics
+using ErrorMetrics
+using Sindbad
 
-# Define observations and model output
-y = [1.0, 2.0, 3.0]  # observations
-yσ = [0.1, 0.1, 0.1]  # uncertainties
-ŷ = [1.1, 2.1, 3.1]  # model output
+# Setup experiment info
+info = getExperimentInfo("experiment_config.json")
 
-# Calculate MSE
-mse = metric(MSE(), ŷ, y, yσ)
-
-# Calculate correlation
-correlation = metric(Pcor(), ŷ, y, yσ)
-```
-
-### Using Multiple Metrics in ParameterOptimization
-
-```julia
-# Define cost options for multiple variables
+# Define cost options with metrics
 cost_options = [
     (
-        variable = :variable1,
+        variable = :gpp,
         cost_metric = MSE(),
-        cost_weight = 1.0
+        cost_weight = 1.0,
+        temporal_data_aggr = TimeDay(),  # From TimeSamplers.jl
+        # ... other options
     ),
     (
-        variable = :variable2,
-        cost_metric = Pcor(),
-        cost_weight = 0.5
+        variable = :npp,
+        cost_metric = NSE(),
+        cost_weight = 0.5,
+        temporal_data_aggr = TimeMonth(),  # From TimeSamplers.jl
+        # ... other options
     )
 ]
 
-# Calculate combined metric
-cost_vector = metricVector(model_output, observations, cost_options)
-combined_metric = combineMetric(cost_vector, MetricSum())
+# Run optimization (metrics are used internally)
+optimized_params = optimizeTEM(forcing, observations, info; cost_options=cost_options)
+```
+
+### Evaluating Model Performance
+
+```julia
+using ErrorMetrics
+using Sindbad
+
+# Run model simulation
+land_time_series = runTEM(forcing, info)
+
+# Extract model output and observations
+model_output = land_time_series.fluxes.gpp
+observations = observations.gpp.data
+uncertainties = observations.gpp.uncertainty
+
+# Calculate metrics
+mse = metric(MSE(), model_output, observations, uncertainties)
+nse = metric(NSE(), model_output, observations, uncertainties)
+pcor = metric(Pcor(), model_output, observations, uncertainties)
+```
+
+## Creating Custom Metrics
+
+To create custom metrics for use in SINDBAD, you should add them to ErrorMetrics.jl following the ErrorMetrics.jl interface. See the [ErrorMetrics.jl documentation](https://landecosystems.github.io/ErrorMetrics.jl) for details on implementing new metrics.
+
+Once implemented in ErrorMetrics.jl, custom metrics can be used directly in SINDBAD's `cost_options`:
+
+```julia
+using ErrorMetrics
+using Sindbad
+
+# Use your custom metric
+cost_options = (
+    variable = :gpp,
+    cost_metric = MyCustomMetric(),  # From ErrorMetrics.jl
+    # ... other options
+)
 ```
 
 ## Best Practices
 
-1. **Documentation**
-   - Add clear documentation for your new metric
-   - Include mathematical formulas if applicable
-   - Provide usage examples
+1. **Metric Selection**
+   - Choose metrics appropriate for your variable type and optimization goals
+   - Consider using multiple metrics for comprehensive evaluation
+   - Use inverse metrics (e.g., `NSEInv`) for minimization problems
 
-2. **Testing**
-   - Test with various data types and sizes
-   - Verify edge cases (e.g., NaN values)
-   - Compare with existing metrics
+2. **Weighting**
+   - Adjust `cost_weight` to balance the importance of different variables
+   - Consider the scale and units of different variables when setting weights
 
-3. **Performance**
-   - Optimize for large datasets
-   - Consider memory usage
-   - Handle missing values appropriately
+3. **Data Quality**
+   - Ensure observations and model outputs are properly aligned
+   - Handle missing values appropriately (NaN values are automatically filtered)
+   - Consider observational uncertainty when available
 
-4. **Compatibility**
-   - Ensure compatibility with existing workflows
-   - Follow the established interface
-   - Maintain consistent error handling
+4. **Documentation**
+   - Document your metric choices in experiment configurations
+   - Explain why specific metrics were chosen for your use case
 
-## Defining Purpose for Metric Types
-
-Each metric type in SINDBAD should have a `purpose` function that describes its role in the framework. This helps with documentation and provides clear information about what each metric does.
-
-### How to Define Purpose
-
-1. Make sure that the base `purpose` function from UtilsKit is already imported:
-```julia
-import UtilsKit: purpose
-```
-
-2. Then, `purpose` can be easily extended for your metric type:
-```julia
-# For a concrete metric type
-purpose(::Type{MyMetric}) = "Description of what MyMetric does"
-```
-
-### Best Practices
-- Keep descriptions concise but informative
-- Focus on what the metric measures and how it's calculated
-- Include any normalization or scaling factors in the description
-- For abstract types, clearly indicate their role in the type hierarchy
+For more information on metric implementation, best practices, and detailed examples, see the [ErrorMetrics.jl documentation](https://landecosystems.github.io/ErrorMetrics.jl).

@@ -970,6 +970,10 @@ evapotranspiration
 
 :::tabs
 
+== evapotranspiration_simple
+```@docs
+evapotranspiration_simple
+```
 == evapotranspiration_sum
 ```@docs
 evapotranspiration_sum
@@ -1419,6 +1423,10 @@ percolation
 ```@docs
 percolation_WBP
 ```
+== percolation_rain
+```@docs
+percolation_rain
+```
 
 :::
 
@@ -1584,6 +1592,10 @@ runoff
 
 :::tabs
 
+== runoff_simple
+```@docs
+runoff_simple
+```
 == runoff_sum
 ```@docs
 runoff_sum
@@ -2151,6 +2163,10 @@ wCycle_combined
 == wCycle_components
 ```@docs
 wCycle_components
+```
+== wCycle_simple
+```@docs
+wCycle_simple
 ```
 
 :::

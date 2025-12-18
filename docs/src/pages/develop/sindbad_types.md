@@ -120,10 +120,10 @@ This file implements the `LongTuple` type, which splits large tuples into smalle
 **Provides utility functions for working with SINDBAD types.**
 
 This file contains functions for:
-- `getDefinitions`: Retrieving defined objects in SINDBAD
-- `getTypeDocString`: Generating formatted documentation for types
-- `methodsOf`: Displaying subtypes and their purposes
-- `writeTypeDocString`: Writing type documentation to files
+- `get_definitions`: Retrieving defined objects in SINDBAD
+- `get_type_docstring`: Generating formatted documentation for types
+- `methods_of`: Displaying subtypes and their purposes
+- `write_type_docstring`: Writing type documentation to files
 
 These functions support documentation and introspection of the type system.
 

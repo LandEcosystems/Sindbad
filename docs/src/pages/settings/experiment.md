@@ -87,8 +87,8 @@ The `exe_rules` section defines model execution settings and performance configu
 :::
 
 ::: tip Available Options
-- Use `showMethodsOf(InputArrayBackend)` to list available `input_array_type` options
-- Use `showMethodsOf(DataFormatBackend)` to list supported `input_data_backend` options
+- Use `show_methods_of(InputArrayBackend)` to list available `input_array_type` options
+- Use `show_methods_of(DataFormatBackend)` to list supported `input_data_backend` options
 :::
 
 ### Flags

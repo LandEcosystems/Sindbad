@@ -237,7 +237,7 @@ SINDBAD provides several functions for running experiments with different config
 To list all available experiment methods and their purposes, use:
 ```julia
 using Sindbad.Simulation
-showMethodsOf(RunFlag)
+show_methods_of(RunFlag)
 ```
 This will display a formatted list of all experiment methods and their descriptions.
 

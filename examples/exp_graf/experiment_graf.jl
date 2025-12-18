@@ -1,7 +1,7 @@
 using Revise
 @time using Sindbad
-using Plots
-toggleStackTraceNT()
+
+toggle_type_abbrev_in_stacktrace()
 domain = "africa";
 optimize_it = true;
 # optimize_it = false;
@@ -28,7 +28,7 @@ obs_array = [Array(_o) for _o in observations.data]; # TODO: necessary now for p
     parameter_table = info.optimization.parameter_table;
 
 GC.gc()
-info = dropFields(info, (:settings,));
+info = drop_namedtuple_fields(info, (:settings,));
 @time run_helpers = prepTEM(forcing, info);
 # forcing = nothing
 
@@ -41,7 +41,7 @@ end
 
 @time spinupTEM(info.models.forward, run_helpers.space_spinup_forcing[1], run_helpers.loc_forcing_t, run_helpers.space_land[1], run_helpers.tem_info, run_helpers.tem_info.run.spinup_TEM);
 
-# setLogLevel(:debug)
+# set_log_level(:debug)
 
 @time output_default = runExperimentForward(experiment_json; replace_info=replace_info_spatial);
 
@@ -49,7 +49,7 @@ end
 ds = forcing.data[1];
 # plotdat = out_opti.output.optimized;
 plotdat = output_default.output;
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 output_vars = keys(plotdat)
 for i ∈ eachindex(output_vars)
     v = output_vars[i]
@@ -59,19 +59,19 @@ for i ∈ eachindex(output_vars)
     println("plot output-model => domain: $domain, variable: $vname")
     pd = plotdat[i]
     if size(pd, 2) == 1
-        heatmap(pd[:, 1, :]; title="$(vname)" , size=(2000, 1000))
+        plots_heatmap(pd[:, 1, :]; title="$(vname)" , size=(2000, 1000))
         # Colorbar(fig[1, 2], obj)
-        savefig(joinpath(info.output.dirs.figure, "$(domain)_$(vname).png"))
+        plots_savefig(joinpath(info.output.dirs.figure, "$(domain)_$(vname).png"))
     else
         foreach(axes(pd, 2)) do ll
-            heatmap(pd[:, ll, :]; title="$(vname)" , size=(2000, 1000))
+            plots_heatmap(pd[:, ll, :]; title="$(vname)" , size=(2000, 1000))
             # Colorbar(fig[1, 2], obj)
-            savefig(joinpath(info.output.dirs.figure, "$(domain)_$(vname)_$(ll).png"))
+            plots_savefig(joinpath(info.output.dirs.figure, "$(domain)_$(vname)_$(ll).png"))
         end
     end
 end
 
-default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
 forc_vars = forcing.variables
 for (o, v) in enumerate(forc_vars)
     println("plot forc-model => domain: $domain, variable: $v")
@@ -85,10 +85,10 @@ for (o, v) in enumerate(forc_vars)
     else
         plot_data =  def_var[:,:]
     end
-    heatmap(plot_data; title="$(v):: mean = $(round(SindbadTEM.mean(def_var), digits=2)), nans=$(sum(isInvalid.(plot_data)))", size=(2000, 1000))
-    savefig(joinpath(info.output.dirs.figure, "forc_$(domain)_$v.png"))
+    plots_heatmap(plot_data; title="$(v):: mean = $(round(SindbadTEM.mean(def_var), digits=2)), nans=$(sum(is_invalid_number.(plot_data)))", size=(2000, 1000))
+    plots_savefig(joinpath(info.output.dirs.figure, "forc_$(domain)_$v.png"))
 end
-#setLogLevel(:debug)
+#set_log_level(:debug)
 # @profview metricVector(run_helpers.output_array, obs_array, cost_options) # |> sum
 # set
 # @time metricVector(run_helpers.output_array, obs_array, cost_options) # |> sum
@@ -136,25 +136,25 @@ losses = map(costOpt) do var_row
     (obs_var_no_nan, obs_σ_no_nan, opt_var_no_nan) = getDataWithoutNaN(obs_var, obs_σ, opt_var);
 
     loss_space = map([run_helpers.space_ind...]) do lsi
-        opt_pix = getArrayView(opt_var, lsi)
-        def_pix = getArrayView(def_var, lsi)
-        obs_pix = getArrayView(obs_var, lsi)
-        obs_σ_pix = getArrayView(obs_σ, lsi)
+        opt_pix = view_at_trailing_indices(opt_var, lsi)
+        def_pix = view_at_trailing_indices(def_var, lsi)
+        obs_pix = view_at_trailing_indices(obs_var, lsi)
+        obs_σ_pix = view_at_trailing_indices(obs_σ, lsi)
         (obs_pix_no_nan, obs_σ_pix_no_nan, opt_pix_no_nan) = getDataWithoutNaN(obs_pix, obs_σ_pix, opt_pix)
         (_, _, def_pix_no_nan) = getDataWithoutNaN(obs_pix, obs_σ_pix, def_pix)
         [metric(lossMetric, def_pix_no_nan, obs_pix_no_nan, obs_σ_pix_no_nan), metric(lossMetric, opt_pix_no_nan, obs_pix_no_nan, obs_σ_pix_no_nan)]
     end
 
 
-    default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
+    plots_default(titlefont=(20, "times"), legendfontsize=18, tickfont=(15, :blue))
     b_range = range(-1, 1, length=50)
     p_title = "$(var_row.variable) ($(nameof(typeof(lossMetric))))"
-    histogram(first.(loss_space); title=p_title, size=(2000, 1000),bins=b_range, alpha=0.9, label="default", color="#FDB311")
-    vline!([metric(lossMetric, def_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="default_spatial", color="#FDB311", lw=3)
-    histogram!(last.(loss_space); size=(2000, 1000), bins=b_range, alpha=0.5, label="optimized", color="#18A15C")
-    vline!([metric(lossMetric, opt_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="optimized_spatial", color="#18A15C", lw=3)
-    xlabel!("")
-    savefig(joinpath(info.output.dirs.figure, "obs_vs_pred_$(v_key).png"))
+    plots_histogram(first.(loss_space); title=p_title, size=(2000, 1000),bins=b_range, alpha=0.9, label="default", color="#FDB311")
+    plots_vline!([metric(lossMetric, def_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="default_spatial", color="#FDB311", lw=3)
+    plots_histogram!(last.(loss_space); size=(2000, 1000), bins=b_range, alpha=0.5, label="optimized", color="#18A15C")
+    plots_vline!([metric(lossMetric, opt_var_no_nan, obs_var_no_nan, obs_σ_no_nan)], label="optimized_spatial", color="#18A15C", lw=3)
+    plots_xlabel!("")
+    plots_savefig(joinpath(info.output.dirs.figure, "obs_vs_pred_$(v_key).png"))
     # loss_space
     # @show "plot obs", v, lossMetric
 

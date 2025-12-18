@@ -8,7 +8,7 @@ High-level interface for conducting experiments using the SINDBAD framework (wor
 
 # Dependencies
 ## Related (SINDBAD ecosystem)
-- `UtilsKit`: Shared utilities.
+- `OmniTools`: Shared utilities.
 - `ErrorMetrics`: Metric implementations used in cost/diagnostics.
 
 ## Internal (within `Sindbad`)
@@ -27,18 +27,21 @@ High-level interface for conducting experiments using the SINDBAD framework (wor
 - Designed to be extensible, enabling users to customize and expand the experimental workflow that combines different SINDBAD modules as needed.
 
 # Examples
-1. **Running an experiment**:
-```julia
-using Sindbad
-# Set up experiment parameters
-experiment_config = ...
+```jldoctest
+julia> using Sindbad
 
-# Run the experiment
-Sindbad.Experiment.runExperimentForward(experiment_config)
+julia> # Run a forward experiment from a configuration file
+julia> # out = runExperimentForward("path/to/experiment_config.json")
+
+julia> # Prepare experiment configuration and forcing
+julia> # info, forcing = prepExperiment("path/to/experiment_config.json")
+
+julia> # Run experiment with different modes
+julia> # result = runExperiment(info, forcing, DoRunForward())
 ```
 """
 module Experiment
-    using UtilsKit
+    using OmniTools
     using ErrorMetrics
     using ...SindbadTEM
     using ..Types

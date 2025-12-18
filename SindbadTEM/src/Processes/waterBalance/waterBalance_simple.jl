@@ -20,7 +20,7 @@ end
 
 
 function checkWaterBalanceError(forcing, land, water_balance, tolerance, total_water, total_water_prev, WBP, precip, runoff, evapotranspiration, ::DoCatchModelErrors) # when catch_model_errors is true
-    if isInvalid(water_balance)
+    if is_invalid_number(water_balance)
         throwError(forcing, land, "water balance is invalid", water_balance, total_water, total_water_prev, WBP, precip, runoff, evapotranspiration)
     end
     if abs(water_balance) > tolerance
