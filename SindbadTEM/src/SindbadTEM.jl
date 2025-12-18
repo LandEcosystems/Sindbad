@@ -11,7 +11,7 @@ This module defines the `LandEcosystem` supertype, which serves as the base for 
 # Dependencies
 Key dependencies used/re-exported by the module include:
 - `Reexport`: Re-export helpers (`@reexport`).
-- `UtilsKit`: Shared utilities and `purpose` integration.
+- `OmniTools`: Shared utilities and `purpose` integration.
 - `CodeTracking`: Development/debug helpers.
 - `DataStructures`: Collection types used across TEM utilities.
 - `StaticArraysCore`: Fixed-size and sized array types for performance.
@@ -46,8 +46,8 @@ julia> # catalog = getVariableCatalog()
 """
 module SindbadTEM
    using Reexport: @reexport
-   @reexport using UtilsKit
-   import UtilsKit: purpose
+   @reexport using OmniTools
+   import OmniTools: purpose
    @reexport using Reexport
    @reexport using Pkg
    @reexport using CodeTracking

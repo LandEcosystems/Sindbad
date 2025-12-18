@@ -1,20 +1,20 @@
 # SindbadTEM.jl
 
-[![][docs-stable-img]][docs-stable-url][![][docs-dev-img]][docs-dev-url][![][ci-img]][ci-url] [![][codecov-img]][codecov-url][![Julia][julia-img]][julia-url][![License: EUPLv1.2](https://img.shields.io/badge/License-EUPLv1.2-seagreen)](https://github.com/EarthyScience/SINDBAD/blob/main/LICENSE)
+[![][docs-stable-img]][docs-stable-url][![][docs-dev-img]][docs-dev-url][![][ci-img]][ci-url] [![][codecov-img]][codecov-url][![Julia][julia-img]][julia-url][![License: EUPLv1.2](https://img.shields.io/badge/License-EUPLv1.2-seagreen)](https://github.com/LandEcosystems/Sindbad/blob/main/LICENSE)
 
-<img src="../docs/src/assets/logo.png" align="right" style="padding-left:10px;" width="150"/>
+<img src="../docs/src/assets/sindbad_logo.png" align="right" style="padding-left:10px;" width="150"/>
 
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
-[docs-dev-url]: https://earthyscience.github.io/SINDBAD/dev/
+[docs-dev-url]: https://landecosystems.github.io/Sindbad/dev/
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: https://earthyscience.github.io/SINDBAD/stable/
+[docs-stable-url]: https://landecosystems.github.io/Sindbad/stable/
 
-[codecov-img]: https://codecov.io/gh/EarthyScience/SINDBAD/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/EarthyScience/SINDBAD
+[codecov-img]: https://codecov.io/gh/LandEcosystems/Sindbad/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/LandEcosystems/Sindbad
 
-[ci-img]: https://github.com/EarthyScience/SINDBAD/workflows/CI/badge.svg
-[ci-url]: https://github.com/EarthyScience/SINDBAD/actions?query=workflow%3ACI
+[ci-img]: https://github.com/LandEcosystems/Sindbad/workflows/CI/badge.svg
+[ci-url]: https://github.com/LandEcosystems/Sindbad/actions?query=workflow%3ACI
 
 [julia-img]: https://img.shields.io/badge/julia-v1.10+-blue.svg
 [julia-url]: https://julialang.org/
@@ -55,7 +55,7 @@ When developing with SINDBAD, `SindbadTEM` is automatically included:
 ```julia
 using Pkg
 Pkg.develop(path="path/to/SINDBAD")
-Pkg.develop(path="path/to/SINDBAD/SindbadTEM")
+Pkg.develop(path="path/to/Sindbad/SindbadTEM")
 ```
 
 ## Usage
@@ -118,13 +118,13 @@ Tooling for:
 - `DataStructures`: Advanced data structures (OrderedDict, Deque)
 - `StaticArraysCore`: Fixed-size arrays for performance-critical operations
 - `StatsBase`: Statistical functions
-- `UtilsKit`: Utility functions (maintained in a separate repository; installed automatically by Julia’s package manager)
+- `OmniTools`: Utility functions (maintained in a separate repository; installed automatically by Julia’s package manager)
 
 ## Documentation
 
 Comprehensive documentation is available at:
-- **Stable**: https://earthyscience.github.io/SINDBAD/stable/
-- **Development**: https://earthyscience.github.io/SINDBAD/dev/
+- **Stable**: https://landecosystems.github.io/Sindbad/dev/
+- **Development**: https://landecosystems.github.io/Sindbad/dev/
 
 ## SINDBAD Contributors
 
