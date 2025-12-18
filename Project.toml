@@ -22,6 +22,7 @@ Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
 NCDatasets = "85f8d34a-cbdd-5861-8df4-14fed0d494ab"
 NaNStatistics = "b946abbf-3ea7-4610-9019-9858bfdeaf2d"
 NetCDF = "30363a11-5582-574a-97bb-aa9a979735b9"
+OmniTools = "202e6067-a2be-48c9-bc21-3d3d20912f89"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
@@ -31,7 +32,6 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 ThreadPools = "b189fb0b-2eb5-4ed4-bc0c-d34c51242431"
 TimeSamplers = "a27efc82-29b7-4223-84cd-12fc64c7a5bb"
-UtilsKit = "202e6067-a2be-48c9-bc21-3d3d20912f89"
 YAXArrayBase = "90b8fcef-0c2d-428d-9c56-5f86629e9d14"
 YAXArrays = "c21b50f5-aa40-41ea-b809-c0f5e47bfa5c"
 Zarr = "0a941bbe-ad1d-11e8-39d9-ab76183a1d99"
@@ -53,9 +53,6 @@ PolyesterForwardDiff = "98d1487c-24ca-40b6-b7ab-df2af84e126b"
 PreallocationTools = "d236fae5-4411-538c-8e31-a6e3d9e00b46"
 QuasiMonteCarlo = "8a4e6c94-4038-4cdc-81c3-7e6ffdb2a71b"
 Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
-
-[sources]
-SindbadTEM = {path = "SindbadTEM"}
 
 [extensions]
 SindbadCMAEvolutionStrategyExt = "CMAEvolutionStrategy"

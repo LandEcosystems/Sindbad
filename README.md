@@ -1,27 +1,27 @@
 # SINDBAD
 
-[![][docs-stable-img]][docs-stable-url][![][docs-dev-img]][docs-dev-url][![][ci-img]][ci-url] [![][codecov-img]][codecov-url][![Julia][julia-img]][julia-url][![License: EUPLv1.2](https://img.shields.io/badge/License-EUPLv1.2-seagreen)](https://github.com/EarthyScience/SINDBAD/blob/main/LICENSE)
+[![][docs-stable-img]][docs-stable-url][![][docs-dev-img]][docs-dev-url][![][ci-img]][ci-url] [![][codecov-img]][codecov-url][![Julia][julia-img]][julia-url][![License: EUPLv1.2](https://img.shields.io/badge/License-EUPLv1.2-seagreen)](https://github.com/LandEcosystems/Sindbad/blob/main/LICENSE)
 
-<img src="docs/src/assets/logo.png" align="right" style="padding-left:10px;" width="150"/>
+<img src="docs/src/assets/sindbad_logo.png" align="right" style="padding-left:10px;" width="150"/>
 
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
-[docs-dev-url]: https://earthyscience.github.io/SINDBAD/dev/
+[docs-dev-url]: https://landecosystems.github.io/Sindbad/dev/
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: https://earthyscience.github.io/SINDBAD/stable/
+[docs-stable-url]: https://landecosystems.github.io/Sindbad/stable/
 
-[codecov-img]: https://codecov.io/gh/EarthyScience/SINDBAD/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/EarthyScience/SINDBAD
+[codecov-img]: https://codecov.io/gh/LandEcosystems/Sindbad/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/LandEcosystems/Sindbad
 
-[ci-img]: https://github.com/EarthyScience/SINDBAD/workflows/CI/badge.svg
-[ci-url]: https://github.com/EarthyScience/SINDBAD/actions?query=workflow%3ACI
+[ci-img]: https://github.com/LandEcosystems/Sindbad/workflows/CI/badge.svg
+[ci-url]: https://github.com/LandEcosystems/Sindbad/actions?query=workflow%3ACI
 
 [julia-img]: https://img.shields.io/badge/julia-v1.10+-blue.svg
 [julia-url]: https://julialang.org/
 
 Welcome to the repository for **S**trategies to **IN**tegrate **D**ata and **B**iogeochemic**A**l mo**D**els (SINDBAD).
 
-Researchers and developers actively developing the model and doing research using [this public SINDBAD repo](https://github.com/EarthyScience/SINDBAD) are encouraged to contact and join [the RnD-Team](./SindbadTEM/governance4RnD.md), which provides "beta" updates under active development.
+Researchers and developers actively developing the model and doing research using [this public SINDBAD repo](https://github.com/LandEcosystems/Sindbad) are encouraged to contact and join [the RnD-Team](./SindbadTEM/governance4RnD.md), which provides "beta" updates under active development.
 
 ## Overview
 
@@ -56,7 +56,7 @@ Internal packages (SINDBAD core):
 Related packages (SINDBAD ecosystem):
 - **`ErrorMetrics`**: Model–observation metrics (maintained in a separate repository)
 - **`TimeSampler`**: Time aggregation / sampling utilities (maintained in a separate repository)
-- **`UtilsKit`**: Shared utility toolkit (maintained in a separate repository)
+- **`OmniTools`**: Shared utility toolkit (maintained in a separate repository)
 
 ## Installation
 
@@ -71,7 +71,7 @@ Pkg.add("Sindbad")
 
 `Sindbad` depends on three categories of packages:
 
-- **Related (SINDBAD ecosystem)**: `ErrorMetrics`, `TimeSampler`, `UtilsKit` (installed automatically).
+- **Related (SINDBAD ecosystem)**: `ErrorMetrics`, `TimeSampler`, `OmniTools` (installed automatically).
 - **Internal (SINDBAD core)**: `Sindbad.DataLoaders`, `Sindbad.Experiment`, `Sindbad.MachineLearning`, `Sindbad.ParameterOptimization`, `Sindbad.Setup`, `Sindbad.Simulation`, `Sindbad.Types`, `Sindbad.Visualization`, `SindbadTEM`.
 - **External (third-party)**: e.g. `CSV`, `JLD2`, `JSON`, `NCDatasets`, `Plots`, `ProgressMeter`, `YAXArrays`, `Zarr`, etc. (installed automatically).
 
@@ -130,8 +130,8 @@ out = Sindbad.Experiment.runExperimentForward("experiment_config.json")
 ## Documentation
 
 Comprehensive documentation is available at:
-- **Stable**: [earthyscience.github.io/SINDBAD/stable](https://earthyscience.github.io/SINDBAD/stable/)
-- **Development**: [earthyscience.github.io/SINDBAD/dev](https://earthyscience.github.io/SINDBAD/dev/)
+- **Stable**: [landecosystems.github.io/Sindbad/stable](https://landecosystems.github.io/Sindbad/dev/)
+- **Development**: [landecosystems.github.io/Sindbad/dev](https://landecosystems.github.io/Sindbad/dev/)
 
 ## SINDBAD Contributors
 
