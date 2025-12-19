@@ -2,8 +2,11 @@
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 DocumenterVitepress = "4710194d-e776-4893-9690-8d956a29c365"
+ErrorMetrics = "c324fbf6-076a-4da5-8ad2-21081a6b285c"
+OmniTools = "202e6067-a2be-48c9-bc21-3d3d20912f89"
 Sindbad = "36c3e672-7dee-4606-99b5-7e5d8d85a313"
 SindbadTEM = "6686e6de-2010-4bf8-9178-b2bcc470766e"
+TimeSamplers = "a27efc82-29b7-4223-84cd-12fc64c7a5bb"
 
 [sources]
 Sindbad = {path = ".."}
