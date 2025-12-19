@@ -60,20 +60,30 @@ pre, code {
 }
 
 /**
- * Colors
+ * Colors - Inspired by Sindbad logo palette (same as ErrorMetrics theme)
+ * Primary colors extracted from logo: teal, blue, and complementary tones
  * -------------------------------------------------------------------------- */
 
 :root {
-  --julia-blue: rgb(56.475, 87.3, 190.575);
-  --julia-purple: rgb(131.4, 77.625, 157.05);
-  --julia-red: rgb(179.10, 52.875, 45.0);
-  --julia-green: rgb(49.5, 134.1, 33.525);
-  --vp-c-brand-light: #DEA958ff;
-  --vp-c-brand-lighter: #9499ff;
-  --vp-c-brand-lightest: #bcc0ff;
-  --vp-c-brand-dark: #535bf2;
-  --vp-c-brand-darker: #454ce1;
-  --vp-c-brand-2: #5499c7;
+  /* Brand colors - Distinct teal/cyan palette inspired by Sindbad logo */
+  /* Primary brand color - deep teal/cyan */
+  --vp-c-brand-1: #008B8B;
+  --vp-c-brand-2: #20B2AA;
+  --vp-c-brand-3: #48D1CC;
+  
+  /* Accent colors from logo palette */
+  --sindbad-teal: #008B8B;
+  --sindbad-cyan: #20B2AA;
+  --sindbad-light-cyan: #48D1CC;
+  --sindbad-dark-teal: #006666;
+  --sindbad-blue: #4682B4;
+  
+  /* Light mode brand colors */
+  --vp-c-brand-light: #20B2AA;
+  --vp-c-brand-lighter: #48D1CC;
+  --vp-c-brand-lightest: #AFEEEE;
+  --vp-c-brand-dark: #006666;
+  --vp-c-brand-darker: #004D4D;
 }
 
 /**
@@ -83,13 +93,13 @@ pre, code {
 :root {
   --vp-button-brand-border: var(--vp-c-brand-2);
   --vp-button-brand-text: var(--vp-c-white);
-  --vp-button-brand-bg: var(--vp-c-brand);
+  --vp-button-brand-bg: var(--vp-c-brand-1);
   --vp-button-brand-hover-border: var(--vp-c-brand-2);
   --vp-button-brand-hover-text: var(--vp-c-white);
   --vp-button-brand-hover-bg: var(--vp-c-brand-2);
   --vp-button-brand-active-border: var(--vp-c-brand-2);
   --vp-button-brand-active-text: var(--vp-c-white);
-  --vp-button-brand-active-bg: var(--vp-button-brand-bg);
+  --vp-button-brand-active-bg: var(--vp-c-brand-1);
 }
 
 /**
@@ -140,11 +150,198 @@ pre, code {
 
 
 /**
- * Component: Algolia
+ * Dark mode colors
  * -------------------------------------------------------------------------- */
+.dark {
+  --vp-c-brand-1: #20B2AA;
+  --vp-c-brand-2: #48D1CC;
+  --vp-c-brand-3: #AFEEEE;
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+}
 
+/**
+ * Component: Links
+ * -------------------------------------------------------------------------- */
+:root {
+  --vp-c-text-link: var(--vp-c-brand-1);
+}
+
+a:hover {
+  color: var(--vp-c-brand-2);
+}
+
+/**
+ * Component: Page Headings (Section and Subsection Titles)
+ * -------------------------------------------------------------------------- */
+/* Main page headings */
+.VPDoc .content h1 {
+  color: var(--sindbad-teal);
+  border-bottom: 2px solid var(--sindbad-cyan);
+  padding-bottom: 0.5rem;
+}
+
+.VPDoc .content h2 {
+  color: var(--sindbad-cyan);
+  border-bottom: 1px solid var(--sindbad-light-cyan);
+  padding-bottom: 0.4rem;
+  margin-top: 2rem;
+}
+
+.VPDoc .content h3 {
+  color: var(--sindbad-dark-teal);
+  margin-top: 1.5rem;
+}
+
+.VPDoc .content h4 {
+  color: var(--sindbad-blue);
+  margin-top: 1.25rem;
+}
+
+.VPDoc .content h5,
+.VPDoc .content h6 {
+  color: var(--sindbad-teal);
+  margin-top: 1rem;
+}
+
+/* Dark mode adjustments for headings */
+.dark .VPDoc .content h1 {
+  color: var(--sindbad-cyan);
+  border-bottom-color: var(--sindbad-light-cyan);
+}
+
+.dark .VPDoc .content h2 {
+  color: var(--sindbad-light-cyan);
+  border-bottom-color: var(--sindbad-cyan);
+}
+
+.dark .VPDoc .content h3 {
+  color: var(--sindbad-cyan);
+}
+
+.dark .VPDoc .content h4 {
+  color: var(--sindbad-light-cyan);
+}
+
+.dark .VPDoc .content h5,
+.dark .VPDoc .content h6 {
+  color: var(--sindbad-cyan);
+}
+
+/**
+ * Component: Sidebar Titles
+ * -------------------------------------------------------------------------- */
+/* Sidebar section group titles */
+.VPSidebar .group .items .item .text {
+  color: var(--sindbad-teal);
+  font-weight: 600;
+}
+
+.VPSidebar .group .items .item.is-active .text {
+  color: var(--sindbad-cyan);
+  font-weight: 700;
+}
+
+.VPSidebar .group .items .item:hover .text {
+  color: var(--sindbad-cyan);
+}
+
+/* Sidebar subsection titles (nested items) */
+.VPSidebar .group .items .item .items .item .text {
+  color: var(--sindbad-dark-teal);
+  font-weight: 500;
+}
+
+.VPSidebar .group .items .item .items .item.is-active .text {
+  color: var(--sindbad-cyan);
+  font-weight: 600;
+}
+
+.VPSidebar .group .items .item .items .item:hover .text {
+  color: var(--sindbad-cyan);
+}
+
+/* Sidebar group labels (section headers like "Getting Started", "Documentation") */
+.VPSidebar .group .title {
+  color: var(--sindbad-teal);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+}
+
+/* Dark mode adjustments for sidebar */
+.dark .VPSidebar .group .items .item .text {
+  color: var(--sindbad-cyan);
+}
+
+.dark .VPSidebar .group .items .item.is-active .text {
+  color: var(--sindbad-light-cyan);
+}
+
+.dark .VPSidebar .group .items .item:hover .text {
+  color: var(--sindbad-light-cyan);
+}
+
+.dark .VPSidebar .group .items .item .items .item .text {
+  color: var(--sindbad-cyan);
+}
+
+.dark .VPSidebar .group .items .item .items .item.is-active .text {
+  color: var(--sindbad-light-cyan);
+}
+
+.dark .VPSidebar .group .items .item .items .item:hover .text {
+  color: var(--sindbad-light-cyan);
+}
+
+.dark .VPSidebar .group .title {
+  color: var(--sindbad-cyan);
+}
+
+/**
+ * Component: Table of Contents (Outline)
+ * -------------------------------------------------------------------------- */
+/* TOC headings */
+.VPDocOutline .outline-title {
+  color: var(--sindbad-teal);
+  font-weight: 600;
+}
+
+.VPDocOutline .outline-link {
+  color: var(--sindbad-dark-teal);
+}
+
+.VPDocOutline .outline-link:hover {
+  color: var(--sindbad-cyan);
+}
+
+.VPDocOutline .outline-link.active {
+  color: var(--sindbad-cyan);
+  font-weight: 600;
+}
+
+/* Dark mode for TOC */
+.dark .VPDocOutline .outline-title {
+  color: var(--sindbad-cyan);
+}
+
+.dark .VPDocOutline .outline-link {
+  color: var(--sindbad-cyan);
+}
+
+.dark .VPDocOutline .outline-link:hover {
+  color: var(--sindbad-light-cyan);
+}
+
+.dark .VPDocOutline .outline-link.active {
+  color: var(--sindbad-light-cyan);
+}
+
+/**
+ * Component: Search
+ * -------------------------------------------------------------------------- */
 .DocSearch {
-  --docsearch-primary-color: var(--vp-c-brand) !important;
+  --docsearch-primary-color: var(--vp-c-brand-1) !important;
 }
 
 
@@ -170,30 +367,6 @@ mjx-container > svg {
   display: inline-block;
 }
 
-/**
- * Colors links
- * -------------------------------------------------------------------------- */
-
- :root {
-  --vp-c-brand-1-old: #3d8abe;
-  --vp-c-brand-1: #006c67e9;
-  --vp-c-brand-2: #006c67e9;
-  /* --vp-c-brand-2: #5499c7; */
-  --vp-c-brand-3: #487da0;
-  --vp-c-sponsor: #ca2971;
-  --vitest-c-sponsor-hover: #c13071;
-}
-
-.dark {
-  /* --vp-c-brand-1: #DEA958ff;
-  --vp-c-brand-2: rgb(233, 184, 112); */
-  --vp-c-brand-1: #049790c3;
-  --vp-c-brand-2: #049790c3;
-  --vp-c-brand-3: #d8c980;
-  --vp-c-sponsor: #ee4e95;
-  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
-  --vitest-c-sponsor-hover: #e51370;
-}
 
 /* .vitepress/theme/custom.css */
 
@@ -242,4 +415,26 @@ mjx-container > svg {
     margin-right: 0;
     margin-bottom: 1em;
   }
+}
+
+/**
+ * Component: Home Page Feature Boxes
+ * -------------------------------------------------------------------------- */
+/* Feature box titles (Challenge, Goal, Community, etc.) */
+.VPHome .VPFeature .title {
+  color: var(--sindbad-teal);
+  font-weight: 600;
+}
+
+.VPHome .VPFeature:hover .title {
+  color: var(--sindbad-cyan);
+}
+
+/* Dark mode for feature titles */
+.dark .VPHome .VPFeature .title {
+  color: var(--sindbad-cyan);
+}
+
+.dark .VPHome .VPFeature:hover .title {
+  color: var(--sindbad-light-cyan);
 }
