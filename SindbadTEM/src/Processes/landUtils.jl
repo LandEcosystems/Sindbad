@@ -1,26 +1,33 @@
-export addToElem, @add_to_elem, addToEachElem, addVec
+export @add_to_elem, @pack_nt, @rep_elem, @rep_vec, @unpack_nt
+export addToElem, addToEachElem, addVec
 export getZix
-export @pack_nt, @unpack_nt
-export repElem, @rep_elem, repVec, @rep_vec
-export setComponents
-export setComponentFromMainPool, setMainFromComponentPool
+export processPackNT, processUnpackNT
+export repElem, repVec
+export setComponentFromMainPool, setComponents, setMainFromComponentPool
 export totalS
+
+using ..SindbadTEM
+import StaticArraysCore: SVector
 
 """
     @add_to_elem
 
-macro to add to an element of a vector or a static vector.    
-    
-# Example
-```julia
-helpers = (; pools =(;
-        zeros=(; cOther = 0.0f0,),
-        ones = (; cOther = 1.0f0 ))
-        )
-cOther = [100.0f0, 1.0f0]
-# and then add 1.0f0 to the first element of cOther
-@add_to_elem 1 ⇒ (cOther, 1, :cOther)
-```    
+Macro to add a value to an element of a vector or static vector.
+
+# Arguments
+- `outparams::Expr`: Expression in the form `value ⇒ (vector, index, pool_name)`
+
+# Examples
+```jldoctest
+julia> using StaticArraysCore: SVector
+julia> helpers = (; pools = (; zeros = (; cOther = SVector(0.0f0, 0.0f0),),))
+julia> cOther = SVector(100.0f0, 1.0f0)
+julia> @add_to_elem 1.0f0 ⇒ (cOther, 1, :cOther)
+julia> cOther
+2-element SVector{2, Float32} with indices SOneTo(2):
+ 101.0f0
+   1.0f0
+```
 """
 macro add_to_elem(outparams::Expr)
     @assert outparams.head == :call || outparams.head == :(=)
@@ -40,22 +47,38 @@ macro add_to_elem(outparams::Expr)
                 tar,
                 lhs,
                 esc(Expr(:., :(helpers.pools.zeros), hp_pool)),
-                # esc(:(land.constants.z_zero)),
                 esc(indx)))
     ]
     return Expr(:block, outCode...)
 end
 
+
 """
     addToElem(v::SVector, Δv, v_zero, ind::Int)
     addToElem(v::AbstractVector, Δv, _, ind::Int)
 
-# Arguments
-- `v`: a StaticVector or AbstractVector
-- `Δv`: the value to be added
-- `v_zero`: a StaticVector of zeros
-- `ind::Int`: the index of the element to be added
+Add a value to a specific element of a vector.
 
+# Arguments
+- `v`: A `StaticVector` or `AbstractVector`
+- `Δv`: The value to be added
+- `v_zero`: A `StaticVector` of zeros (used for `SVector` only)
+- `ind::Int`: The index of the element to modify
+
+# Returns
+- The modified vector with `Δv` added to element at index `ind`
+
+# Examples
+```jldoctest
+julia> using StaticArraysCore: SVector
+julia> v = SVector(1.0, 2.0, 3.0)
+julia> v_zero = SVector(0.0, 0.0, 0.0)
+julia> addToElem(v, 5.0, v_zero, 2)
+3-element SVector{3, Float64} with indices SOneTo(3):
+ 1.0
+ 7.0
+ 3.0
+```
 """
 function addToElem end
 
@@ -74,14 +97,28 @@ function addToElem(v::AbstractVector, Δv, _, ind::Int)
 end
 
 """
-    addToEachElem(v::SVector, Δv:Real)
-    addToEachElem(v::AbstractVector, Δv:Real)
+    addToEachElem(v::SVector, Δv::Real)
+    addToEachElem(v::AbstractVector, Δv::Real)
 
-add Δv to each element of v when v is a StaticVector or a Vector.
+Add a value to each element of a vector.
 
 # Arguments
-- `v`: a StaticVector or AbstractVector
-- `Δv`: the value to be added to each element
+- `v`: A `StaticVector` or `AbstractVector`
+- `Δv::Real`: The value to be added to each element
+
+# Returns
+- The modified vector with `Δv` added to all elements
+
+# Examples
+```jldoctest
+julia> using StaticArraysCore: SVector
+julia> v = SVector(1.0, 2.0, 3.0)
+julia> addToEachElem(v, 5.0)
+3-element SVector{3, Float64} with indices SOneTo(3):
+ 6.0
+ 7.0
+ 8.0
+```
 """
 function addToEachElem end
 
@@ -99,11 +136,26 @@ end
     addVec(v::SVector, Δv::SVector)
     addVec(v::AbstractVector, Δv::AbstractVector)
 
-add Δv to v when v is a StaticVector or a Vector.
+Add one vector to another element-wise.
 
 # Arguments
-- `v`: a StaticVector or AbstractVector
-- `Δv`: a StaticVector or AbstractVector
+- `v`: A `StaticVector` or `AbstractVector`
+- `Δv`: A `StaticVector` or `AbstractVector` of the same length
+
+# Returns
+- The result of adding `Δv` to `v` element-wise
+
+# Examples
+```jldoctest
+julia> using StaticArraysCore: SVector
+julia> v = SVector(1.0, 2.0, 3.0)
+julia> Δv = SVector(0.5, 1.0, 1.5)
+julia> addVec(v, Δv)
+3-element SVector{3, Float64} with indices SOneTo(3):
+ 1.5
+ 3.0
+ 4.5
+```
 """
 function addVec end
 
@@ -117,15 +169,28 @@ function addVec(v::AbstractVector, Δv::AbstractVector)
     return v
 end
 
-
 """
     getZix(dat::SubArray)
     getZix(dat::SubArray, zixhelpersPool)
     getZix(dat::Array, zixhelpersPool)
     getZix(dat::SVector, zixhelpersPool)
 
-returns the indices of a view for a subArray
+Return the indices of a view for a subarray or return the provided indices.
 
+# Arguments
+- `dat`: A `SubArray`, `Array`, or `SVector`
+- `zixhelpersPool`: (Optional) Helper indices to return if `dat` is not a `SubArray`
+
+# Returns
+- A tuple of indices for the array view
+
+# Examples
+```jldoctest
+julia> arr = [1, 2, 3, 4, 5]
+julia> view_arr = view(arr, 2:4)
+julia> getZix(view_arr)
+(2:4,)
+```
 """
 function getZix end
 
@@ -148,18 +213,18 @@ end
 """
     @pack_nt
 
-macro to pack variables into a named tuple.
+Macro to pack variables into a named tuple.
 
-# Example
-```julia
-@pack_nt begin
-    (a, b) ⇒ land.diagnostics
-    (c, d, f) ⇒ land.fluxes
-end
-# or 
-@pack_nt (a, b) ⇒ land.diagnostics
-# or 
-@pack_nt a ⇒ land.diagnostics
+# Arguments
+- `outparams`: Expression or block of expressions in the form `(vars...) ⇒ target` or `var ⇒ target`
+
+# Examples
+```jldoctest
+julia> land = (; diagnostics = (; a = 1, b = 2), fluxes = (; c = 3, d = 4))
+julia> a, b = 10, 20
+julia> @pack_nt (a, b) ⇒ land.diagnostics
+julia> land.diagnostics
+(a = 10, b = 20)
 ```
 """
 macro pack_nt(outparams)
@@ -176,7 +241,16 @@ end
 """
     processPackNT(ex)
 
+Internal helper function to process pack named tuple expressions.
 
+# Arguments
+- `ex`: An expression to process
+
+# Returns
+- A processed expression for packing into a named tuple
+
+# Notes
+- This is an internal function used by the `@pack_nt` macro
 """
 function processPackNT(ex)
     rename, ex = if ex.head == :(=)
@@ -190,10 +264,8 @@ function processPackNT(ex)
     lhs = ex.args[2]
     rhs = ex.args[3]
     if lhs isa Symbol
-        #println("symbol")
         lhs = [lhs]
     elseif lhs.head == :tuple
-        #println("tuple")
         lhs = lhs.args
     else
         error("processPackNT: could not pack:" * lhs * "=" * rhs)
@@ -211,7 +283,6 @@ function processPackNT(ex)
                 Expr(:tuple,
                     Expr(:parameters, Expr(:(...), esc(rhs)),
                         Expr(:kw, esc(s), esc(rn)))))
-            # expr_l = Expr(:(=), esc(rhs), Expr(:tuple, Expr(:parameters, Expr(:(...), esc(rhs)), Expr(:(=), esc(s), esc(rn)))))
             expr_l
         elseif depth_field == 2
             top = Symbol(split(string(rhs), '.')[1])
@@ -225,7 +296,6 @@ function processPackNT(ex)
                         (Expr(:tuple,
                             Expr(:parameters, Expr(:(...), esc(rhs)),
                                 Expr(:kw, esc(s), esc(rn))))))))
-            # tmp = Expr(:(=), esc(top), Expr(:macrocall, Symbol("@set"), :(#= none:1 =#), Expr(:(=), Expr(:ref, Expr(:ref, esc(top), QuoteNode(field)), QuoteNode(s)), esc(rn))))
             tmp
         end
     end
@@ -235,7 +305,16 @@ end
 """
     processUnpackNT(ex)
 
+Internal helper function to process unpack named tuple expressions.
 
+# Arguments
+- `ex`: An expression to process
+
+# Returns
+- A processed expression for unpacking from a named tuple
+
+# Notes
+- This is an internal function used by the `@unpack_nt` macro
 """
 function processUnpackNT(ex)
     rename, ex = if ex.head == :(=)
@@ -266,19 +345,25 @@ function processUnpackNT(ex)
     return Expr(:block, lines...)
 end
 
+
 """
     @rep_elem
-macro to replace an element of a vector or a static vector.
 
-# Example
-```julia
-helpers = (; pools =(;
-        zeros=(; cOther = 0.0f0,),
-        ones = (; cOther = 1.0f0 ))
-        )
-cOther = [100.0f0, 1.0f0]
-# and then replace the first element of cOther with 1.0f0
-@rep_elem 1 ⇒ (cOther, 1, :cOther) 
+Macro to replace an element of a vector or static vector.
+
+# Arguments
+- `outparams::Expr`: Expression in the form `value ⇒ (vector, index, pool_name)`
+
+# Examples
+```jldoctest
+julia> using StaticArraysCore: SVector
+julia> helpers = (; pools = (; zeros = (; cOther = SVector(0.0f0, 0.0f0),), ones = (; cOther = SVector(1.0f0, 1.0f0),)))
+julia> cOther = SVector(100.0f0, 1.0f0)
+julia> @rep_elem 50.0f0 ⇒ (cOther, 1, :cOther)
+julia> cOther
+2-element SVector{2, Float32} with indices SOneTo(2):
+  50.0f0
+   1.0f0
 ```
 """
 macro rep_elem(outparams::Expr)
@@ -309,12 +394,30 @@ end
     repElem(v::AbstractVector, v_elem, _, _, ind::Int)
     repElem(v::SVector, v_elem, v_zero, v_one, ind::Int)
 
+Replace an element of a vector with a new value.
+
 # Arguments
-- `v`: a StaticVector or AbstractVector
-- `v_elem`: the value to be replaced with
-- `v_zero`: a StaticVector of zeros
-- `v_one`: a StaticVector of ones
-- `ind::Int`: the index of the element to be replaced
+- `v`: A `StaticVector` or `AbstractVector`
+- `v_elem`: The new value to assign
+- `v_zero`: A `StaticVector` of zeros (used for `SVector` only)
+- `v_one`: A `StaticVector` of ones (used for `SVector` only)
+- `ind::Int`: The index of the element to replace
+
+# Returns
+- The modified vector with element at index `ind` replaced by `v_elem`
+
+# Examples
+```jldoctest
+julia> using StaticArraysCore: SVector
+julia> v = SVector(1.0, 2.0, 3.0)
+julia> v_zero = SVector(0.0, 0.0, 0.0)
+julia> v_one = SVector(1.0, 1.0, 1.0)
+julia> repElem(v, 5.0, v_zero, v_one, 2)
+3-element SVector{3, Float64} with indices SOneTo(3):
+ 1.0
+ 5.0
+ 3.0
+```
 """
 function repElem end
 
@@ -331,22 +434,25 @@ function repElem(v::SVector, v_elem, v_zero, v_one, ind::Int)
     v_one = v_one .* n_0 .+ n_1
     v_one = Base.setindex(v_one, n_0, ind)
     v = v .* v_one .+ v_zero .* v_elem
-    # v = Base.setindex(v, v_elem, vlit_level)
     return v
 end
 
 """
     @rep_vec
-macro to replace a vector or a static vector with a new value.
 
-# Example
-```julia
-_vec = [100.0f0, 2.0f0]
-# and then replace the vector with 1.0f0
-@rep_vec _vec ⇒ 1.0f0
-# or with a new vector
-@rep_vec _vec ⇒ [3.0f0, 2.0f0]
+Macro to replace a vector or static vector with a new value.
 
+# Arguments
+- `outparams::Expr`: Expression in the form `vector ⇒ new_value`
+
+# Examples
+```jldoctest
+julia> _vec = [100.0f0, 2.0f0]
+julia> @rep_vec _vec ⇒ 1.0f0
+julia> _vec
+2-element Vector{Float32}:
+ 1.0f0
+ 1.0f0
 ```
 """
 macro rep_vec(outparams::Expr)
@@ -363,12 +469,25 @@ end
     repVec(v::AbstractVector, v_new)
     repVec(v::SVector, v_new)
 
-replaces the values of a vector with a new value
+Replace the values of a vector with a new value or vector.
 
-# Arguments:
-- `v`: an AbstractVector or a StaticVector
-- `v_new`: a new value to replace the old one
+# Arguments
+- `v`: An `AbstractVector` or `StaticVector`
+- `v_new`: A new value or vector to replace the old values
 
+# Returns
+- The modified vector with values replaced
+
+# Examples
+```jldoctest
+julia> using StaticArraysCore: SVector
+julia> v = SVector(1.0, 2.0, 3.0)
+julia> repVec(v, 5.0)
+3-element SVector{3, Float64} with indices SOneTo(3):
+ 5.0
+ 5.0
+ 5.0
+```
 """
 function repVec end
 
@@ -384,77 +503,30 @@ function repVec(v::SVector, v_new)
 end
 
 """
-    setComponents(land, helpers, Val{s_main}, Val{s_comps}, Val{zix})
-
-# Arguments:
-- `land`: a core SINDBAD NT that contains all variables for a given time step that is overwritten at every timestep
-- `helpers`: helper NT with necessary objects for model run and type consistencies
-- `::Val{s_main}`: a NT with names of the main pools
-- `::Val{s_comps}`: a NT with names of the component pools
-- `::Val{zix}`: a NT with zix of each pool
-"""
-function setComponents(
-    land,
-    helpers,
-    ::Val{s_main},
-    ::Val{s_comps},
-    ::Val{zix}) where {s_main,s_comps,zix}
-    output = quote end
-    push!(output.args, Expr(:(=), s_main, Expr(:., :(land.pools), QuoteNode(s_main))))
-    foreach(s_comps) do s_comp
-        push!(output.args, Expr(:(=), s_comp, Expr(:., :(land.pools), QuoteNode(s_comp))))
-        zix_pool = getfield(zix, s_comp)
-        c_ix = 1
-        foreach(zix_pool) do ix
-            push!(output.args, Expr(:(=),
-                s_comp,
-                Expr(:call,
-                    rep_elem,
-                    s_comp,
-                    Expr(:ref, s_main, ix),
-                    Expr(:., :(helpers.pools.zeros), QuoteNode(s_comp)),
-                    Expr(:., :(helpers.pools.ones), QuoteNode(s_comp)),
-                    :(land.constants.z_zero),
-                    :(land.constants.o_one),
-                    c_ix)))
-
-            c_ix += 1
-        end
-        push!(output.args, Expr(:(=),
-            :land,
-            Expr(:tuple,
-                Expr(:(...), :land),
-                Expr(:(=),
-                    :pools,
-                    (Expr(:tuple,
-                        Expr(:parameters, Expr(:(...), :(land.pools)),
-                            Expr(:kw, s_comp, s_comp))))))))
-    end
-    return output
-end
-
-
-"""
     setComponentFromMainPool(land, helpers, Val{s_main}, Val{s_comps}, Val{zix})
 
-- sets the component pools value using the values for the main pool
-- name are generated using the components in helpers so that the model formulations are not specific for poolnames and are dependent on model structure.json
+Set component pool values using values from the main pool.
 
+# Arguments
+- `land`: A core SINDBAD NamedTuple containing all variables for a given time step
+- `helpers`: Helper NamedTuple with necessary objects for model run and type consistencies
+- `::Val{s_main}`: A NamedTuple with names of the main pools
+- `::Val{s_comps}`: A NamedTuple with names of the component pools
+- `::Val{zix}`: A NamedTuple with zix (indices) of each pool
 
-# Arguments:
-- `land`: a core SINDBAD NT that contains all variables for a given time step that is overwritten at every timestep
-- `helpers`: helper NT with necessary objects for model run and type consistencies
-- `::Val{s_main}`: a NT with names of the main pools
-- `::Val{s_comps}`: a NT with names of the component pools
-- `::Val{zix}`: a NT with zix of each pool
+# Returns
+- Generated code expression to set component pools from main pool
+
+# Notes
+- Names are generated using components in helpers so model formulations are not specific for pool names
+- This is a generated function that creates code at compile time
 """
 @generated function setComponentFromMainPool(
-    # function setComponentFromMainPool(
     land,
     helpers,
     ::Val{s_main},
     ::Val{s_comps},
-    ::Val{zix}) where {s_main,s_comps,zix}
+    ::Val{zix}) where {s_main, s_comps, zix}
     gen_output = quote end
     push!(gen_output.args, Expr(:(=), s_main, Expr(:., :(land.pools), QuoteNode(s_main))))
     foreach(s_comps) do s_comp
@@ -489,26 +561,89 @@ end
     return gen_output
 end
 
+"""
+    setComponents(land, helpers, Val{s_main}, Val{s_comps}, Val{zix})
+
+Set component pools from main pool values.
+
+# Arguments
+- `land`: A core SINDBAD NamedTuple containing all variables for a given time step
+- `helpers`: Helper NamedTuple with necessary objects for model run and type consistencies
+- `::Val{s_main}`: A NamedTuple with names of the main pools
+- `::Val{s_comps}`: A NamedTuple with names of the component pools
+- `::Val{zix}`: A NamedTuple with zix (indices) of each pool
+
+# Returns
+- Generated code expression to set components
+
+# Notes
+- This function generates code at runtime to set component pools
+"""
+function setComponents(
+    land,
+    helpers,
+    ::Val{s_main},
+    ::Val{s_comps},
+    ::Val{zix}) where {s_main, s_comps, zix}
+    output = quote end
+    push!(output.args, Expr(:(=), s_main, Expr(:., :(land.pools), QuoteNode(s_main))))
+    foreach(s_comps) do s_comp
+        push!(output.args, Expr(:(=), s_comp, Expr(:., :(land.pools), QuoteNode(s_comp))))
+        zix_pool = getfield(zix, s_comp)
+        c_ix = 1
+        foreach(zix_pool) do ix
+            push!(output.args, Expr(:(=),
+                s_comp,
+                Expr(:call,
+                    rep_elem,
+                    s_comp,
+                    Expr(:ref, s_main, ix),
+                    Expr(:., :(helpers.pools.zeros), QuoteNode(s_comp)),
+                    Expr(:., :(helpers.pools.ones), QuoteNode(s_comp)),
+                    :(land.constants.z_zero),
+                    :(land.constants.o_one),
+                    c_ix)))
+
+            c_ix += 1
+        end
+        push!(output.args, Expr(:(=),
+            :land,
+            Expr(:tuple,
+                Expr(:(...), :land),
+                Expr(:(=),
+                    :pools,
+                    (Expr(:tuple,
+                        Expr(:parameters, Expr(:(...), :(land.pools)),
+                            Expr(:kw, s_comp, s_comp))))))))
+    end
+    return output
+end
 
 """
     setMainFromComponentPool(land, helpers, Val{s_main}, Val{s_comps}, Val{zix})
 
-- sets the main pool from the values of the component pools
-- name are generated using the components in helpers so that the model formulations are not specific for poolnames and are dependent on model structure.json
+Set main pool values from component pool values.
 
-# Arguments:
-- `land`: a core SINDBAD NT that contains all variables for a given time step that is overwritten at every timestep
-- `helpers`: helper NT with necessary objects for model run and type consistencies
-- `::Val{s_main}`: a NT with names of the main pools
-- `::Val{s_comps}`: a NT with names of the component pools
-- `::Val{zix}`: a NT with zix of each pool
+# Arguments
+- `land`: A core SINDBAD NamedTuple containing all variables for a given time step
+- `helpers`: Helper NamedTuple with necessary objects for model run and type consistencies
+- `::Val{s_main}`: A NamedTuple with names of the main pools
+- `::Val{s_comps}`: A NamedTuple with names of the component pools
+- `::Val{zix}`: A NamedTuple with zix (indices) of each pool
+
+# Returns
+- Generated code expression to set main pool from component pools
+
+# Notes
+- Names are generated using components in helpers so model formulations are not specific for pool names
+- This is a generated function that creates code at compile time
 """
 @generated function setMainFromComponentPool(
     land,
     helpers,
     ::Val{s_main},
     ::Val{s_comps},
-    ::Val{zix}) where {s_main,s_comps,zix}
+    ::Val{zix}) where {s_main, s_comps, zix}
     gen_output = quote end
     push!(gen_output.args, Expr(:(=), s_main, Expr(:., :(land.pools), QuoteNode(s_main))))
     foreach(s_comps) do s_comp
@@ -544,8 +679,26 @@ end
 
 """
     totalS(s, sΔ)
+    totalS(s)
 
-return total storage amount given the storage and the current delta storage without creating an allocation for a temporary array
+Return the total storage amount given storage and delta storage without creating temporary arrays.
+
+# Arguments
+- `s`: Storage array
+- `sΔ`: (Optional) Delta storage array
+
+# Returns
+- Total storage amount (sum of `s` and `sΔ` if provided, or just `s`)
+
+# Examples
+```jldoctest
+julia> s = [1.0, 2.0, 3.0]
+julia> sΔ = [0.1, 0.2, 0.3]
+julia> totalS(s, sΔ)
+6.6
+julia> totalS(s)
+6.0
+```
 """
 function totalS(s, sΔ)
     sm = zero(eltype(s))
@@ -555,11 +708,6 @@ function totalS(s, sΔ)
     return sm
 end
 
-"""
-    totalS(s)
-
-return total storage amount given the storage without creating an allocation for a temporary array
-"""
 function totalS(s)
     sm = zero(eltype(s))
     for si ∈ eachindex(s)
@@ -568,22 +716,20 @@ function totalS(s)
     return sm
 end
 
-
 """
     @unpack_nt
 
-macro to unpack variables from a named tuple.
+Macro to unpack variables from a named tuple.
 
-# Example
+# Arguments
+- `inparams`: Expression or block of expressions in the form `(vars...) ⇐ source` or `var ⇐ source`
 
-```julia
-@unpack_nt (f1, f2) ⇐ forcing # named tuple
-@unpack_nt var1 ⇐ land.diagnostics # named tuple
-# or 
-@unpack_nt begin
-    (f1, f2) ⇐ forcing
-    var1 ⇐ land.diagnostics
-end
+# Examples
+```jldoctest
+julia> forcing = (; f1 = 1.0, f2 = 2.0)
+julia> @unpack_nt (f1, f2) ⇐ forcing
+julia> f1, f2
+(1.0, 2.0)
 ```
 """
 macro unpack_nt(inparams)

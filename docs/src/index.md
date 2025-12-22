@@ -19,7 +19,7 @@ hero:
       link: pages/develop/overview
     - theme: alt
       text: Code
-      link: pages/code/overview
+      link: pages/code/api/Sindbad
     - theme: alt
       text: Repository
       link: https://github.com/LandEcosystems/Sindbad
@@ -49,8 +49,8 @@ features:
 
   - icon: <img width="50" height="50" src="https://img.icons8.com/bubbles/50/mind-map.png" alt="hybrid-icon"/>
     title: Code
-    link: /pages/code/overview
-    details: Code documentation for understanding setup/workflow/experiments.
+    link: /pages/code/api/Sindbad
+    details: Generated API documentation for the Sindbad / SindbadTEM codebase.
 ---
 ```
 

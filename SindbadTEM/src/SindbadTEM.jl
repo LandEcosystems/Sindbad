@@ -6,7 +6,11 @@ A Julia package for the terrestrial ecosystem model (TEM) implementation within 
 The `SindbadTEM` package serves as the core of the SINDBAD framework, providing foundational types, utilities, and tools for building and managing SINDBAD models.
 
 # Purpose
-This module defines the `LandEcosystem` supertype, which serves as the base for all SINDBAD models. It also provides utilities for managing model variables, tools for model operations, and a catalog of variables used in SINDBAD workflows.
+This module is the entry point for the SINDBAD TEM implementation. It pulls together:
+- Core abstract types (notably `LandEcosystem`, defined in `TEMTypes`)
+- Utilities for model inspection and tooling
+- A canonical variable catalog for consistent metadata
+- The process/approach hierarchy and default process ordering
 
 # Dependencies
 Key dependencies used/re-exported by the module include:
@@ -20,14 +24,14 @@ Key dependencies used/re-exported by the module include:
 - `InteractiveUtils`, `Crayons`: Interactive/dev UX helpers.
 
 # Included Files
-- **`TEMTypes.jl`**: Core TEM types (including `LandEcosystem`) and shared type utilities.
-- **`TEMUtils.jl`**: Helper macros/functions for pools, NamedTuples, logging, and TEM utilities.
-- **`TEMVariableCatalog.jl`**: Canonical catalog of SINDBAD variables for consistent IO metadata.
-- **`Processes/Processes.jl`**: Process hierarchy, metadata macros, and process/approach definitions (re-exported as `SindbadTEM.Processes`).
+- **`Types.jl`** (module `SindbadTEM.TEMTypes`): Core TEM types (including `LandEcosystem`) and shared type utilities.
+- **`Utils.jl`** (module `SindbadTEM.Utils`): Utilities for model inspection/tooling (e.g. I/O parsing).
+- **`Variables.jl`** (module `SindbadTEM.Variables`): Canonical catalog of SINDBAD TEM variables and metadata helpers.
+- **`Processes.jl`** (module `SindbadTEM.Processes`): Process hierarchy, parameter metadata macros, model/approach docstring helpers, and dynamic inclusion of process implementations under `src/Processes/`.
 - *(Internal)* `tmp_precompile_placeholder.jl`: Auto-managed placeholder to force precompilation when new processes/approaches are added.
 
 # Notes
-- The `LandEcosystem` supertype serves as the foundation for all SINDBAD models, enabling extensibility and modularity.
+- The `LandEcosystem` supertype serves as the foundation for all SINDBAD TEM models/processes, enabling extensibility and modularity.
 - The module re-exports key functionality from several dependencies (e.g., `StaticArraysCore`, `DataStructures`) to simplify downstream usage.
 - Designed to be lightweight and modular, allowing seamless integration with other SINDBAD modules in the top src directory of the repository.
 
@@ -60,7 +64,7 @@ module SindbadTEM
    @reexport using Base.Docs: doc as base_doc
 
    # create a tmp_ file for tracking the creation of new approaches. This is needed because precompiler is not consistently loading the newly created approaches. This file is appended every time a new model/approach is created which forces precompile in the next use of SindbadTEM.
-   file_path = file_path = joinpath(@__DIR__, "tmp_precompile_placeholder.jl")
+   file_path = joinpath(@__DIR__, "tmp_precompile_placeholder.jl")
    # Check if the file exists
    if isfile(file_path)
       # Include the file if it exists
@@ -74,17 +78,20 @@ module SindbadTEM
       println("Created a blank file: $file_path to track precompilation of new processes and approaches")
    end
    
-   include("TEMTypes.jl")
-   include("TEMUtils.jl")
-   include("TEMVariableCatalog.jl")
-   include("Processes/Processes.jl")
+   include("Types.jl")
+   @reexport using .TEMTypes
+   include("Utils.jl")
+   @reexport using .Utils
+   include("Variables.jl")
+   @reexport using .Variables
+   include("Processes.jl")
    @reexport using .Processes
 
    # append the docstring of the LandEcosystem type to the docstring of the SindbadTEM module so that all the methods of the LandEcosystem type are included after the models have been described
    @doc """
    LandEcosystem
 
-   $(purpose(LandEcosystem))
+   $(purpose(TEMTypes.LandEcosystem))
 
    # Methods
    All subtypes of `LandEcosystem` must implement at least one of the following methods:
@@ -126,8 +133,8 @@ module SindbadTEM
    ---
 
    # Extended help
-   $(methods_of(LandEcosystem, purpose_function=purpose))
+   $(methods_of(TEMTypes.LandEcosystem, purpose_function=purpose))
    """
-   LandEcosystem
+   TEMTypes.LandEcosystem
    
 end

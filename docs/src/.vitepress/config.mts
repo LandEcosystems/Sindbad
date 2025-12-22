@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import path from 'path'
+import mathjax3 from 'markdown-it-mathjax3'
 
 // https://vitepress.dev/reference/site-config
 
@@ -21,33 +22,49 @@ const settingsItems = [
   { text: 'Parameters', link: '/pages/settings/parameters' },
 ]
 
+// "Code" is the fully generated API reference (from Documenter + generators).
+//
+// Important: Vitepress top-nav dropdowns don't expand nested groups more than one level.
+// So we keep Code nav items shallow: Sindbad + group headings (+ TEM / + Modules / + Extensions).
 const codeItems = [
-  { text: 'Sindbad', link: '/pages/code/overview' },
-  { text: ' + TEM', link: '/pages/code/sindbadTEM' },
-
-  { text: ' \u00A0\u00A0++ Processes', link: '/pages/code/models' },
-  { text: ' \u00A0\u00A0++ Types', link: '/pages/code/types' },
-  { text: ' + DataLoaders', link: '/pages/code/data' },
-  { text: ' + MachineLearning', link: '/pages/code/ml' },
-  { text: ' + ParameterOptimization', link: '/pages/code/optimization' },
-  { text: ' + Setup', link: '/pages/code/setup' },
-  { text: ' + Simulation', link: '/pages/code/simulation' },
-  { text: ' + Visualization', link: '/pages/code/visuals' }
-]
-
-const codeGenItems = [
-  { text: 'Sindbad', link: '/pages/code_gen/Sindbad' },
-  { text: ' + Core', link: '/pages/code_gen/Sindbad' },
-  { text: ' + Data', link: '/pages/code_gen/DataLoaders' },
-  { text: ' + Experiment', link: '/pages/code_gen/Sindbad.Simulation' },
-  { text: ' + Metrics', link: '/pages/code_gen/SindbadMetrics' },
-  { text: ' + ML', link: '/pages/code_gen/MachineLearning' },
-  { text: ' + Models', link: '/pages/code_gen/SindbadModels' },
-  { text: ' + ParameterOptimization', link: '/pages/code_gen/Sindbad.ParameterOptimization' },
-  { text: ' + Setup', link: '/pages/code_gen/Setup' },
-  { text: ' + TEM', link: '/pages/code_gen/SindbadTEM' },
-  { text: ' + Utils', link: '/pages/code_gen/Utils' },
-  // { text: ' + Visuals', link: '/pages/code_gen/Visualization' }
+  { text: 'Sindbad', link: '/pages/code/api/Sindbad' },
+  {
+    text: ' + TEM',
+    items: [
+      { text: '++ Processes', link: '/pages/code/api/SindbadTEM.Processes' },
+      { text: '++ Utils', link: '/pages/code/api/SindbadTEM.Utils' },
+      { text: '++ TEMTypes', link: '/pages/code/api/SindbadTEM.TEMTypes' },
+      { text: '++ Variables', link: '/pages/code/api/SindbadTEM.Variables' },
+    ],
+  },
+  {
+    text: ' + Modules',
+    items: [
+      { text: '++ Types', link: '/pages/code/api/Types' },
+      { text: '++ Setup', link: '/pages/code/api/Setup' },
+      { text: '++ DataLoaders', link: '/pages/code/api/DataLoaders' },
+      { text: '++ Simulation', link: '/pages/code/api/Simulation' },
+      { text: '++ ParameterOptimization', link: '/pages/code/api/ParameterOptimization' },
+      { text: '++ MachineLearning', link: '/pages/code/api/MachineLearning' },
+      { text: '++ Visualization', link: '/pages/code/api/Visualization' },
+    ],
+  },
+  {
+    text: ' + Extensions',
+    items: [
+      { text: '++ Extensions (index)', link: '/pages/code/api/extensions/index' },
+      { text: '++ SindbadCMAEvolutionStrategyExt', link: '/pages/code/api/extensions/SindbadCMAEvolutionStrategyExt' },
+      { text: '++ SindbadDifferentialEquationsExt', link: '/pages/code/api/extensions/SindbadDifferentialEquationsExt' },
+      { text: '++ SindbadEnzymeExt', link: '/pages/code/api/extensions/SindbadEnzymeExt' },
+      { text: '++ SindbadFiniteDiffExt', link: '/pages/code/api/extensions/SindbadFiniteDiffExt' },
+      { text: '++ SindbadFiniteDifferencesExt', link: '/pages/code/api/extensions/SindbadFiniteDifferencesExt' },
+      { text: '++ SindbadForwardDiffExt', link: '/pages/code/api/extensions/SindbadForwardDiffExt' },
+      { text: '++ SindbadNLsolveExt', link: '/pages/code/api/extensions/SindbadNLsolveExt' },
+      { text: '++ SindbadOptimizationExt', link: '/pages/code/api/extensions/SindbadOptimizationExt' },
+      { text: '++ SindbadPreallocationToolsExt', link: '/pages/code/api/extensions/SindbadPreallocationToolsExt' },
+      { text: '++ SindbadZygoteExt', link: '/pages/code/api/extensions/SindbadZygoteExt' },
+    ],
+  },
 ]
 const aboutItems = [
   { text: 'Contact', link: '/pages/about/contact' },
@@ -85,9 +102,6 @@ const navTemp = {
     { text: 'Code', 
       items: codeItems,
     },
-    // { text: 'CodeGen',
-    //   items: codeGenItems,
-    // },
     { text: 'Develop', items: manualItems,
     },
     { text: 'About', 
@@ -114,17 +128,13 @@ const sidebar = [
     collapsed: true,
     items: codeItems
   },
-  // { text: 'CodeGen',
-  //   collapsed: true,
-  //   items: codeGenItems
-  // },
   { text: 'About',
     items: aboutItems
   },
 ]
 
 export default defineConfig({
-  base: 'REPLACE_ME_DOCUMENTER_VITEPRESS',
+  base: '/sindbad',
   title: "SINDBAD",
   description: "A model-data integration framework for terrestrial ecosystem processes",
   lastUpdated: true,
@@ -134,6 +144,33 @@ export default defineConfig({
   
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['script', {}, `
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
+          displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        },
+        startup: {
+          ready: () => {
+            MathJax.startup.defaultReady();
+            MathJax.startup.promise.then(() => {
+              if (MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+              }
+            });
+          }
+        }
+      };
+    `],
+    ['script', { 
+      type: 'text/javascript',
+      id: 'MathJax-script',
+      async: true,
+      src: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+    }],
   ],
   
   vite: {
@@ -165,8 +202,10 @@ export default defineConfig({
   },
 
   markdown: {
+    math: true,
     config(md) {
       md.use(tabsMarkdownPlugin)
+      md.use(mathjax3)
     },
     theme: {
       light: "github-light",

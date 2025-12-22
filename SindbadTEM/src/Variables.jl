@@ -1,12 +1,26 @@
-export checkMissingVarInfo
-export defaultVariableInfo
-export getUniqueVarNames
-export getVarFull
-export getVariableInfo
-export sindbad_tem_variables
-export whatIs
+"""
+`SindbadTEM.Variables`
 
-orD = DataStructures.OrderedDict
+Submodule that exposes the canonical SINDBAD TEM variable catalog and
+convenience helpers such as `sindbad_tem_variables`, `getVariableInfo`,
+and `whatIs`.
+
+Use this module when you need **metadata about model variables** (names,
+units, descriptions, and land fields) for documentation, IO, or diagnostics.
+"""
+module Variables
+    using ..SindbadTEM
+    import ..SindbadTEM: DataStructures
+    import ..SindbadTEM.TEMTypes: LandEcosystem
+
+    export checkMissingVarInfo
+    export getUniqueVarNames
+    export getVarFull
+    export getVariableInfo
+    export sindbad_tem_variables
+    export whatIs
+
+    orD = DataStructures.OrderedDict
 
 """
 `sindbad_tem_variables`
@@ -1581,31 +1595,6 @@ function checkMissingVarInfo()
 end 
     
 
-"""
-    defaultVariableInfo(string_key = false)
-
-a central helper function to get the default information of a sindbad variable as a dictionary
-"""
-function defaultVariableInfo(string_key=false)
-    if string_key
-        return DataStructures.OrderedDict(
-            "standard_name" => "",
-            "long_name" => "",
-            "units" => "",
-            "land_field" => "",
-            "description" => ""
-        )
-    else
-        return DataStructures.OrderedDict(
-            :standard_name => "",
-            :long_name => "",
-            :units => "",
-            :land_field => "",
-            :description => ""
-        )
-    end
-end
-
 
 """
     displayVariableDict(dk, dv, exist = true)
@@ -1749,29 +1738,104 @@ function getVariableCatalogFromLand(land)
     return variCat
 end
 
+"""
+    getVarField(var_pair)
+
+Return the field name from a pair consisting of the field and subfield of SINDBAD land.
+
+# Arguments
+- `var_pair`: A pair of `(field, subfield)` symbols
+
+# Returns
+- The field name (first element of the pair)
+"""
+function getVarField(var_pair)
+    return first(var_pair)
+end
 
 """
-    getVariableInfo(vari_b, t_step = day)
+    getVarFull(var_pair)
 
-# Arguments:
-- `vari_b`: a variable name in the form of field__subfield
-- `t_step`: time step of the variable, default is "day"
+Return the variable full name used as the key in the catalog of `sindbad_tem_variables` from a pair consisting of the field and subfield of SINDBAD land. Convention is `field__subfield` of land.
+
+# Arguments
+- `var_pair`: A pair of `(field, subfield)` symbols
+
+# Returns
+- A `Symbol` in the form `field__subfield`
+"""
+function getVarFull(var_pair)
+    return Symbol(String(first(var_pair)) * "__" * String(last(var_pair)))
+end
+
+"""
+    getVarName(var_pair)
+
+Return the model variable name from a pair consisting of the field and subfield of SINDBAD land.
+
+# Arguments
+- `var_pair`: A pair of `(field, subfield)` symbols
+
+# Returns
+- The variable name (second element of the pair)
+"""
+function getVarName(var_pair)
+    return last(var_pair)
+end
+
+"""
+    getVariableInfo(vari_b, t_step="day")
+    getVariableInfo(vari_b::Symbol, t_step="day")
+
+Retrieve detailed information about a SINDBAD variable from the variable catalog.
+
+# Arguments
+- `vari_b`: The variable name (either as a Symbol or in the form of field__subfield)
+- `t_step`: Time step of the variable (default: `"day"`)
+
+# Returns
+- A dictionary containing the following information about the variable:
+  - `standard_name`: The standard name of the variable
+  - `long_name`: A longer description of the variable
+  - `units`: The units of the variable (with time step replaced if applicable)
+  - `land_field`: The field in the SINDBAD model where the variable is used
+  - `description`: A detailed description of the variable
+
+# Notes
+- If the variable is provided as a pair, it is converted to the full variable key using `getVarFull`
+- Accesses `sindbad_tem_variables` catalog and `defaultVariableInfo` from `SindbadTEM.Variables` module
 """
 function getVariableInfo(vari_b, t_step="day")
     vname = getVarFull(vari_b)
     return getVariableInfo(vname, t_step)
 end
 
-"""
-    getVariableInfo(vari_b::Symbol, t_step = day)
-
-# Arguments:
-- `vari_b`: a variable name
-- `t_step`: time step of the variable, default is "day"
-"""
 function getVariableInfo(vari_b::Symbol, t_step="day")
-    catalog = sindbad_tem_variables
-    default_info = defaultVariableInfo(true)
+    # Access Variables module safely - it may not be loaded during Processes.jl initialization
+    catalog = try
+        getfield(SindbadTEM, :Variables).sindbad_tem_variables
+    catch
+        # Return default info if Variables module is not yet loaded
+        return Dict(
+            "standard_name" => split(string(vari_b), "__")[2],
+            "long_name" => "",
+            "units" => "",
+            "land_field" => split(string(vari_b), "__")[1],
+            "description" => split(string(vari_b), "__")[2] * "_" * split(string(vari_b), "__")[1]
+        )
+    end
+    default_info = try
+        getfield(SindbadTEM, :Variables).defaultVariableInfo(true)
+    catch
+        # Return default info if Variables module is not yet loaded
+        return Dict(
+            "standard_name" => split(string(vari_b), "__")[2],
+            "long_name" => "",
+            "units" => "",
+            "land_field" => split(string(vari_b), "__")[1],
+            "description" => split(string(vari_b), "__")[2] * "_" * split(string(vari_b), "__")[1]
+        )
+    end
     default_keys = Symbol.(keys(default_info))
     o_varib = copy(default_info)
     if vari_b ∈ keys(catalog)
@@ -1809,35 +1873,6 @@ function getVariableInfo(vari_b::Symbol, t_step="day")
         o_varib["description"] = split(string(vari_b), "__")[2] * "_" * split(string(vari_b), "__")[1]
     end
     return Dict(o_varib)
-end
-
-
-"""
-    getVarField(var_pair)
-
-return the field name from a pair consisting of the field and subfield of SINDBAD land
-"""
-function getVarField(var_pair)
-    return first(var_pair)
-end
-
-"""
-    getVarFull(var_pair)
-
-return the variable full name used as the key in the catalog of sindbad_tem_variables from a pair consisting of the field and subfield of SINDBAD land. Convention is `field__subfield` of land
-"""
-function getVarFull(var_pair)
-    return Symbol(String(first(var_pair)) * "__" * String(last(var_pair)))
-end
-
-
-"""
-    getVarName(var_pair)
-
-return the model variable name from a pair consisting of the field and subfield of SINDBAD land
-"""
-function getVarName(var_pair)
-    return last(var_pair)
 end
 
 """
@@ -1890,3 +1925,5 @@ function whatIs(var_field::Symbol, var_sfield::Symbol)
     checkDisplayVariableDict(var_full)
     return nothing
 end
+
+end  # module Variables

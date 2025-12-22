@@ -102,3 +102,51 @@ standard_sindbad_model = (:constants,
 a tuple of all available SINDBAD models
 """
 all_available_sindbad_model = Tuple(subtypes(LandEcosystem))
+
+
+
+"""
+    getSindbadModelOrder(model_name; all_models=standard_sindbad_model)
+
+Return the default order of a SINDBAD model in the model list.
+
+# Arguments
+- `model_name`: Name of the model
+- `all_models`: The list of all models (default: `standard_sindbad_model`)
+
+# Examples
+```jldoctest
+julia> # Get the order of a model
+julia> # getSindbadModelOrder(:gpp)
+```
+"""
+function getSindbadModelOrder(model_name; all_models=standard_sindbad_model)
+    mo = findall(x -> x == model_name, all_models)[1]
+    println("The order [default] of $(model_name) in models.jl of core SINDBAD is $(mo)")
+end
+
+"""
+    getSindbadModels(; all_models=standard_sindbad_model)
+
+Return a dictionary of SINDBAD models and their approaches.
+
+# Arguments
+- `all_models`: The list of all models (default: `standard_sindbad_model`)
+
+# Returns
+- An `OrderedDict` mapping model names to lists of approach names
+
+# Examples
+```jldoctest
+julia> # Get all models and approaches
+julia> # models_dict = getSindbadModels()
+```
+"""
+function getSindbadModels(; all_models=standard_sindbad_model)
+    approaches = []
+    for _md ∈ all_models
+        push!(approaches, Pair(_md, [nameof(_x) for _x in subtypes(getfield(SindbadTEM.Processes, _md))]))
+    end
+    return DataStructures.OrderedDict(approaches)
+end
+

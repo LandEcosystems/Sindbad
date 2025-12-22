@@ -12,9 +12,11 @@ The `Processes` module provides the infrastructure for defining and implementing
 - `Parameters`: Provides the `@with_kw` macro for keyword argument construction.
 
 # Included Files:
-The module dynamically includes all process implementations from subdirectories in `TEM/Processes/`. Each process directory contains:
-- A main process file (e.g., `gpp.jl`) defining the abstract process type
-- Approach files (e.g., `gpp_LUE.jl`, `gpp_Farquhar.jl`) implementing specific approaches
+The module dynamically includes all process implementations from subdirectories under `src/Processes/`.
+
+Each process directory follows the convention:
+- A main process file: `Processes/<process>/<process>.jl` defining the abstract process type
+- One or more approach files: `Processes/<process>/<process>_*.jl` implementing specific approaches
 
 Key processes include:
 - Carbon cycle processes (GPP, respiration, allocation, turnover)
@@ -26,7 +28,7 @@ Key processes include:
 - All models must implement at least one of the following methods: `define`, `precompute`, `compute`, or `update`.
 - Parameters should use metadata macros (`@bounds`, `@describe`, `@units`, `@timescale`) for proper documentation and validation.
 - Processes should follow SINDBAD modeling conventions for consistency and maintainability.
-- The module provides `getModelDocString` and `getApproachDocString` functions for automatic documentation generation.
+- The module provides `getModelDocString` and `getApproachDocString` helpers for automatic documentation generation of models and approaches.
 
 # Examples:
 ```jldoctest
@@ -53,8 +55,7 @@ julia> # end
 module Processes
 
     # Import & export necessary modules/functions
-    using ..SindbadTEM
-    import ..SindbadTEM: LandEcosystem, purpose, LongTuple
+    import SindbadTEM.TEMTypes: LandEcosystem, purpose
     using FieldMetadata: @metadata
     using Parameters: @with_kw
     @metadata timescale "" String
@@ -62,10 +63,6 @@ module Processes
     @metadata bounds (-Inf, Inf) Tuple
     @metadata units "" String
     export describe, bounds, units
-    export DoCatchModelErrors
-    export DoNotCatchModelErrors
-    export @describe, @bounds, @units, @timescale
-    export @with_kw
     export getApproachDocString
     # define dispatch structs for catching process errors
 
@@ -370,21 +367,20 @@ module Processes
     end
 
     # include the utility functions for the model processes
-    include(joinpath(@__DIR__, "ProcessesUtils.jl"))
+    include(joinpath(@__DIR__, "Processes/landUtils.jl"))
 
     # Import all models: developed by @lalonso
-    all_folders = readdir(joinpath(@__DIR__, "."))
-    all_dir_models = filter(entry -> isdir(joinpath(@__DIR__, entry)), all_folders)
-
+    all_folders = readdir(joinpath(@__DIR__, "Processes/"))
+    all_dir_models = filter(entry -> isdir(joinpath(@__DIR__, "Processes", entry)), all_folders)
     for model_name ∈ all_dir_models
-        model_path = joinpath(model_name, model_name * ".jl")
+        model_path = joinpath(@__DIR__, "Processes", model_name, model_name * ".jl")
         include(model_path)
     end
 
     # now having this ordered list is independent from the step including the models into this `module`.
-    include(joinpath(@__DIR__, "standardSindbadTEM.jl"))
+    include(joinpath(@__DIR__, "Processes/standardSindbadTEM.jl"))
     
     # include the run functions for the methods of the TEM processes
-    include(joinpath(@__DIR__, "runProcesses.jl"))
+    include(joinpath(@__DIR__, "Methods.jl"))
 
 end
