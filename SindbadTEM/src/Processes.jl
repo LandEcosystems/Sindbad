@@ -53,8 +53,7 @@ julia> # end
 module Processes
 
     # Import & export necessary modules/functions
-    using ..SindbadTEM
-    import ..SindbadTEM: LandEcosystem, purpose, LongTuple
+    import SindbadTEM.TEMTypes: LandEcosystem, purpose
     using FieldMetadata: @metadata
     using Parameters: @with_kw
     @metadata timescale "" String
@@ -62,10 +61,6 @@ module Processes
     @metadata bounds (-Inf, Inf) Tuple
     @metadata units "" String
     export describe, bounds, units
-    export DoCatchModelErrors
-    export DoNotCatchModelErrors
-    export @describe, @bounds, @units, @timescale
-    export @with_kw
     export getApproachDocString
     # define dispatch structs for catching process errors
 
@@ -370,21 +365,20 @@ module Processes
     end
 
     # include the utility functions for the model processes
-    include(joinpath(@__DIR__, "ProcessesUtils.jl"))
+    include(joinpath(@__DIR__, "Processes/landUtils.jl"))
 
     # Import all models: developed by @lalonso
-    all_folders = readdir(joinpath(@__DIR__, "."))
-    all_dir_models = filter(entry -> isdir(joinpath(@__DIR__, entry)), all_folders)
-
+    all_folders = readdir(joinpath(@__DIR__, "Processes/"))
+    all_dir_models = filter(entry -> isdir(joinpath(@__DIR__, "Processes", entry)), all_folders)
     for model_name ∈ all_dir_models
-        model_path = joinpath(model_name, model_name * ".jl")
+        model_path = joinpath(@__DIR__, "Processes", model_name, model_name * ".jl")
         include(model_path)
     end
 
     # now having this ordered list is independent from the step including the models into this `module`.
-    include(joinpath(@__DIR__, "standardSindbadTEM.jl"))
+    include(joinpath(@__DIR__, "Processes/standardSindbadTEM.jl"))
     
     # include the run functions for the methods of the TEM processes
-    include(joinpath(@__DIR__, "runProcesses.jl"))
+    include(joinpath(@__DIR__, "Methods.jl"))
 
 end

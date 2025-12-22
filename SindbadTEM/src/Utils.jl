@@ -1,12 +1,21 @@
+"""
+`SindbadTEM.Utils`
 
-export getInOutModel
-export getInOutModels
-export getSindbadModelOrder
-export getSindbadModels
-export getTypedModel
-export getUnitConversionForParameter
-export modelParameter
-export modelParameters
+Submodule that provides utility functions for SINDBAD model operations including I/O parsing, parameter management, and model inspection.
+"""
+module Utils
+    using SindbadTEM
+    import SindbadTEM.TEMTypes: LandEcosystem
+    import SindbadTEM.DataStructures: DataStructures
+
+    export getInOutModel
+    export getInOutModels
+    export getSindbadModelOrder
+    export getSindbadModels
+    export getTypedModel
+    export getUnitConversionForParameter
+    export modelParameter
+    export modelParameters
 
 """
     getInOutModel(model::LandEcosystem)
@@ -374,7 +383,7 @@ end
 
 helper function to return the default order of a sindbad model
 """
-function getSindbadModelOrder(model_name; all_models=standard_sindbad_model)
+function getSindbadModelOrder(model_name; all_models=SindbadTEM.Processes.standard_sindbad_model)
     mo = findall(x -> x == model_name, all_models)[1]
     println("The order [default] of $(model_name) in models.jl of core SINDBAD is $(mo)")
 end
@@ -384,12 +393,12 @@ end
 
 helper function to return a dictionary of sindbad model and approaches
 """
-function getSindbadModels(; all_models=standard_sindbad_model)
+function getSindbadModels(; all_models=SindbadTEM.Processes.standard_sindbad_model)
     approaches = []
     for _md ∈ all_models
         push!(approaches, Pair(_md, [nameof(_x) for _x in subtypes(getfield(SindbadTEM.Processes, _md))]))
     end
-    return DataStructures.OrderedDict(approaches)
+    return SindbadTEM.DataStructures.OrderedDict(approaches)
 end
 
 
@@ -543,3 +552,5 @@ function modelParameter(model::LandEcosystem, show=true)
     end
     return p_vec
 end
+
+end # module Utils

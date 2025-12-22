@@ -20,9 +20,9 @@ Key dependencies used/re-exported by the module include:
 - `InteractiveUtils`, `Crayons`: Interactive/dev UX helpers.
 
 # Included Files
-- **`TEMTypes.jl`**: Core TEM types (including `LandEcosystem`) and shared type utilities.
-- **`TEMUtils.jl`**: Helper macros/functions for pools, NamedTuples, logging, and TEM utilities.
-- **`TEMVariableCatalog.jl`**: Canonical catalog of SINDBAD variables for consistent IO metadata.
+- **`TEMTypes.jl`** (module `SindbadTEM.Types`): Core TEM types (including `LandEcosystem`) and shared type utilities.
+- **`TEMUtils.jl`** (module `SindbadTEM.Utils`): Helper macros/functions for pools, NamedTuples, logging, and TEM utilities.
+- **`TEMVariables.jl`** (module `SindbadTEM.Variables`): Canonical catalog of SINDBAD variables for consistent IO metadata.
 - **`Processes/Processes.jl`**: Process hierarchy, metadata macros, and process/approach definitions (re-exported as `SindbadTEM.Processes`).
 - *(Internal)* `tmp_precompile_placeholder.jl`: Auto-managed placeholder to force precompilation when new processes/approaches are added.
 
@@ -74,17 +74,20 @@ module SindbadTEM
       println("Created a blank file: $file_path to track precompilation of new processes and approaches")
    end
    
-   include("TEMTypes.jl")
-   include("TEMUtils.jl")
-   include("TEMVariableCatalog.jl")
-   include("Processes/Processes.jl")
+   include("Types.jl")
+   @reexport using .TEMTypes
+   include("Utils.jl")
+   @reexport using .Utils
+   include("Variables.jl")
+   @reexport using .Variables
+   include("Processes.jl")
    @reexport using .Processes
 
    # append the docstring of the LandEcosystem type to the docstring of the SindbadTEM module so that all the methods of the LandEcosystem type are included after the models have been described
    @doc """
    LandEcosystem
 
-   $(purpose(LandEcosystem))
+   $(purpose(TEMTypes.LandEcosystem))
 
    # Methods
    All subtypes of `LandEcosystem` must implement at least one of the following methods:
@@ -126,8 +129,8 @@ module SindbadTEM
    ---
 
    # Extended help
-   $(methods_of(LandEcosystem, purpose_function=purpose))
+   $(methods_of(TEMTypes.LandEcosystem, purpose_function=purpose))
    """
-   LandEcosystem
+   TEMTypes.LandEcosystem
    
 end
