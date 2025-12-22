@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import path from 'path'
+import mathjax3 from 'markdown-it-mathjax3'
 
 // https://vitepress.dev/reference/site-config
 
@@ -26,7 +27,7 @@ const codeItems = [
   { text: ' + TEM', link: '/pages/code/sindbadTEM' },
 
   { text: ' \u00A0\u00A0++ Processes', link: '/pages/code/models' },
-  { text: ' \u00A0\u00A0++ Types', link: '/pages/code/types' },
+  { text: ' + Types', link: '/pages/code/types' },
   { text: ' + DataLoaders', link: '/pages/code/data' },
   { text: ' + MachineLearning', link: '/pages/code/ml' },
   { text: ' + ParameterOptimization', link: '/pages/code/optimization' },
@@ -36,18 +37,37 @@ const codeItems = [
 ]
 
 const codeGenItems = [
-  { text: 'Sindbad', link: '/pages/code_gen/Sindbad' },
-  { text: ' + Core', link: '/pages/code_gen/Sindbad' },
-  { text: ' + Data', link: '/pages/code_gen/DataLoaders' },
-  { text: ' + Experiment', link: '/pages/code_gen/Sindbad.Simulation' },
-  { text: ' + Metrics', link: '/pages/code_gen/SindbadMetrics' },
-  { text: ' + ML', link: '/pages/code_gen/MachineLearning' },
-  { text: ' + Models', link: '/pages/code_gen/SindbadModels' },
-  { text: ' + ParameterOptimization', link: '/pages/code_gen/Sindbad.ParameterOptimization' },
-  { text: ' + Setup', link: '/pages/code_gen/Setup' },
-  { text: ' + TEM', link: '/pages/code_gen/SindbadTEM' },
-  { text: ' + Utils', link: '/pages/code_gen/Utils' },
-  // { text: ' + Visuals', link: '/pages/code_gen/Visualization' }
+  {
+    text: 'Sindbad',
+    items: [
+      {
+        text: 'TEM',
+        items: [
+          { text: 'Processes', link: '/pages/code_gen/SindbadTEM.Processes' },
+          { text: 'Types', link: '/pages/code_gen/SindbadTEM.Types' },
+          { text: 'Utils', link: '/pages/code_gen/SindbadTEM.Utils' },
+          { text: 'Variables', link: '/pages/code_gen/SindbadTEM.Variables' },
+        ],
+      },
+      {
+        text: 'Base',
+        items: [
+          { text: 'Types', link: '/pages/code_gen/Types' },
+          { text: 'Setup', link: '/pages/code_gen/Setup' },
+          { text: 'DataLoaders', link: '/pages/code_gen/DataLoaders' },
+        ],
+      },
+      {
+        text: 'Application',
+        items: [
+          { text: 'Simulation', link: '/pages/code_gen/Simulation' },
+          { text: 'ParameterOptimization', link: '/pages/code_gen/ParameterOptimization' },
+          { text: 'MachineLearning', link: '/pages/code_gen/MachineLearning' },
+          { text: 'Visualization', link: '/pages/code_gen/Visualization' },
+        ],
+      },
+    ],
+  },
 ]
 const aboutItems = [
   { text: 'Contact', link: '/pages/about/contact' },
@@ -85,9 +105,9 @@ const navTemp = {
     { text: 'Code', 
       items: codeItems,
     },
-    // { text: 'CodeGen',
-    //   items: codeGenItems,
-    // },
+    { text: 'CodeGen',
+      items: codeGenItems,
+    },
     { text: 'Develop', items: manualItems,
     },
     { text: 'About', 
@@ -114,17 +134,17 @@ const sidebar = [
     collapsed: true,
     items: codeItems
   },
-  // { text: 'CodeGen',
-  //   collapsed: true,
-  //   items: codeGenItems
-  // },
+  { text: 'CodeGen',
+    collapsed: true,
+    items: codeGenItems
+  },
   { text: 'About',
     items: aboutItems
   },
 ]
 
 export default defineConfig({
-  base: 'REPLACE_ME_DOCUMENTER_VITEPRESS',
+  base: '/sindbad',
   title: "SINDBAD",
   description: "A model-data integration framework for terrestrial ecosystem processes",
   lastUpdated: true,
@@ -134,6 +154,33 @@ export default defineConfig({
   
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['script', {}, `
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
+          displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        },
+        startup: {
+          ready: () => {
+            MathJax.startup.defaultReady();
+            MathJax.startup.promise.then(() => {
+              if (MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+              }
+            });
+          }
+        }
+      };
+    `],
+    ['script', { 
+      type: 'text/javascript',
+      id: 'MathJax-script',
+      async: true,
+      src: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+    }],
   ],
   
   vite: {
@@ -165,8 +212,10 @@ export default defineConfig({
   },
 
   markdown: {
+    math: true,
     config(md) {
       md.use(tabsMarkdownPlugin)
+      md.use(mathjax3)
     },
     theme: {
       light: "github-light",
