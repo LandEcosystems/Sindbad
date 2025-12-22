@@ -42,6 +42,7 @@ using DocStringExtensions
 # Generate documentation files
 include("gen_models_md.jl")
 include("gen_lib_md.jl")
+include("gen_ext_md.jl")
 
 makedocs(; sitename="Sindbad",
     authors="Sindbad Development Team",

@@ -1,7 +1,7 @@
 ```@docs
 SindbadTEM.Processes
 ```
-## Available Models
+## Processes (models + approaches)
 
 ### EVI
 
@@ -4092,6 +4092,18 @@ Outputs: :diagnostics => :water_balance
 
 ----
 
+## Methods
+
+```@meta
+DocTestSetup= quote
+using SindbadTEM.Processes
+end
+```
+```@autodocs
+Modules = [SindbadTEM.Processes]
+Filter = x -> x isa Function
+Private = false
+```
 ## Internal
 
 ```@meta

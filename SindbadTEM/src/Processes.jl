@@ -12,9 +12,11 @@ The `Processes` module provides the infrastructure for defining and implementing
 - `Parameters`: Provides the `@with_kw` macro for keyword argument construction.
 
 # Included Files:
-The module dynamically includes all process implementations from subdirectories in `TEM/Processes/`. Each process directory contains:
-- A main process file (e.g., `gpp.jl`) defining the abstract process type
-- Approach files (e.g., `gpp_LUE.jl`, `gpp_Farquhar.jl`) implementing specific approaches
+The module dynamically includes all process implementations from subdirectories under `src/Processes/`.
+
+Each process directory follows the convention:
+- A main process file: `Processes/<process>/<process>.jl` defining the abstract process type
+- One or more approach files: `Processes/<process>/<process>_*.jl` implementing specific approaches
 
 Key processes include:
 - Carbon cycle processes (GPP, respiration, allocation, turnover)
@@ -26,7 +28,7 @@ Key processes include:
 - All models must implement at least one of the following methods: `define`, `precompute`, `compute`, or `update`.
 - Parameters should use metadata macros (`@bounds`, `@describe`, `@units`, `@timescale`) for proper documentation and validation.
 - Processes should follow SINDBAD modeling conventions for consistency and maintainability.
-- The module provides `getModelDocString` and `getApproachDocString` functions for automatic documentation generation.
+- The module provides `getModelDocString` and `getApproachDocString` helpers for automatic documentation generation of models and approaches.
 
 # Examples:
 ```jldoctest

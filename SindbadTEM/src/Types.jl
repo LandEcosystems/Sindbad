@@ -44,22 +44,55 @@ module TEMTypes
     export DoNotInlineUpdate
 
 
+    """
+        DoCatchModelErrors
+
+    Dispatch type to **enable error catching** during model execution.
+    """
     struct DoCatchModelErrors <: SindbadTypes end
     purpose(::Type{DoCatchModelErrors}) = "Enable error catching during model execution"
 
+    """
+        DoNotCatchModelErrors
+
+    Dispatch type to **disable error catching** during model execution.
+    """
     struct DoNotCatchModelErrors <: SindbadTypes end
     purpose(::Type{DoNotCatchModelErrors}) = "Disable error catching during model execution"
 
+    """
+        DoDebugModel
+
+    Dispatch type to **enable debug mode** for model execution.
+
+    Used by higher-level orchestration code (e.g. `computeTEM`) to select
+    debug-oriented execution paths (extra printing, timing, etc.).
+    """
     struct DoDebugModel <: SindbadTypes end
     purpose(::Type{DoDebugModel}) = "Enable model debugging mode"
 
+    """
+        DoNotDebugModel
+
+    Dispatch type to **disable debug mode** for model execution.
+    """
     struct DoNotDebugModel <: SindbadTypes end
     purpose(::Type{DoNotDebugModel}) = "Disable model debugging mode"
 
+    """
+        DoInlineUpdate
+
+    Dispatch type to **enable inline updates** of model state (within a single time step).
+    """
     struct DoInlineUpdate <: SindbadTypes end
     purpose(::Type{DoInlineUpdate}) = "Enable inline updates of model state"
 
+    """
+        DoNotInlineUpdate
+
+    Dispatch type to **disable inline updates** of model state.
+    """
     struct DoNotInlineUpdate <: SindbadTypes end
     purpose(::Type{DoNotInlineUpdate}) = "Disable inline updates of model state"
 
-end  # module Types
+end  # module TEMTypes

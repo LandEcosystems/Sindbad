@@ -114,11 +114,12 @@ function get_github_link(file_path::String)
     end
 end
 
-open(joinpath(@__DIR__, "./src/pages/code/models.md"), "w") do o_file
+mkpath(joinpath(@__DIR__, "src/pages/code/api"))
+open(joinpath(@__DIR__, "./src/pages/code/api/SindbadTEM.Processes.md"), "w") do o_file
     # write(o_file, "## Models\n\n")
     write(o_file, "```@docs\nSindbadTEM.Processes\n```\n")
 
-    write(o_file, "## Available Models\n\n")
+    write(o_file, "## Processes (models + approaches)\n\n")
 
     sindbad_models_from_types = nameof.(SindbadTEM.subtypes(SindbadTEM.LandEcosystem))
     foreach(sort(collect(sindbad_models_from_types))) do sm
@@ -157,6 +158,12 @@ open(joinpath(@__DIR__, "./src/pages/code/models.md"), "w") do o_file
         write(o_file, "\n:::\n\n")
         write(o_file, "\n----\n\n")
     end
+
+    # Put all functions under a single "Methods" section (no model/type bindings here).
+    write(o_file, "## Methods\n\n")
+    write(o_file, "```@meta\nDocTestSetup= quote\nusing SindbadTEM.Processes\nend\n```\n")
+    write(o_file, "```@autodocs\nModules = [SindbadTEM.Processes]\nFilter = x -> x isa Function\nPrivate = false\n```\n")
+
     write(o_file, "## Internal\n\n")
     write(o_file, "```@meta\nCollapsedDocStrings = false\nDocTestSetup= quote\nusing SindbadTEM.Processes\nend\n```\n")
     write(o_file, "\n```@autodocs\nModules = [SindbadTEM.Processes]\nPublic = false\n```")

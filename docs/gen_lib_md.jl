@@ -9,8 +9,9 @@ using Logging
 
 packages_list = (:Sindbad, :SindbadTEM)
 sindbad_modules = (:Types, :Setup, :DataLoaders, :Simulation, :ParameterOptimization, :MachineLearning, :Visualization)
-sindbadTEM_modules = (:Processes, :Types, :Utils, :Variables)
-mkpath("./src/pages/code_gen")
+sindbadTEM_modules = (:TEMTypes, :Utils, :Variables)
+output_dir = joinpath(@__DIR__, "src/pages/code/api")
+mkpath(output_dir)
 lib_path = joinpath(@__DIR__, "../lib")
 
 # Get source directories
@@ -151,7 +152,7 @@ end
 
 # Helper function to generate documentation for a module
 function generate_module_docs(module_path::String, module_expr::String, module_name::Symbol, package_name::Symbol)
-    doc_path = joinpath(@__DIR__, "./src/pages/code_gen/$(module_path).md")
+    doc_path = joinpath(output_dir, "$(module_path).md")
     open(doc_path, "w") do o_file
         write(o_file, "```@docs\n$(module_expr)\n```\n")
         write(o_file, "## Functions\n\n")
@@ -222,7 +223,7 @@ end
 
 # Generate documentation for top-level packages
 foreach(packages_list) do package_name
-    doc_path = joinpath(@__DIR__, "./src/pages/code_gen/$(package_name).md")
+    doc_path = joinpath(output_dir, "$(package_name).md")
     open(doc_path, "w") do o_file
         write(o_file, "```@docs\n$(package_name)\n```\n")
         write(o_file, "## Functions\n\n")
@@ -296,7 +297,7 @@ end
 function generate_file_docs(file_name::String, package_name::Symbol)
     # Remove .jl extension if present
     base_name = replace(file_name, ".jl" => "")
-    doc_path = joinpath(@__DIR__, "./src/pages/code_gen/$(base_name).md")
+    doc_path = joinpath(output_dir, "$(base_name).md")
     
     # Find the file
     file_path = joinpath(sindbadTEM_src_dir, file_name)

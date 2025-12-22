@@ -18,7 +18,7 @@ and visualization workflows.
 # Dependencies:
 ## Related (SINDBAD ecosystem)
 - `ErrorMetrics`: Model–observation metrics used across cost/diagnostics.
-- `TimeSampler`: Temporal sampling/aggregation helpers.
+- `TimeSamplers`: Temporal sampling/aggregation helpers.
 - `OmniTools`: Shared utilities used across modules.
 
 ## External (third-party)
@@ -58,6 +58,8 @@ and visualization workflows.
 - **Visualization** (`src/Visualization/`):
   - Supplies plotting and reporting helpers for experiment evaluation
     (time series, spatial maps, diagnostic overlays, etc.).
+- **Experiment** (`src/Experiment/`):
+  - High-level experiment runner and output persistence helpers that tie together setup, loaders, simulation, optimization, ML, and visualization.
 
 # Notes:
 - Each submodule is included and reexported so end users can call

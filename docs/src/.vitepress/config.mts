@@ -22,50 +22,47 @@ const settingsItems = [
   { text: 'Parameters', link: '/pages/settings/parameters' },
 ]
 
+// "Code" is the fully generated API reference (from Documenter + generators).
+//
+// Important: Vitepress top-nav dropdowns don't expand nested groups more than one level.
+// So we keep Code nav items shallow: Sindbad + group headings (+ TEM / + Modules / + Extensions).
 const codeItems = [
-  { text: 'Sindbad', link: '/pages/code/overview' },
-  { text: ' + TEM', link: '/pages/code/sindbadTEM' },
-
-  { text: ' \u00A0\u00A0++ Processes', link: '/pages/code/models' },
-  { text: ' + Types', link: '/pages/code/types' },
-  { text: ' + DataLoaders', link: '/pages/code/data' },
-  { text: ' + MachineLearning', link: '/pages/code/ml' },
-  { text: ' + ParameterOptimization', link: '/pages/code/optimization' },
-  { text: ' + Setup', link: '/pages/code/setup' },
-  { text: ' + Simulation', link: '/pages/code/simulation' },
-  { text: ' + Visualization', link: '/pages/code/visuals' }
-]
-
-const codeGenItems = [
+  { text: 'Sindbad', link: '/pages/code/api/Sindbad' },
   {
-    text: 'Sindbad',
+    text: ' + TEM',
     items: [
-      {
-        text: 'TEM',
-        items: [
-          { text: 'Processes', link: '/pages/code_gen/SindbadTEM.Processes' },
-          { text: 'Types', link: '/pages/code_gen/SindbadTEM.Types' },
-          { text: 'Utils', link: '/pages/code_gen/SindbadTEM.Utils' },
-          { text: 'Variables', link: '/pages/code_gen/SindbadTEM.Variables' },
-        ],
-      },
-      {
-        text: 'Base',
-        items: [
-          { text: 'Types', link: '/pages/code_gen/Types' },
-          { text: 'Setup', link: '/pages/code_gen/Setup' },
-          { text: 'DataLoaders', link: '/pages/code_gen/DataLoaders' },
-        ],
-      },
-      {
-        text: 'Application',
-        items: [
-          { text: 'Simulation', link: '/pages/code_gen/Simulation' },
-          { text: 'ParameterOptimization', link: '/pages/code_gen/ParameterOptimization' },
-          { text: 'MachineLearning', link: '/pages/code_gen/MachineLearning' },
-          { text: 'Visualization', link: '/pages/code_gen/Visualization' },
-        ],
-      },
+      { text: '++ Processes', link: '/pages/code/api/SindbadTEM.Processes' },
+      { text: '++ Utils', link: '/pages/code/api/SindbadTEM.Utils' },
+      { text: '++ TEMTypes', link: '/pages/code/api/SindbadTEM.TEMTypes' },
+      { text: '++ Variables', link: '/pages/code/api/SindbadTEM.Variables' },
+    ],
+  },
+  {
+    text: ' + Modules',
+    items: [
+      { text: '++ Types', link: '/pages/code/api/Types' },
+      { text: '++ Setup', link: '/pages/code/api/Setup' },
+      { text: '++ DataLoaders', link: '/pages/code/api/DataLoaders' },
+      { text: '++ Simulation', link: '/pages/code/api/Simulation' },
+      { text: '++ ParameterOptimization', link: '/pages/code/api/ParameterOptimization' },
+      { text: '++ MachineLearning', link: '/pages/code/api/MachineLearning' },
+      { text: '++ Visualization', link: '/pages/code/api/Visualization' },
+    ],
+  },
+  {
+    text: ' + Extensions',
+    items: [
+      { text: '++ Extensions (index)', link: '/pages/code/api/extensions/index' },
+      { text: '++ SindbadCMAEvolutionStrategyExt', link: '/pages/code/api/extensions/SindbadCMAEvolutionStrategyExt' },
+      { text: '++ SindbadDifferentialEquationsExt', link: '/pages/code/api/extensions/SindbadDifferentialEquationsExt' },
+      { text: '++ SindbadEnzymeExt', link: '/pages/code/api/extensions/SindbadEnzymeExt' },
+      { text: '++ SindbadFiniteDiffExt', link: '/pages/code/api/extensions/SindbadFiniteDiffExt' },
+      { text: '++ SindbadFiniteDifferencesExt', link: '/pages/code/api/extensions/SindbadFiniteDifferencesExt' },
+      { text: '++ SindbadForwardDiffExt', link: '/pages/code/api/extensions/SindbadForwardDiffExt' },
+      { text: '++ SindbadNLsolveExt', link: '/pages/code/api/extensions/SindbadNLsolveExt' },
+      { text: '++ SindbadOptimizationExt', link: '/pages/code/api/extensions/SindbadOptimizationExt' },
+      { text: '++ SindbadPreallocationToolsExt', link: '/pages/code/api/extensions/SindbadPreallocationToolsExt' },
+      { text: '++ SindbadZygoteExt', link: '/pages/code/api/extensions/SindbadZygoteExt' },
     ],
   },
 ]
@@ -105,9 +102,6 @@ const navTemp = {
     { text: 'Code', 
       items: codeItems,
     },
-    { text: 'CodeGen',
-      items: codeGenItems,
-    },
     { text: 'Develop', items: manualItems,
     },
     { text: 'About', 
@@ -133,10 +127,6 @@ const sidebar = [
   { text: 'Code',
     collapsed: true,
     items: codeItems
-  },
-  { text: 'CodeGen',
-    collapsed: true,
-    items: codeGenItems
   },
   { text: 'About',
     items: aboutItems

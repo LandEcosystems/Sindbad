@@ -24,7 +24,7 @@ This module brings together all components required for hybrid (process-based + 
 - `SindbadTEM`
 
 ## Optional dependencies (weakdeps / experimental)
-Some ML training/AD backends are listed as weak dependencies in the root `Project.toml` (e.g. `Flux`, `Zygote`, `ForwardDiff`, `Optimisers`, `PreallocationTools`, etc.). Portions of the ML stack may be gated behind these packages and/or not included by default (e.g. `neuralNetwork.jl` is currently not included in the module).
+Some ML training/AD backends are listed as weak dependencies in the root `Project.toml` (e.g. `Zygote`, `ForwardDiff`, `Optimisers`, `PreallocationTools`, etc.) and are enabled via extensions. `Flux` is a hard dependency of this module.
 
 # Included Files
 - `utilsMachineLearning.jl`: Utility functions for machine-learning workflows.
@@ -36,7 +36,7 @@ Some ML training/AD backends are listed as weak dependencies in the root `Projec
 - `prepHybrid.jl`: Prepares data structures and loss definitions for hybrid modeling (including data splits and feature extraction).
 - `mlGradient.jl`: Routines for computing gradients using different libraries and methods, supporting both automatic and finite difference differentiation.
 - `mlTrain.jl`: Training routines for ML and hybrid models, including batching, checkpointing, and evaluation.
-- `neuralNetwork.jl`: Neural network utilities and architectures (currently not included by default).
+- `neuralNetwork.jl`: Neural network utilities and architectures.
 - `siteLosses.jl`: Site-specific loss calculation utilities.
 - `oneHots.jl`: One-hot encoding utilities.
 - `loadCovariates.jl`: Functions for loading and handling covariate data.
