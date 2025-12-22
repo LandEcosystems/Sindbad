@@ -5,9 +5,9 @@ This file is included from the extension module and can use `NLsolve`.
 """
 
 # Bring the target function into scope for adding methods.
+using Sindbad.SindbadTEM
 import Sindbad.Simulation: spinup
-using Sindbad: NlsolveFixedpointTrustregionTWS, NlsolveFixedpointTrustregionCEcoTWS, NlsolveFixedpointTrustregionCEco, @pack_nt, adjustPackPoolComponents, Spinup_TWS, Spinup_cEco_TWS, Spinup_cEco
-
+using Sindbad: NlsolveFixedpointTrustregionTWS, NlsolveFixedpointTrustregionCEcoTWS, NlsolveFixedpointTrustregionCEco, @pack_nt, Spinup_TWS, Spinup_cEco_TWS, Spinup_cEco
 # Example methods (for reference):
 # - spinup(::Any, ::Any, ::Any, ::Any, ::Any, ::Any, ::EtaScaleA0H) @ Sindbad.Simulation src/Simulation/spinupTEM.jl:329
 # - spinup(::Any, ::Any, ::Any, ::Any, ::Any, ::Any, ::SSPSSRootfind) @ Sindbad.Simulation src/Simulation/spinupTEM.jl:450
@@ -36,7 +36,7 @@ function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_
     TWS = r.zero
     TWS = oftype(land.pools.TWS, TWS)
     @pack_nt TWS ⇒ land.pools
-    land = adjustPackPoolComponents(land, tem_info.model_helpers, land.models.w_model)
+    land = SindbadTEM.adjustPackPoolComponents(land, tem_info.model_helpers, land.models.w_model)
     return land
 end
 
@@ -57,8 +57,8 @@ function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_
     TWS_prev = cEco_TWS_spin.TWS
     TWS = oftype(land.pools.TWS, TWS_prev)
     @pack_nt TWS ⇒ land.pools
-    land = adjustPackPoolComponents(land, tem_info.model_helpers, land.models.c_model)
-    land = adjustPackPoolComponents(land, tem_info.model_helpers, land.models.w_model)
+    land = SindbadTEM.adjustPackPoolComponents(land, tem_info.model_helpers, land.models.c_model)
+    land = SindbadTEM.adjustPackPoolComponents(land, tem_info.model_helpers, land.models.w_model)
     return land
 end
 
@@ -70,6 +70,6 @@ function spinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_
     cEco = exp.(r.zero)
     cEco = oftype(land.pools.cEco, cEco)
     @pack_nt cEco ⇒ land.pools
-    land = adjustPackPoolComponents(land, tem_info.model_helpers, land.models.c_model)
+    land = SindbadTEM.adjustPackPoolComponents(land, tem_info.model_helpers, land.models.c_model)
     return land
 end
