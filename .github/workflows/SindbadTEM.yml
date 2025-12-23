@@ -20,6 +20,7 @@ jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.allow_failure }}
     env:
       JULIA_PKG_USE_CLI_GIT: "true"
     strategy:
@@ -60,6 +61,16 @@ jobs:
         shell: julia --project=SindbadTEM {0}
         run: |
           using Pkg
+          function ensure_registered_or_dev(name::String, url::String)
+              try
+                  # If already in the registry (or already resolvable), this is a no-op for Project deps.
+                  Pkg.add(name)
+              catch
+                  @info "$(name) not registered yet; developing from git for CI" url
+                  Pkg.develop(PackageSpec(url=url))
+              end
+          end
+          ensure_registered_or_dev("OmniTools", "https://github.com/LandEcosystems/OmniTools.jl.git")
           Pkg.instantiate()
           Pkg.test("SindbadTEM"; coverage=true)
       - uses: julia-actions/julia-processcoverage@v1
