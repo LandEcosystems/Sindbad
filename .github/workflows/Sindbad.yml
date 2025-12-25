@@ -61,18 +61,18 @@ jobs:
         shell: julia --project=. {0}
         run: |
           using Pkg
-          function ensure_registered_or_dev(name::String, url::String)
-              try
-                  Pkg.add(name)
-              catch
-                  @info "$(name) not registered yet; developing from git for CI" url
-                  Pkg.develop(PackageSpec(url=url))
-              end
-          end
-          # Until ecosystem packages are registered in General, CI can use git fallbacks.
-          ensure_registered_or_dev("OmniTools", "https://github.com/LandEcosystems/OmniTools.jl.git")
-          ensure_registered_or_dev("TimeSamplers", "https://github.com/LandEcosystems/TimeSamplers.jl.git")
-          ensure_registered_or_dev("ErrorMetrics", "https://github.com/LandEcosystems/ErrorMetrics.jl.git")
+          # CI should not rely on developer-local Manifests that point to /Users/... paths.
+          rm("Manifest.toml"; force=true)
+          rm(joinpath("SindbadTEM","Manifest.toml"); force=true)
+
+          # Until ecosystem packages are registered in General, CI uses git fallbacks.
+          # Important: develop them in one call so Pkg can resolve with all unregistered deps available.
+          @info "Ecosystem deps not registered yet; developing from git for CI"
+          Pkg.develop([
+              PackageSpec(url="https://github.com/LandEcosystems/OmniTools.jl.git"),
+              PackageSpec(url="https://github.com/LandEcosystems/TimeSamplers.jl.git"),
+              PackageSpec(url="https://github.com/LandEcosystems/ErrorMetrics.jl.git"),
+          ])
           Pkg.develop(path="SindbadTEM")  # Develop SindbadTEM
           Pkg.instantiate()  # Install all dependencies
           Pkg.test("Sindbad"; coverage=true)
