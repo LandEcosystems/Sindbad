@@ -65,6 +65,9 @@ jobs:
           rm("Manifest.toml"; force=true)
           rm(joinpath("SindbadTEM","Manifest.toml"); force=true)
 
+          # Develop the local, unregistered monorepo package first; otherwise Pkg will expect it to be registered.
+          Pkg.develop(PackageSpec(path="SindbadTEM"))
+
           # Until ecosystem packages are registered in General, CI uses git fallbacks.
           # Important: develop them in one call so Pkg can resolve with all unregistered deps available.
           @info "Ecosystem deps not registered yet; developing from git for CI"
@@ -73,7 +76,6 @@ jobs:
               PackageSpec(url="https://github.com/LandEcosystems/TimeSamplers.jl.git"),
               PackageSpec(url="https://github.com/LandEcosystems/ErrorMetrics.jl.git"),
           ])
-          Pkg.develop(path="SindbadTEM")  # Develop SindbadTEM
           Pkg.instantiate()  # Install all dependencies
           Pkg.test("Sindbad"; coverage=true)
       - uses: julia-actions/julia-processcoverage@v1
