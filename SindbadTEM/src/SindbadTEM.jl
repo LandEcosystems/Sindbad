@@ -64,18 +64,26 @@ module SindbadTEM
    @reexport using Base.Docs: doc as base_doc
 
    # create a tmp_ file for tracking the creation of new approaches. This is needed because precompiler is not consistently loading the newly created approaches. This file is appended every time a new model/approach is created which forces precompile in the next use of SindbadTEM.
+   #
+   # NOTE: On registered/installed packages the package directory may be read-only.
+   # We therefore only attempt to create the placeholder file if writing is permitted.
    file_path = joinpath(@__DIR__, "tmp_precompile_placeholder.jl")
    # Check if the file exists
    if isfile(file_path)
       # Include the file if it exists
       include(file_path)
    else
-      # Create a blank file if it does not exist
-      open(file_path, "w") do file
-         # Optionally, you can write some initial content
-         write(file, "# This is a blank file created by SindbadTEM module to keep track of newly added sindbad approaches/processes which automatically updates this file and then forces precompilation to include the new processes.\n")
+      # Create a blank file if it does not exist (only if the package dir is writable)
+      try
+         open(file_path, "w") do file
+            # Optionally, you can write some initial content
+            write(file, "# This is a blank file created by SindbadTEM module to keep track of newly added sindbad approaches/processes which automatically updates this file and then forces precompilation to include the new processes.\n")
+         end
+         @info "Created a blank file to track precompilation of new processes and approaches" file_path=file_path
+      catch err
+         # Ignore in read-only installs; the placeholder file should normally be shipped with the package.
+         @debug "Could not create tmp_precompile_placeholder.jl (likely read-only install); skipping" file_path=file_path exception=(err, catch_backtrace())
       end
-      println("Created a blank file: $file_path to track precompilation of new processes and approaches")
    end
    
    include("Types.jl")
