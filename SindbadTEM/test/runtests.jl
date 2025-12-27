@@ -1,5 +1,4 @@
 using SindbadTEM
-using BenchmarkTools
 using Test
 
 @testset "SindbadTEM smoke" begin
@@ -15,6 +14,6 @@ using Test
 end
 
 @testset "SindbadTEM integration" verbose=true begin
-    include("utilsCore.jl")
-    include("Models/models.jl") 
+    include("utils_test.jl")
+    include("Processes/test_model.jl") 
 end
