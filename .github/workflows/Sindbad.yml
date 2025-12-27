@@ -29,7 +29,6 @@ jobs:
         version:
           - '1.10'
           - '1.11'
-          - '1'
         os:
           - ubuntu-latest
           - macOS-latest
@@ -37,11 +36,6 @@ jobs:
         arch:
           - x64
         allow_failure: [false]
-        include:
-          - version: 'nightly'
-            os: ubuntu-latest
-            arch: x64
-            allow_failure: true
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2
