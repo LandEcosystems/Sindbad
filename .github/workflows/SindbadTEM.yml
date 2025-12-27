@@ -64,9 +64,6 @@ jobs:
           # CI should not rely on developer-local Manifests that point to /Users/... paths.
           # (When running with `--project=SindbadTEM`, the manifest lives in `SindbadTEM/Manifest.toml`.)
           rm(joinpath("SindbadTEM","Manifest.toml"); force=true)
-          # Until ecosystem packages are registered in General, CI uses git fallbacks.
-          @info "OmniTools not registered yet; developing from git for CI" url="https://github.com/LandEcosystems/OmniTools.jl.git"
-          Pkg.develop([PackageSpec(url="https://github.com/LandEcosystems/OmniTools.jl.git")])
           Pkg.instantiate()
           Pkg.test("SindbadTEM"; coverage=true)
       - uses: julia-actions/julia-processcoverage@v1

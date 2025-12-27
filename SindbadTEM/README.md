@@ -10,120 +10,108 @@
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://landecosystems.github.io/Sindbad/stable/
 
-[codecov-img]: https://codecov.io/gh/LandEcosystems/Sindbad/branch/master/graph/badge.svg
+[codecov-img]: https://codecov.io/gh/LandEcosystems/Sindbad/branch/main/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/LandEcosystems/Sindbad
 
-[ci-img]: https://github.com/LandEcosystems/Sindbad/workflows/CI/badge.svg
-[ci-url]: https://github.com/LandEcosystems/Sindbad/actions?query=workflow%3ACI
+[ci-img]: https://github.com/LandEcosystems/Sindbad/actions/workflows/SindbadTEM.yml/badge.svg
+[ci-url]: https://github.com/LandEcosystems/Sindbad/actions/workflows/SindbadTEM.yml
 
 [julia-img]: https://img.shields.io/badge/julia-v1.10+-blue.svg
 [julia-url]: https://julialang.org/
 
 ## Overview
 
-`SindbadTEM` is the core package of the **S**trategies to **IN**tegrate **D**ata and **B**iogeochemic**A**l mo**D**els (SINDBAD) framework. It provides foundational types, utilities, and tools for building and managing terrestrial ecosystem models.
+`SindbadTEM` is the core terrestrial ecosystem model (TEM) package of the **S**trategies to **IN**tegrate **D**ata and **B**iogeochemic**A**l mo**D**els (SINDBAD) framework.
 
-This package serves as the foundation for the SINDBAD framework, defining the `LandEcosystem` supertype that serves as the base for all SINDBAD models, along with utilities for managing model variables, tools for model operations, and a catalog of variables used in SINDBAD workflows.
+At its core, `SindbadTEM` defines the `LandEcosystem` supertype and the process/approach interface used throughout SINDBAD (`define`, `precompute`, `compute`, `update`). It also ships a canonical variable catalog (`sindbad_tem_variables`) and utilities used by the higher-level `Sindbad` package.
 
 ## Features
 
-- **Core Types**: Defines the `LandEcosystem` supertype and all SINDBAD type hierarchies
-- **Model Processes**: Implements ecosystem process representations and approaches
-- **Variable Catalog**: Maintains canonical catalog of SINDBAD variables for consistent metadata
-- **Model Tools**: Provides tooling for inspecting models, parameter conversions, and docstring generation
-- **Code Generation**: Utilities for scaffolding new SINDBAD process implementations
-
-## Repository Structure
-
-`SindbadTEM` is part of the SINDBAD monorepo. The package structure includes:
-
-- **`src/Types/`**: All SINDBAD type definitions (model, time, land, array, experiment, etc.)
-- **`src/Processes/`**: Process hierarchy, metadata macros, and all process/approach definitions
-- **`src/TEMUtils.jl`**: Helper macros and functions for manipulating pools, NamedTuples, and logging
-- **`src/TEMTools.jl`**: Tooling for inspecting models (I/O listings, parameter conversions, etc.)
-- **`src/sindbadVariableCatalog.jl`**: Canonical catalog of SINDBAD variables
-- **`src/generateCode.jl`**: Code-generation utilities for new process implementations
+- **Core types & interface**: `LandEcosystem` and supporting types in `SindbadTEM.TEMTypes`
+- **Processes & approaches**: A process/approach library under `src/Processes/`
+- **Variable catalog**: Canonical SINDBAD TEM variable metadata and helpers in `SindbadTEM.Variables`
+- **Utilities**: Inspection/tooling helpers in `SindbadTEM.Utils`
 
 ## Installation
 
-`SindbadTEM` is part of the SINDBAD monorepo. For installation and development setup, see the main [SINDBAD README](../README.md) and [CONTRIBUTING.md](../CONTRIBUTING.md).
-
-### As Part of SINDBAD
-
-When developing with SINDBAD, `SindbadTEM` is automatically included:
+### From a Julia package registry (recommended)
 
 ```julia
 using Pkg
-Pkg.develop(path="path/to/SINDBAD")
-Pkg.develop(path="path/to/Sindbad/SindbadTEM")
+Pkg.add("SindbadTEM")
 ```
 
-## Usage
+If you want the full SINDBAD stack (data ingestion, experiment setup, simulation orchestration, optimization/ML tooling, visualization), install:
+
+```julia
+using Pkg
+Pkg.add("Sindbad")
+```
+
+### From source (monorepo checkout)
+
+`SindbadTEM` lives in the SINDBAD monorepo (`Sindbad/SindbadTEM`). Typical development setup:
+
+```julia
+using Pkg
+Pkg.develop(path="path/to/Sindbad")              # top-level orchestration package
+Pkg.develop(path="path/to/Sindbad/SindbadTEM")   # core TEM package from this repo
+Pkg.instantiate()
+```
+
+## Quick start
 
 ```julia
 using SindbadTEM
 
-# Define a new SINDBAD model
-struct MyProcess <: LandEcosystem
-    # Define model-specific fields
+# Define a new model/approach type
+struct MyModel <: LandEcosystem end
+
+# Implement at least one of the required interface methods:
+# define, precompute, compute, update
+function define(params::MyModel, forcing, land, helpers)
+    return land
 end
-
-# Access utilities
-flattened_data = flatten(nested_data)
-
-# Query the variable catalog
-catalog = getVariableCatalog()
 ```
 
-## Main Components
+Query metadata from the canonical variable catalog:
 
-### Types Module
+```julia
+using SindbadTEM
 
-The `Types` module collects all SINDBAD types and exports helper utilities:
+# Catalog keys are symbols of the form :field__subfield
+info = SindbadTEM.Variables.getVariableInfo(:fluxes__gpp, "day")
+```
 
-- Model types (`LandEcosystem` and subtypes)
-- Time and temporal types
-- Land and spatial types
-- Array types
-- Experiment and configuration types
+## Package layout
 
-### Processes Module
+This package is included from `src/SindbadTEM.jl` and organized as:
 
-The `Processes` module declares the process hierarchy and all process/approach definitions:
-
-- Process metadata macros
-- Ecosystem process implementations
-- Model approach definitions
-
-### TEMUtils
-
-Helper utilities for:
-- Pool manipulation
-- NamedTuple operations
-- Logging utilities
-- TER (Terrestrial Ecosystem) utilities
-
-### TEMTools
-
-Tooling for:
-- Model inspection
-- I/O listings
-- Parameter conversions
-- Docstring builders
+- **`src/Types.jl`**: module `SindbadTEM.TEMTypes` (core types; includes `LandEcosystem`)
+- **`src/Utils.jl`**: module `SindbadTEM.Utils` (inspection/tooling utilities)
+- **`src/Variables.jl`**: module `SindbadTEM.Variables` (variable catalog + metadata helpers)
+- **`src/Processes.jl`**: module `SindbadTEM.Processes` (process hierarchy + includes `src/Processes/*`)
 
 ## Dependencies
 
-- `Reexport`: Simplifies re-exporting functionality
-- `CodeTracking`: Code definition tracking for debugging
-- `DataStructures`: Advanced data structures (OrderedDict, Deque)
-- `StaticArraysCore`: Fixed-size arrays for performance-critical operations
-- `StatsBase`: Statistical functions
-- `OmniTools`: Utility functions (maintained in a separate repository; installed automatically by Julia’s package manager)
+Key direct dependencies (installed automatically by Julia’s package manager) include:
+
+- `OmniTools`
+- `Accessors`
+- `CodeTracking`
+- `Crayons`
+- `DataStructures`
+- `FieldMetadata`
+- `Flatten`
+- `Parameters`
+- `Reexport`
+- `StaticArrays` / `StaticArraysCore`
+- `StatsBase`
 
 ## Documentation
 
 Comprehensive documentation is available at:
-- **Stable**: https://landecosystems.github.io/Sindbad/dev/
+- **Stable**: https://landecosystems.github.io/Sindbad/stable/
 - **Development**: https://landecosystems.github.io/Sindbad/dev/
 
 ## SINDBAD Contributors
@@ -159,7 +147,7 @@ You are free to:
 
 - Copy, modify, and redistribute the code  
 - Use the software as a package in your own projects, regardless of their license or copyright status  
-- Apply the software in both commercial and non-commercial contexts  
+- Apply the software in both commercial and non-commercial contexts
 
 ---
 
