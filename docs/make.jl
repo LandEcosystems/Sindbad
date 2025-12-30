@@ -40,10 +40,21 @@ if !isdir(joinpath(final_site_dir, "/pages/concept/sindbad_info"))
     cp(joinpath(@__DIR__,"src/pages/concept/sindbad_info"), joinpath(final_site_dir, "pages/concept/sindbad_info"); force=true)
 end
 
-DocumenterVitepress.deploydocs(; 
-    repo = "github.com/LandEcosystems/Sindbad", # this must be the full URL!
-    target = joinpath(@__DIR__, "build"), # this is where Vitepress stores its output
-    branch = "gh-pages",
-    devbranch = "main",
-    push_preview = true
-)
+#
+# Deployment
+#
+# Avoid attempting to deploy during local builds. Deploy explicitly by setting:
+# - CI=true (typical in GitHub Actions), or
+# - SINDBAD_DOCS_DEPLOY=true
+#
+should_deploy = get(ENV, "CI", "false") == "true" || get(ENV, "SINDBAD_DOCS_DEPLOY", "false") == "true"
+
+if should_deploy
+    DocumenterVitepress.deploydocs(; 
+        repo = "github.com/LandEcosystems/Sindbad", # this must be the full URL!
+        target = joinpath(@__DIR__, "build"), # this is where Vitepress stores its output
+        branch = "gh-pages",
+        devbranch = "main",
+        push_preview = true
+    )
+end

@@ -5,6 +5,11 @@ import mathjax3 from 'markdown-it-mathjax3'
 
 // https://vitepress.dev/reference/site-config
 
+// GitHub Pages deploys this site under https://<org>.github.io/sindbad/
+// (i.e. it is NOT hosted at the domain root). Any assets referenced in raw HTML
+// (e.g. `head` tags, footer HTML strings) must include the base prefix.
+const DEPLOY_BASE = '/sindbad/'
+
 const conceptItems = [
   { text: 'SINDBAD', link: '/pages/concept/overview' },
   { text: 'Experiment', link: '/pages/concept/experiment' },
@@ -22,47 +27,62 @@ const settingsItems = [
   { text: 'Parameters', link: '/pages/settings/parameters' },
 ]
 
-// "Code" is the fully generated API reference (from Documenter + generators).
+// "Code" is the generated API reference (from Documenter + generators).
 //
 // Important: Vitepress top-nav dropdowns don't expand nested groups more than one level.
-// So we keep Code nav items shallow: Sindbad + group headings (+ TEM / + Modules / + Extensions).
-const codeItems = [
+// For good UX:
+// - top nav shows *direct* entry points (TEM / Modules / Extensions)
+// - sidebar provides the detailed tree and makes section headings clickable
+const codeItemsNav = [
+  { text: 'Sindbad', link: '/pages/code/api/Sindbad' },
+  // TEM should land on the package/module docstring page
+  { text: 'SindbadTEM (TEM)', link: '/pages/code/api/SindbadTEM' },
+  // Modules should land on an index page
+  { text: 'Modules', link: '/pages/code/api/modules/index' },
+  // Extensions should land on the extensions index
+  { text: 'Extensions', link: '/pages/code/api/extensions/index' },
+]
+
+const codeItemsSidebar = [
   { text: 'Sindbad', link: '/pages/code/api/Sindbad' },
   {
-    text: ' + TEM',
+    text: 'TEM',
+    link: '/pages/code/api/SindbadTEM',
     items: [
-      { text: '++ Processes', link: '/pages/code/api/SindbadTEM.Processes' },
-      { text: '++ Utils', link: '/pages/code/api/SindbadTEM.Utils' },
-      { text: '++ TEMTypes', link: '/pages/code/api/SindbadTEM.TEMTypes' },
-      { text: '++ Variables', link: '/pages/code/api/SindbadTEM.Variables' },
+      { text: 'Processes', link: '/pages/code/api/SindbadTEM.Processes' },
+      { text: 'Utils', link: '/pages/code/api/SindbadTEM.Utils' },
+      { text: 'TEMTypes', link: '/pages/code/api/SindbadTEM.TEMTypes' },
+      { text: 'Variables', link: '/pages/code/api/SindbadTEM.Variables' },
     ],
   },
   {
-    text: ' + Modules',
+    text: 'Modules',
+    link: '/pages/code/api/modules/index',
     items: [
-      { text: '++ Types', link: '/pages/code/api/Types' },
-      { text: '++ Setup', link: '/pages/code/api/Setup' },
-      { text: '++ DataLoaders', link: '/pages/code/api/DataLoaders' },
-      { text: '++ Simulation', link: '/pages/code/api/Simulation' },
-      { text: '++ ParameterOptimization', link: '/pages/code/api/ParameterOptimization' },
-      { text: '++ MachineLearning', link: '/pages/code/api/MachineLearning' },
-      { text: '++ Visualization', link: '/pages/code/api/Visualization' },
+      { text: 'Types', link: '/pages/code/api/Types' },
+      { text: 'Setup', link: '/pages/code/api/Setup' },
+      { text: 'DataLoaders', link: '/pages/code/api/DataLoaders' },
+      { text: 'Simulation', link: '/pages/code/api/Simulation' },
+      { text: 'ParameterOptimization', link: '/pages/code/api/ParameterOptimization' },
+      { text: 'MachineLearning', link: '/pages/code/api/MachineLearning' },
+      { text: 'Visualization', link: '/pages/code/api/Visualization' },
     ],
   },
   {
-    text: ' + Extensions',
+    text: 'Extensions',
+    link: '/pages/code/api/extensions/index',
     items: [
-      { text: '++ Extensions (index)', link: '/pages/code/api/extensions/index' },
-      { text: '++ SindbadCMAEvolutionStrategyExt', link: '/pages/code/api/extensions/SindbadCMAEvolutionStrategyExt' },
-      { text: '++ SindbadDifferentialEquationsExt', link: '/pages/code/api/extensions/SindbadDifferentialEquationsExt' },
-      { text: '++ SindbadEnzymeExt', link: '/pages/code/api/extensions/SindbadEnzymeExt' },
-      { text: '++ SindbadFiniteDiffExt', link: '/pages/code/api/extensions/SindbadFiniteDiffExt' },
-      { text: '++ SindbadFiniteDifferencesExt', link: '/pages/code/api/extensions/SindbadFiniteDifferencesExt' },
-      { text: '++ SindbadForwardDiffExt', link: '/pages/code/api/extensions/SindbadForwardDiffExt' },
-      { text: '++ SindbadNLsolveExt', link: '/pages/code/api/extensions/SindbadNLsolveExt' },
-      { text: '++ SindbadOptimizationExt', link: '/pages/code/api/extensions/SindbadOptimizationExt' },
-      { text: '++ SindbadPreallocationToolsExt', link: '/pages/code/api/extensions/SindbadPreallocationToolsExt' },
-      { text: '++ SindbadZygoteExt', link: '/pages/code/api/extensions/SindbadZygoteExt' },
+      { text: 'Extensions (index)', link: '/pages/code/api/extensions/index' },
+      { text: 'SindbadCMAEvolutionStrategyExt', link: '/pages/code/api/extensions/SindbadCMAEvolutionStrategyExt' },
+      { text: 'SindbadDifferentialEquationsExt', link: '/pages/code/api/extensions/SindbadDifferentialEquationsExt' },
+      { text: 'SindbadEnzymeExt', link: '/pages/code/api/extensions/SindbadEnzymeExt' },
+      { text: 'SindbadFiniteDiffExt', link: '/pages/code/api/extensions/SindbadFiniteDiffExt' },
+      { text: 'SindbadFiniteDifferencesExt', link: '/pages/code/api/extensions/SindbadFiniteDifferencesExt' },
+      { text: 'SindbadForwardDiffExt', link: '/pages/code/api/extensions/SindbadForwardDiffExt' },
+      { text: 'SindbadNLsolveExt', link: '/pages/code/api/extensions/SindbadNLsolveExt' },
+      { text: 'SindbadOptimizationExt', link: '/pages/code/api/extensions/SindbadOptimizationExt' },
+      { text: 'SindbadPreallocationToolsExt', link: '/pages/code/api/extensions/SindbadPreallocationToolsExt' },
+      { text: 'SindbadZygoteExt', link: '/pages/code/api/extensions/SindbadZygoteExt' },
     ],
   },
 ]
@@ -100,7 +120,7 @@ const navTemp = {
     { text: 'Settings',  items: settingsItems, 
     },
     { text: 'Code', 
-      items: codeItems,
+      items: codeItemsNav,
     },
     { text: 'Develop', items: manualItems,
     },
@@ -126,7 +146,7 @@ const sidebar = [
   },
   { text: 'Code',
     collapsed: true,
-    items: codeItems
+    items: codeItemsSidebar
   },
   { text: 'About',
     items: aboutItems
@@ -134,7 +154,7 @@ const sidebar = [
 ]
 
 export default defineConfig({
-  base: '/sindbad',
+  base: DEPLOY_BASE,
   title: "SINDBAD",
   description: "A model-data integration framework for terrestrial ecosystem processes",
   lastUpdated: true,
@@ -143,7 +163,8 @@ export default defineConfig({
   outDir: 'REPLACE_ME_DOCUMENTER_VITEPRESS',
   
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }],
+    // IMPORTANT: Vitepress does not automatically prefix `head` hrefs with `base`.
+    ['link', { rel: 'icon', href: `${DEPLOY_BASE}favicon.ico` }],
     ['script', {}, `
       window.MathJax = {
         tex: {
@@ -168,7 +189,8 @@ export default defineConfig({
     ['script', { 
       type: 'text/javascript',
       id: 'MathJax-script',
-      async: true,
+      // Vitepress `head` attrs are typed as string values.
+      async: 'true',
       src: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
     }],
   ],
@@ -233,7 +255,8 @@ export default defineConfig({
       },
     ],
     footer: {
-      message: '<a href="https://www.bgc-jena.mpg.de/en" target="_blank"><img src="/logo_mpi_grey.png" class="footer-logo" alt="MPI Logo"/></a>',
+      // IMPORTANT: `footer.message` is raw HTML (no withBase), so we must prefix `base`.
+      message: `<a href="https://www.bgc-jena.mpg.de/en" target="_blank" rel="noopener"><img src="${DEPLOY_BASE}logo_mpi_grey.png" class="footer-logo" alt="MPI Logo"/></a>`,
       copyright: '© Copyright 2025 <strong> SINDBAD Development Team</strong></span>'
     }
   }

@@ -1,92 +1,56 @@
-## dev/build documentation
+## Build / develop the Sindbad docs
+
+The docs site is built by Julia (`DocumenterVitepress`) and served/bundled by Node (`vitepress`).
 
 ```sh
-sindbad.jl $ cd docs
+cd docs
 ```
-### remote server
-Load the appropriate modules
+### Prereqs
+
+- **Node**: install via your system package manager or from `https://nodejs.org/en`
+- **Julia**: compatible with the `docs/Manifest.toml` in this repo
+
+### Install Node deps
 
 ```sh
-docs $ module load nodejs/20.12.2
+npm ci
 ```
 
-Load Julia
+## Build the documentation
+
+From the repo root (or from `docs/`), run:
 
 ```sh
-docs $ module load julia/1.10
+julia --project=docs -e 'include("docs/make.jl")'
 ```
 
-### locally
+This will:
 
-Go to https://nodejs.org/en and follow instructions to install `Node.js`. 
-
-### Install
-
-Install `npm` packages
-
-```sh
-docs $ npm i
-```
-
-## Building the Documentation
-
-Now, start a julia session and activate the `docs` env:
-
-````sh
-docs $ julia
-````
-
-````sh
-julia > ] # type ]
-````
-and
-
-````sh
-pkg > activate . # now, instantiate
-````
-
-````sh
-] dev ../ ../lib/SindbadUtils ../lib/Sindbad.DataLoaders ../lib/SindbadMetrics ../lib/Sindbad.SetupSimulation ../lib/SindbadTEM ../lib/SindbadML
-````
-
-````sh
-pkg > instantiate # type delete[backspace] after finishing to get back to the julia repl
-````
-
-Building the documentations takes two steps:
-
-````julia
-julia> include("gen_models_md.jl")
-````
-which generates a markdown file with all available models. Then do,
-
-```julia
-julia> include("make.jl")
-```
-
-to create the site.
+- instantiate/precompile the `docs/` Julia environment
+- generate doc pages (models / libs / extensions)
+- build the static site output under `docs/build/`
 
 ## Start a local dev server
 
-To see the documentation locally (remote machine) run in another terminal:
+After the Julia build step above, run:
 
 ```sh
-docs $ npm run docs:dev
+npm run docs:dev
 ```
 
-A small alert should popup, click `open in browser`. Or click on `➜  Local:   http://localhost:5173/`.
+Then open the local URL printed by Vitepress (typically `http://localhost:5173/`).
 
 ## Build directly
 
 Also, if all `md` files are already available, the following should also work
 
 ```sh
-docs $ npm run docs:build
+npm run docs:build
 ```
 
 and to get a `preview` 
 
 ```sh
-docs $ npm run docs:preview
+npm run docs:preview
 ```
 ___

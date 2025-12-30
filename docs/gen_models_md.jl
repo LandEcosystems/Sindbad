@@ -38,7 +38,6 @@ end
 function extract_equation_code(file_path::String, type_name::String)
     # Get params, inputs, and outputs using getInOutModel
     params, inputs, outputs = get_model_io_info(type_name)
-    @show params, inputs, outputs
     if params === nothing && inputs === nothing && outputs === nothing
         return nothing
     end
@@ -140,7 +139,6 @@ open(joinpath(@__DIR__, "./src/pages/code/api/SindbadTEM.Processes.md"), "w") do
             approach_file = find_model_file(apr_str)
             if approach_file !== nothing
                 equation_code = extract_equation_code(approach_file, apr_str)
-                @show equation_code
                 if equation_code !== nothing && strip(equation_code) != ""
                     write(o_file, "\n**Calculated using:**\n\n")
                     write(o_file, "```julia\n")
