@@ -12,16 +12,8 @@ This page serves as an overview of the type definitions used across the SINDBAD 
 
 This file establishes the `purpose` function, which provides descriptive information about types in the SINDBAD framework. It defines the base `SindbadTypes` abstract type from which all other SINDBAD types inherit. The file includes all other type definition files and provides documentation for the type system.
 
-## SpinupTypes.jl
-**Defines types for model spinup procedures and sequences.**
-
-This file defines the `SpinupTypes` abstract type and its subtypes, which contains types for different spinup modes and methods:
-- `SpinupMode`: Abstract type with numerous concrete implementations
-- Scaling methods: `EtaScaleA0H`, `EtaScaleAH`, etc.
-- Solver methods: `NlsolveFixedpointTrustregion`, `ODETsit5`, etc.
-- Spinup sequence types: `SpinupSequence`, `SpinupSequenceWithAggregator`
-
-These types control how models reach equilibrium states before simulation.
+The sections below list **only the type-definition files that are currently included by**
+`src/Types/Types.jl` (i.e. what the `Sindbad.Types` module loads).
 
 ## LandTypes.jl
 **Defines types for land model data structures and helpers.**
@@ -75,17 +67,6 @@ This file defines the `ParameterOptimizationTypes` abstract type and its subtype
 
 These types control how model parameters are optimized.
 
-## MetricsTypes.jl
-**Defines types for model performance metrics and evaluation.**
-
-This file defines `MetricTypes` abstract type and its subtypes, which contains:
-- `PerfMetric`: Performance metrics (NSE, correlation, MSE, etc.)
-- `DataAggrOrder`: Controls order of data aggregation (space-then-time or time-then-space)
-- `SpatialDataAggr`: Methods for spatial data aggregation
-- `SpatialMetricAggr`: Methods for aggregating metrics spatially
-
-These types control how model performance is evaluated.
-
 ## MachineLearningTypes.jl
 **Defines types for machine learning and gradient calculations.**
 
@@ -95,33 +76,6 @@ This file defines `MachineLearningTypes` abstract type and its subtypes, which f
 - Finite difference methods: `FiniteDiffGrad`, `FiniteDifferencesGrad`
 
 These types control how gradients are calculated for optimization.
-
-## LongTuple.jl
-**Defines a specialized tuple type for handling large collections of data.**
-
-This file implements the `LongTuple` type, which splits large tuples into smaller chunks for better memory management and performance. It includes methods for indexing, mapping, and displaying these `LongTuple`s.
-
-## TypesFunctions.jl
-**Provides utility functions for working with SINDBAD types.**
-
-This file contains functions for:
-- `get_definitions`: Retrieving defined objects in SINDBAD
-- `get_type_docstring`: Generating formatted documentation for types
-- `methods_of`: Displaying subtypes and their purposes
-- `write_type_docstring`: Writing type documentation to files
-
-These functions support documentation and introspection of the type system.
-
-## docStringForTypes.jl
-**Contains generated documentation for SINDBAD types.**
-
-This file contains pre-generated documentation strings for all SINDBAD types, including their purpose, type hierarchy, and available subtypes.
-
-::: warning
-
-This file should not be edited manually.
-
-:::
 
 ## Types from related packages (used/re-exported by SINDBAD)
 

@@ -42,8 +42,29 @@ module Types
     import Sindbad: purpose
     using Sindbad: get_type_docstring, SindbadTypes
     using InteractiveUtils: subtypes
-    using Base.Docs: hasdoc
     using TimeSamplers
+
+    # Julia 1.10 compatibility:
+    # `Base.Docs.hasdoc` is not available on all supported Julia versions, so we implement a
+    # small helper that checks whether a *binding* has a docstring attached.
+    _binding_hasdoc(mod::Module, sym::Symbol) = try
+        haskey(Base.Docs.meta(mod), Base.Docs.Binding(mod, sym))
+    catch
+        false
+    end
+
+    _type_hasdoc(T::Type) = try
+        Base.Docs.doc(T) !== nothing
+    catch
+        false
+    end
+
+    function _attach_binding_doc!(mod::Module, sym::Symbol, doc_txt::AbstractString, T::Type)
+        b = Base.Docs.Binding(mod, sym)
+        ds = Base.Docs.DocStr(Core.svec(String(doc_txt)), T, Dict{Symbol, Any}())
+        Base.Docs.doc!(mod, b, ds)
+        return nothing
+    end
 
     # ------------------------- SindbadTypes ------------------------------------------------------------
     include("LandTypes.jl")
@@ -78,11 +99,15 @@ module Types
             #
             # Important: Documenter `@docs Foo` looks up docs via module bindings.
             # Attaching docs to the object alone is not sufficient in many cases.
-            sym = Symbol(nameof(st))
-            if !hasdoc(@__MODULE__, sym)
-                doc_txt = get_type_docstring(st, purpose_function=purpose)
-                # Attach docstring to the *binding* so Documenter `@docs Name` can find it.
-                @eval Base.Docs.@doc $doc_txt $sym
+            #
+            # Also: only attach for types whose binding lives in this module, to avoid
+            # documenting imported/foreign types.
+            if parentmodule(st) === @__MODULE__
+                sym = Symbol(nameof(st))
+                if isdefined(@__MODULE__, sym) && !_binding_hasdoc(@__MODULE__, sym) && !_type_hasdoc(st)
+                    doc_txt = get_type_docstring(st, purpose_function=purpose)
+                    _attach_binding_doc!(@__MODULE__, sym, doc_txt, st)
+                end
             end
             _attach_type_docstrings!(st)
         end

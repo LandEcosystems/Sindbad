@@ -7,6 +7,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -27,7 +30,12 @@ jobs:
         uses: julia-actions/cache@v2
       - name: Build and deploy docs
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Prefer the ephemeral workflow token. (Same value as `secrets.GITHUB_TOKEN` but clearer.)
+          GITHUB_TOKEN: ${{ github.token }}
+          # Only deploy when we have permission to push:
+          # - on pushes/tags/workflow_dispatch, always
+          # - on PRs, only when the PR comes from the same repo (fork PRs get a read-only token)
+          SINDBAD_DOCS_DEPLOY: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
         run: >
           cd docs;
           JULIA_PKG_USE_CLI_GIT=true julia --color=yes make.jl
