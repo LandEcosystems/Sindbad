@@ -5,7 +5,7 @@ version = "0.1.0"
 description = "Model–data integration framework for terrestrial ecosystem models (SINDBAD)"
 license = "EUPL-1.2"
 readme = "README.md"
-repository = "https://github.com/LandEcosystems/Sindbad"
+repository = "https://github.com/LandEcosystems/Sindbad.jl.git"
 
 [deps]
 AxisKeys = "94b1ba4f-4ee9-5380-92f1-94cde586c3c5"
