@@ -10,6 +10,6 @@ This extension is loaded automatically by Julia when `PreallocationTools` is ava
 
 ## Files
 
-- `MachineLearningGetCacheFromOutput.jl`
-- `MachineLearningGetOutputFromCache.jl`
-- `SindbadPreallocationToolsExt.jl`
+- [`MachineLearningGetCacheFromOutput.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadPreallocationToolsExt/MachineLearningGetCacheFromOutput.jl)
+- [`MachineLearningGetOutputFromCache.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadPreallocationToolsExt/MachineLearningGetOutputFromCache.jl)
+- [`SindbadPreallocationToolsExt.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadPreallocationToolsExt/SindbadPreallocationToolsExt.jl)

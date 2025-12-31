@@ -10,5 +10,5 @@ This extension is loaded automatically by Julia when `Zygote` is available.
 
 ## Files
 
-- `MachineLearningGradientSite.jl`
-- `SindbadZygoteExt.jl`
+- [`MachineLearningGradientSite.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadZygoteExt/MachineLearningGradientSite.jl)
+- [`SindbadZygoteExt.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadZygoteExt/SindbadZygoteExt.jl)

@@ -10,5 +10,5 @@ This extension is loaded automatically by Julia when `Enzyme` is available.
 
 ## Files
 
-- `MachineLearningGradientSite.jl`
-- `SindbadEnzymeExt.jl`
+- [`MachineLearningGradientSite.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadEnzymeExt/MachineLearningGradientSite.jl)
+- [`SindbadEnzymeExt.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadEnzymeExt/SindbadEnzymeExt.jl)

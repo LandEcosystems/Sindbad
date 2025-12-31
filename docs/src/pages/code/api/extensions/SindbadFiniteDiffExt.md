@@ -10,5 +10,5 @@ This extension is loaded automatically by Julia when `FiniteDiff` is available.
 
 ## Files
 
-- `MachineLearningGradientSite.jl`
-- `SindbadFiniteDiffExt.jl`
+- [`MachineLearningGradientSite.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadFiniteDiffExt/MachineLearningGradientSite.jl)
+- [`SindbadFiniteDiffExt.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadFiniteDiffExt/SindbadFiniteDiffExt.jl)

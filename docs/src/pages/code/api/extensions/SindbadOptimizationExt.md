@@ -10,5 +10,5 @@ This extension is loaded automatically by Julia when `Optimization` is available
 
 ## Files
 
-- `ParameterOptimizationOptimizer.jl`
-- `SindbadOptimizationExt.jl`
+- [`ParameterOptimizationOptimizer.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadOptimizationExt/ParameterOptimizationOptimizer.jl)
+- [`SindbadOptimizationExt.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadOptimizationExt/SindbadOptimizationExt.jl)

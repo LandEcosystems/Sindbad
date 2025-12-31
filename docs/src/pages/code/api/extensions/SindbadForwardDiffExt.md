@@ -10,5 +10,5 @@ This extension is loaded automatically by Julia when `ForwardDiff` is available.
 
 ## Files
 
-- `MachineLearningGradientSite.jl`
-- `SindbadForwardDiffExt.jl`
+- [`MachineLearningGradientSite.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadForwardDiffExt/MachineLearningGradientSite.jl)
+- [`SindbadForwardDiffExt.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadForwardDiffExt/SindbadForwardDiffExt.jl)

@@ -10,5 +10,5 @@ This extension is loaded automatically by Julia when `DifferentialEquations` is 
 
 ## Files
 
-- `SimulationSpinup.jl`
-- `SindbadDifferentialEquationsExt.jl`
+- [`SimulationSpinup.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadDifferentialEquationsExt/SimulationSpinup.jl)
+- [`SindbadDifferentialEquationsExt.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadDifferentialEquationsExt/SindbadDifferentialEquationsExt.jl)

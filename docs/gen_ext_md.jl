@@ -78,7 +78,9 @@ function generate_extension_docs()
                 if !isempty(files)
                     write(io, "## Files\n\n")
                     for f in files
-                        write(io, "- `$(f)`\n")
+                        rel_path = relpath(joinpath(ext_dir, f), repo_root)
+                        rel_url = replace(rel_path, "\\" => "/")
+                        write(io, "- [`$(f)`](https://github.com/LandEcosystems/Sindbad/blob/main/$(rel_url))\n")
                     end
                 end
             end

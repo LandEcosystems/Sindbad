@@ -10,5 +10,5 @@ This extension is loaded automatically by Julia when `CMAEvolutionStrategy` is a
 
 ## Files
 
-- `ParameterOptimizationOptimizer.jl`
-- `SindbadCMAEvolutionStrategyExt.jl`
+- [`ParameterOptimizationOptimizer.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadCMAEvolutionStrategyExt/ParameterOptimizationOptimizer.jl)
+- [`SindbadCMAEvolutionStrategyExt.jl`](https://github.com/LandEcosystems/Sindbad/blob/main/ext/SindbadCMAEvolutionStrategyExt/SindbadCMAEvolutionStrategyExt.jl)
