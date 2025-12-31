@@ -36,7 +36,7 @@ const settingsItems = [
 const codeItemsNav = [
   { text: 'Sindbad', link: '/pages/code/api/Sindbad' },
   // TEM should land on the package/module docstring page
-  { text: 'SindbadTEM (TEM)', link: '/pages/code/api/SindbadTEM' },
+  { text: 'TEM', link: '/pages/code/api/SindbadTEM' },
   // Modules should land on an index page
   { text: 'Modules', link: '/pages/code/api/modules/index' },
   // Extensions should land on the extensions index

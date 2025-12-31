@@ -59,13 +59,6 @@ module Types
         false
     end
 
-    function _attach_binding_doc!(mod::Module, sym::Symbol, doc_txt::AbstractString, T::Type)
-        b = Base.Docs.Binding(mod, sym)
-        ds = Base.Docs.DocStr(Core.svec(String(doc_txt)), T, Dict{Symbol, Any}())
-        Base.Docs.doc!(mod, b, ds)
-        return nothing
-    end
-
     # ------------------------- SindbadTypes ------------------------------------------------------------
     include("LandTypes.jl")
     include("ArrayTypes.jl")
@@ -106,7 +99,10 @@ module Types
                 sym = Symbol(nameof(st))
                 if isdefined(@__MODULE__, sym) && !_binding_hasdoc(@__MODULE__, sym) && !_type_hasdoc(st)
                     doc_txt = get_type_docstring(st, purpose_function=purpose)
-                    _attach_binding_doc!(@__MODULE__, sym, doc_txt, st)
+                    # Use `@doc` so the stored doc is the usual Markdown-based form that
+                    # Documenter expects, while still guarding with a Julia-1.10-safe
+                    # "has docs?" check above.
+                    @eval Base.Docs.@doc $doc_txt $sym
                 end
             end
             _attach_type_docstrings!(st)
