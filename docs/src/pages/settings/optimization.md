@@ -62,6 +62,7 @@ The algorithm configuration file specifies detailed optimization settings:
 To list all implemented optimization methods:
 ```julia
 using Sindbad.ParameterOptimization
+using OmniTools: show_methods_of
 show_methods_of(ParameterOptimizationMethod)
 ```
 :::

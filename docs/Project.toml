@@ -11,3 +11,6 @@ TimeSamplers = "a27efc82-29b7-4223-84cd-12fc64c7a5bb"
 [sources]
 Sindbad = {path = ".."}
 SindbadTEM = {path = "../SindbadTEM"}
+ErrorMetrics = {path = "../lib/ErrorMetrics"}
+OmniTools = {path = "../lib/OmniTools"}
+TimeSamplers = {path = "../lib/TimeSamplers"}

@@ -6,6 +6,7 @@ This documentation provides a framework for adding new cost calculation methods 
 For a more detailed view of available cost methods and their purposes, use:
 ```julia
 using Sindbad.Simulation
+using OmniTools: show_methods_of
 show_methods_of(CostMethod)
 ```
 This will display a formatted list of all cost methods and their descriptions.

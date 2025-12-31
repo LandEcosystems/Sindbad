@@ -100,6 +100,7 @@ These functions are automatically used during the cost calculation process.
 
 ```julia
 using ErrorMetrics
+using TimeSamplers
 using Sindbad
 
 # Setup experiment info

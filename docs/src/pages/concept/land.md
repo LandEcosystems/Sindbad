@@ -31,7 +31,8 @@ Variables used exclusively by a single model are stored under the model name (e.
 To ensure proper organization and prevent potential issues, use the following command to examine the `land` structure:
 
 ```julia
-julia> tc_print(land)
+using OmniTools: tc_print
+tc_print(land)
 ```
 
 ::: danger Important Considerations

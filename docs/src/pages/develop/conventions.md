@@ -154,6 +154,7 @@ Add a purpose function to describe the role of the model or approach.
 Use @doc to provide detailed documentation, including references, versions, and authorship.
 
 ```julia
+import OmniTools: purpose
 purpose(::Type{ApproachName}) = "Description of the approach's purpose and summary of its main method or principle"
 ```
 

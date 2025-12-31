@@ -18,6 +18,7 @@ In `src/Types/MachineLearningTypes.jl`, add a new struct subtype of `ActivationT
 export MyActivation
 
 struct MyActivation <: ActivationType end
+import OmniTools: purpose
 purpose(::Type{MyActivation}) = "Describe your activation function here"
 ```
 

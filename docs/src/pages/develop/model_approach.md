@@ -18,7 +18,7 @@ using Sindbad.Simulation
 To view available model approaches and their implementations:
 
 ```julia
-using Sindbad.Simulation: show_methods_of
+using OmniTools: show_methods_of
 show_methods_of(LandEcosystem)
 ```
 
@@ -38,6 +38,7 @@ abstract type newModel <: LandEcosystem end
 end
 
 # Define the purpose
+import OmniTools: purpose
 purpose(::Type{newModel}) = "Description of what this model does"
 ```
 
