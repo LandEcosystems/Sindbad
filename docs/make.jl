@@ -1,4 +1,12 @@
 using Pkg
+
+# Make docs builds reproducible by isolating the load path from the user's global env.
+# This prevents unrelated packages in `@v#.#` (e.g. different Zygote versions) from
+# activating Sindbad extensions and/or causing resolution conflicts.
+empty!(Base.LOAD_PATH)
+push!(Base.LOAD_PATH, "@")
+push!(Base.LOAD_PATH, "@stdlib")
+
 cd(@__DIR__)
 Pkg.activate(".")
 
