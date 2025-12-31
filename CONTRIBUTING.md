@@ -54,8 +54,9 @@ For **SINDBAD Experiments**:
 ```julia
 Pkg.develop(path="../../")  # Sindbad (this repository)
 
-# Only needed if you are editing SindbadTEM itself:
-Pkg.develop(path="../../SindbadTEM")
+# By default, `SindbadTEM` is resolved from the registry via `Sindbad`'s normal dependencies.
+# Only develop `SindbadTEM` locally if you are actively editing it in this monorepo checkout:
+# Pkg.develop(path="../../SindbadTEM")
 
 # Add any other local dependencies as needed
 Pkg.resolve()

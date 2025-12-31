@@ -21,9 +21,9 @@ end
 @testset "SindbadTEM model run (via Sindbad)" begin
     # Reuse SindbadTEM's lightweight mock inputs to validate that core TEM process models
     # are runnable when users only `using Sindbad`.
-    include(joinpath(@__DIR__, "..", "SindbadTEM", "test", "mock_input", "forcing.jl"))
-    include(joinpath(@__DIR__, "..", "SindbadTEM", "test", "mock_input", "land.jl"))
-    include(joinpath(@__DIR__, "..", "SindbadTEM", "test", "mock_input", "helpers.jl"))
+    include(joinpath(@__DIR__, "mock_input", "forcing.jl"))
+    include(joinpath(@__DIR__, "mock_input", "land.jl"))
+    include(joinpath(@__DIR__, "mock_input", "helpers.jl"))
 
     # When running `Pkg.test("Sindbad")`, only `Sindbad` is guaranteed to be on the load path.
     # Access SindbadTEM through the reexported module.

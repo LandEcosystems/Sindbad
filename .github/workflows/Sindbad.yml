@@ -57,10 +57,6 @@ jobs:
           using Pkg
           # CI should not rely on developer-local Manifests that point to /Users/... paths.
           rm("Manifest.toml"; force=true)
-          rm(joinpath("SindbadTEM","Manifest.toml"); force=true)
-
-          # Develop the local, unregistered monorepo package first; otherwise Pkg will expect it to be registered.
-          Pkg.develop(PackageSpec(path="SindbadTEM"))
           Pkg.instantiate()  # Install all dependencies
           Pkg.test("Sindbad"; coverage=true)
       - uses: julia-actions/julia-processcoverage@v1

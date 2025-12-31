@@ -15,8 +15,8 @@ mkpath(output_dir)
 lib_path = joinpath(@__DIR__, "../lib")
 
 # Get source directories
-sindbad_src_dir = joinpath(@__DIR__, "..", "src")
-sindbadTEM_src_dir = joinpath(@__DIR__, "..", "SindbadTEM", "src")
+sindbad_src_dir = dirname(pathof(Sindbad))
+sindbadTEM_src_dir = dirname(pathof(SindbadTEM))
 
 # Function to extract function code from a source file
 # Returns all methods of the function

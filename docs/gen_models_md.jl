@@ -3,9 +3,8 @@ using InteractiveUtils
 using SindbadTEM.DataStructures
 
 # Get source directory for SindbadTEM models
-sindbadTEM_src_dir = joinpath(@__DIR__, "..", "SindbadTEM", "src")
-# Get repository root directory
-repo_root = joinpath(@__DIR__, "..")
+sindbadTEM_src_dir = dirname(pathof(SindbadTEM))
+sindbadTEM_pkg_root = dirname(sindbadTEM_src_dir)
 # GitHub repository URL
 github_repo_url = "https://github.com/LandEcosystems/Sindbad"
 github_branch = "main"
@@ -102,12 +101,14 @@ function get_github_link(file_path::String)
         return nothing
     end
     
-    # Get relative path from repository root
+    # Map installed-package paths back to the monorepo layout on GitHub.
+    # `file_path` typically looks like: <...>/SindbadTEM/<hash>/src/...
+    # GitHub layout is: SindbadTEM/src/...
     try
-        rel_path = relpath(file_path, repo_root)
+        rel_path = relpath(file_path, sindbadTEM_pkg_root)
         # Normalize path separators for GitHub URLs
         rel_path = replace(rel_path, "\\" => "/")
-        return "$github_repo_url/blob/$github_branch/$rel_path"
+        return "$github_repo_url/blob/$github_branch/SindbadTEM/$rel_path"
     catch
         return nothing
     end
