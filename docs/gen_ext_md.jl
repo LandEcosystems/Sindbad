@@ -68,15 +68,14 @@ function generate_extension_docs()
             write(io, "This extension is loaded automatically by Julia when `$(weakdep)` is available.\n\n")
             if rel_main_file !== nothing
                 rel_url = replace(rel_main_file, "\\" => "/")
-                write(io, "**Source**: `$(rel_main_file)`\n\n")
-                write(io, "[View source on GitHub](https://github.com/LandEcosystems/Sindbad/blob/main/$(rel_url))\n\n")
+                write(io, "**Source**: [`$(rel_main_file)`](https://github.com/LandEcosystems/Sindbad/blob/main/$(rel_url))\n\n")
             end
 
             # List files in the extension folder (useful for navigation)
             if isdir(ext_dir)
                 files = sort(filter(f -> endswith(f, ".jl"), readdir(ext_dir)))
                 if !isempty(files)
-                    write(io, "## Files\n\n")
+                    write(io, "## Includes\n\n")
                     for f in files
                         rel_path = relpath(joinpath(ext_dir, f), repo_root)
                         rel_url = replace(rel_path, "\\" => "/")

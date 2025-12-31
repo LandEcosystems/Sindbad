@@ -150,7 +150,7 @@ open(joinpath(@__DIR__, "./src/pages/code/api/SindbadTEM.Processes.md"), "w") do
                 # Add GitHub link to the source file (always show if file is found)
                 github_link = get_github_link(approach_file)
                 if github_link !== nothing
-                    write(o_file, "[Full Code]($github_link)\n\n")
+                    write(o_file, "[View Source]($github_link)\n\n")
                 end
             end
         end

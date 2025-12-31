@@ -24,6 +24,88 @@ function write_collapsed_code(io::IO, code::AbstractString; title::AbstractStrin
     return nothing
 end
 
+# Append a grouped view of the SindbadTEM variable catalog.
+function write_sindbad_tem_variable_catalog(io::IO)
+    catalog = SindbadTEM.Variables.sindbad_tem_variables
+    # Inner dict uses Symbol => String, so normalize a bit for missing fields
+    function _get(info, k::Symbol, default::String="")
+        return haskey(info, k) ? info[k] : default
+    end
+
+    # Collect rows
+    rows = [(k, v, lowercase(_get(v, :land_field, ""))) for (k, v) in catalog]
+
+    # Markdown table (portable; column widths aren't reliably enforceable in markdown renderers).
+    # Column order: standard_name | units | description | long_name | Key
+    function _esc_md_cell(s::AbstractString)
+        # Minimal escaping for markdown tables
+        s = replace(s, "\n" => " ")
+        s = replace(s, "|" => "\\|")
+        return s
+    end
+
+    function write_table(items)
+        write(io, "| standard_name | units | description | long_name | Key |\n")
+        write(io, "|---|---|---|---|---|\n")
+        for (k, info, _) in items
+            standard_name = _esc_md_cell(_get(info, :standard_name))
+            units = _esc_md_cell(_get(info, :units))
+            desc = _esc_md_cell(_get(info, :description))
+            long_name = _esc_md_cell(_get(info, :long_name))
+            write(io, "| `$(standard_name)` | `$(units)` | $(desc) | `$(long_name)` | `$(k)` |\n")
+        end
+        write(io, "\n")
+    end
+
+    # Primary categories
+    categories = [
+        ("Fluxes", "fluxes"),
+        ("Pools", "pools"),
+        ("States", "states"),
+        ("Diagnostics", "diagnostics"),
+    ]
+
+    write(io, "\n### Variable Catalog (`sindbad_tem_variables`)\n\n")
+    write(io, "Variables are grouped by `land_field` into Fluxes / Pools / States / Diagnostics, with everything else under Others.\n\n")
+
+    # We want the Vitepress outline ("On this page") to show only the variable groups.
+    # So: groups are H2 headings; everything else is H3 or below.
+    for (title, field_key) in categories
+        items = [(k, info, lf) for (k, info, lf) in rows if lf == field_key]
+        sort!(items, by = x -> String(x[1]))
+        write(io, "## $(title)\n\n")
+        write(io, ":::details Show table ($(length(items)))\n\n")
+        if isempty(items)
+            write(io, "_No variables in this category._\n\n")
+        else
+            write_table(items)
+        end
+        write(io, ":::\n\n")
+    end
+
+    # Others: group by land_field value (e.g. constants / properties / models / <model names> ...)
+    other_items = [(k, info, lf) for (k, info, lf) in rows if !(lf in ("fluxes", "pools", "states", "diagnostics"))]
+    by_lf = Dict{String, Vector{Tuple{Symbol, typeof(first(values(catalog))), String}}}()
+    for item in other_items
+        lf = item[3] == "" ? "unknown" : item[3]
+        push!(get!(by_lf, lf, Vector{typeof(item)}()), item)
+    end
+    other_fields = sort(collect(keys(by_lf)))
+
+    write(io, "## Others\n\n")
+    write(io, ":::details Show table ($(length(other_items)))\n\n")
+    for lf in other_fields
+        items = by_lf[lf]
+        sort!(items, by = x -> String(x[1]))
+        # Avoid headings here (so outline stays clean); use bold label instead.
+        write(io, "**`$(lf)`** ($(length(items)))\n\n")
+        write_table(items)
+    end
+    write(io, ":::\n\n")
+
+    return nothing
+end
+
 # Get source directories
 sindbad_src_dir = dirname(pathof(Sindbad))
 sindbadTEM_src_dir = dirname(pathof(SindbadTEM))
@@ -165,7 +247,12 @@ function generate_module_docs(module_path::String, module_expr::String, module_n
     doc_path = joinpath(output_dir, "$(module_path).md")
     open(doc_path, "w") do o_file
         write(o_file, "```@docs\n$(module_expr)\n```\n")
-        write(o_file, "## Functions\n\n")
+        # Avoid a level-2 heading here on the Variables page (so outline shows only variable groups).
+        if package_name == :SindbadTEM && module_name == :Variables
+            write(o_file, "### Functions\n\n")
+        else
+            write(o_file, "## Functions\n\n")
+        end
         
         # Get the module
         the_package = getfield(Main, package_name)
@@ -174,7 +261,11 @@ function generate_module_docs(module_path::String, module_expr::String, module_n
         lib_functions = get_definitions(the_module, Function)
         if !isempty(lib_functions)
             foreach(lib_functions) do function_name
-                write(o_file, "### $(function_name)\n")
+                if package_name == :SindbadTEM && module_name == :Variables
+                    write(o_file, "#### $(function_name)\n")
+                else
+                    write(o_file, "### $(function_name)\n")
+                end
                 write(o_file, "```@docs\n$(function_name)\n```\n")
                 
                 # Add code section right after the docstring
@@ -221,6 +312,11 @@ function generate_module_docs(module_path::String, module_expr::String, module_n
         end
         
         write(o_file, "```@meta\nCollapsedDocStrings = false\nDocTestSetup= quote\nusing $(package_name).$(module_name)\nend\n```\n")
+
+        # Special case: add grouped variable catalog for SindbadTEM.Variables
+        if package_name == :SindbadTEM && module_name == :Variables
+            write_sindbad_tem_variable_catalog(o_file)
+        end
     end
 end
 
@@ -279,6 +375,15 @@ foreach(packages_list) do package_name
             end
         end
         write(o_file, "```@meta\nCollapsedDocStrings = false\nDocTestSetup= quote\nusing $(package_name)\nend\n```\n")
+
+        # For the SindbadTEM landing page, add quick links to key submodules.
+        if package_name == :SindbadTEM
+            write(o_file, "\n## Modules\n\n")
+            write(o_file, "- [`SindbadTEM.TEMTypes`](/pages/code/api/SindbadTEM.TEMTypes)\n")
+            write(o_file, "- [`SindbadTEM.Utils`](/pages/code/api/SindbadTEM.Utils)\n")
+            write(o_file, "- [`SindbadTEM.Variables`](/pages/code/api/SindbadTEM.Variables)\n")
+            write(o_file, "- [`SindbadTEM.Processes`](/pages/code/api/SindbadTEM.Processes)\n")
+        end
     end
 end
 

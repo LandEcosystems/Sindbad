@@ -82,7 +82,7 @@ Example usage:
 
 
 ## Interactive Exploration of `SINDBAD info`
-Interactively [view an example info from a SINDBAD experiment](http://sindbad-mdi.org/pages/concept/sindbad_info/sindbad_info.html)
+Interactively [view an example info from a SINDBAD experiment](https://www.sindbad-mdi.org/pages/concept/sindbad_info/sindbad_info.html)
 ![SINDBAD info](../../assets/sindbad_info.png)
 
 ## Usage Guidelines
