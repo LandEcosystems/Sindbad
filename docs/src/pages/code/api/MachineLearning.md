@@ -8,13 +8,15 @@ Sindbad.MachineLearning
 JoinDenseNN
 ```
 
- Code
+:::details Code
 
 ```julia
 function JoinDenseNN(models::Tuple)
     return Chain(Join(vcat, models...))
 end
 ```
+
+:::
 
 
 ----
@@ -24,7 +26,7 @@ end
 activationFunction
 ```
 
- Code
+:::details Code
 
 ```julia
 function activationFunction end
@@ -52,6 +54,8 @@ function activationFunction(model_options, ::CustomSigmoid)
 end
 ```
 
+:::
+
 
 ----
 
@@ -60,7 +64,7 @@ end
 denseNN
 ```
 
- Code
+:::details Code
 
 ```julia
 function denseNN(in_dim::Int, n_neurons::Int, out_dim::Int;
@@ -76,6 +80,8 @@ function denseNN(in_dim::Int, n_neurons::Int, out_dim::Int;
 end
 ```
 
+:::
+
 
 ----
 
@@ -84,7 +90,7 @@ end
 destructureNN
 ```
 
- Code
+:::details Code
 
 ```julia
 function destructureNN(model; nn_opt=Optimisers.Adam())
@@ -94,6 +100,8 @@ function destructureNN(model; nn_opt=Optimisers.Adam())
 end
 ```
 
+:::
+
 
 ----
 
@@ -102,7 +110,7 @@ end
 epochLossComponents
 ```
 
- Code
+:::details Code
 
 ```julia
 function epochLossComponents(loss_functions::F, loss_array_sites, loss_array_components, epoch_number, scaled_params, sites_list) where {F}
@@ -121,6 +129,8 @@ function epochLossComponents(loss_functions::F, loss_array_sites, loss_array_com
 end
 ```
 
+:::
+
 
 ----
 
@@ -129,7 +139,7 @@ end
 getCacheFromOutput
 ```
 
- Code
+:::details Code
 
 ```julia
 function getCacheFromOutput(loc_output, ::MachineLearningGradType)
@@ -148,6 +158,8 @@ function getOutputFromCache(loc_output, _, ::MachineLearningGradType)
 end
 ```
 
+:::
+
 
 ----
 
@@ -156,7 +168,7 @@ end
 getIndicesSplit
 ```
 
- Code
+:::details Code
 
 ```julia
 function getIndicesSplit end
@@ -197,6 +209,8 @@ function getIndicesSplit(info, site_indices, ::CalcFoldFromSplit)
 end
 ```
 
+:::
+
 
 ----
 
@@ -205,7 +219,7 @@ end
 getInnerArgs
 ```
 
- Code
+:::details Code
 
 ```julia
 function getInnerArgs(idx, grads_lib,
@@ -254,6 +268,8 @@ function getInnerArgs(idx, grads_lib,
 end
 ```
 
+:::
+
 
 ----
 
@@ -262,7 +278,7 @@ end
 getLossForSites
 ```
 
- Code
+:::details Code
 
 ```julia
 function getLossForSites(gradient_lib, loss_function::F, loss_array_sites, loss_array_split, epoch_number,
@@ -293,6 +309,8 @@ function getLossForSites(gradient_lib, loss_function::F, loss_array_sites, loss_
 end
 ```
 
+:::
+
 
 ----
 
@@ -301,7 +319,7 @@ end
 getLossFunctionHandles
 ```
 
- Code
+:::details Code
 
 ```julia
 function getLossFunctionHandles(info, run_helpers, sites)
@@ -328,6 +346,8 @@ function getLossFunctionHandles(info, run_helpers, sites)
 end
 ```
 
+:::
+
 
 ----
 
@@ -336,7 +356,7 @@ end
 getOutputFromCache
 ```
 
- Code
+:::details Code
 
 ```julia
 function getOutputFromCache(loc_output, _, ::MachineLearningGradType)
@@ -348,6 +368,8 @@ function getOutputFromCache(loc_output, new_params, ::PolyesterForwardDiffGrad)
 end
 ```
 
+:::
+
 
 ----
 
@@ -356,7 +378,7 @@ end
 getParamsAct
 ```
 
- Code
+:::details Code
 
 ```julia
 function getParamsAct(x, parameter_table)
@@ -366,6 +388,8 @@ function getParamsAct(x, parameter_table)
 end
 ```
 
+:::
+
 
 ----
 
@@ -374,7 +398,7 @@ end
 getPullback
 ```
 
- Code
+:::details Code
 
 ```julia
 function getPullback end
@@ -395,6 +419,8 @@ function getPullback(flat, re, features::Tuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -403,7 +429,7 @@ end
 gradientBatch!
 ```
 
- Code
+:::details Code
 
 ```julia
 function gradientBatch! end
@@ -467,6 +493,8 @@ function gradientBatch!(grads_lib::MachineLearningGradType, grads_batch, gradien
 end
 ```
 
+:::
+
 
 ----
 
@@ -475,7 +503,7 @@ end
 gradientSite
 ```
 
- Code
+:::details Code
 
 ```julia
 function gradientSite end
@@ -538,6 +566,8 @@ function gradientSite(::PolyesterForwardDiffGrad, x_vals, gradient_options::Name
 end
 ```
 
+:::
+
 
 ----
 
@@ -546,7 +576,7 @@ end
 gradsNaNCheck!
 ```
 
- Code
+:::details Code
 
 ```julia
 function gradsNaNCheck!(grads_batch, _params_batch, sites_batch, parameter_table; replace_value = 0.0, show_params_for_nan=false)
@@ -566,6 +596,8 @@ function gradsNaNCheck!(grads_batch, _params_batch, sites_batch, parameter_table
 end
 ```
 
+:::
+
 
 ----
 
@@ -574,7 +606,7 @@ end
 lcKAoneHotbatch
 ```
 
- Code
+:::details Code
 
 ```julia
 function lcKAoneHotbatch(lc_data, up_bound, lc_name, ka_labels)
@@ -589,6 +621,8 @@ function lcKAoneHotbatch(lc_data, up_bound, lc_name, ka_labels)
 end
 ```
 
+:::
+
 
 ----
 
@@ -597,7 +631,7 @@ end
 loadCovariates
 ```
 
- Code
+:::details Code
 
 ```julia
 function loadCovariates(sites_forcing; kind="all", cube_path = "/Net/Groups/BGI/work_5/scratch/lalonso/CovariatesFLUXNET_3.zarr")
@@ -668,6 +702,8 @@ function loadCovariates(sites_forcing; kind="all", cube_path = "/Net/Groups/BGI/
 end
 ```
 
+:::
+
 
 ----
 
@@ -676,7 +712,7 @@ end
 loadTrainedNN
 ```
 
- Code
+:::details Code
 
 ```julia
 function loadTrainedNN(path_model)
@@ -690,6 +726,8 @@ function loadTrainedNN(path_model)
 end
 ```
 
+:::
+
 
 ----
 
@@ -698,7 +736,7 @@ end
 loss
 ```
 
- Code
+:::details Code
 
 ```julia
 function lossVector(params, models, parameter_to_index, parameter_scaling_type, loc_forcing, loc_spinup_forcing, loc_forcing_t, loc_output, land_init, tem_info, loc_obs, cost_options, constraint_method, gradient_lib,::LossModelObsMachineLearning)
@@ -730,6 +768,8 @@ function lossComponents(params, models, parameter_to_index, parameter_scaling_ty
 end
 ```
 
+:::
+
 
 ----
 
@@ -738,7 +778,7 @@ end
 lossComponents
 ```
 
- Code
+:::details Code
 
 ```julia
 function lossComponents(params, models, parameter_to_index, parameter_scaling_type, loc_forcing, loc_spinup_forcing, loc_forcing_t, loc_output, land_init, tem_info, loc_obs, cost_options, constraint_method, gradient_lib,loss_type::LossModelObsMachineLearning)
@@ -748,6 +788,8 @@ function lossComponents(params, models, parameter_to_index, parameter_scaling_ty
 end
 ```
 
+:::
+
 
 ----
 
@@ -756,7 +798,7 @@ end
 lossSite
 ```
 
- Code
+:::details Code
 
 ```julia
 function lossSite(new_params, gradient_lib, models, loc_forcing, loc_spinup_forcing, 
@@ -769,6 +811,8 @@ function lossSite(new_params, gradient_lib, models, loc_forcing, loc_spinup_forc
 end
 ```
 
+:::
+
 
 ----
 
@@ -777,7 +821,7 @@ end
 lossVector
 ```
 
- Code
+:::details Code
 
 ```julia
 function lossVector(params, models, parameter_to_index, parameter_scaling_type, loc_forcing, loc_spinup_forcing, loc_forcing_t, loc_output, land_init, tem_info, loc_obs, cost_options, constraint_method, gradient_lib,::LossModelObsMachineLearning)
@@ -797,6 +841,8 @@ function lossVector(params, models, parameter_to_index, parameter_scaling_type, 
 end
 ```
 
+:::
+
 
 ----
 
@@ -805,7 +851,7 @@ end
 mixedGradientTraining
 ```
 
- Code
+:::details Code
 
 ```julia
 function mixedGradientTraining(grads_lib, nn_model, train_refs, test_val_refs, total_constraints, loss_fargs, forward_args;
@@ -872,6 +918,8 @@ function mixedGradientTraining(grads_lib, nn_model, train_refs, test_val_refs, t
 end
 ```
 
+:::
+
 
 ----
 
@@ -880,7 +928,7 @@ end
 mlModel
 ```
 
- Code
+:::details Code
 
 ```julia
 function mlModel end
@@ -936,6 +984,8 @@ function mlModel(info, n_features, ::FluxDenseNN)
 end
 ```
 
+:::
+
 
 ----
 
@@ -944,7 +994,7 @@ end
 mlOptimizer
 ```
 
- Code
+:::details Code
 
 ```julia
 function mlOptimizer end
@@ -962,6 +1012,8 @@ function mlOptimizer(optimizer_options, ::OptimisersDescent)
 end
 ```
 
+:::
+
 
 ----
 
@@ -970,7 +1022,7 @@ end
 oneHotPFT
 ```
 
- Code
+:::details Code
 
 ```julia
 function oneHotPFT(pft, up_bound, veg_class)
@@ -986,6 +1038,8 @@ function oneHotPFT(pft, up_bound, veg_class)
 end
 ```
 
+:::
+
 
 ----
 
@@ -994,13 +1048,15 @@ end
 partitionBatches
 ```
 
- Code
+:::details Code
 
 ```julia
 function partitionBatches(n; batch_size=32)
     return partition(1:n, batch_size)
 end
 ```
+
+:::
 
 
 ----
@@ -1010,7 +1066,7 @@ end
 prepHybrid
 ```
 
- Code
+:::details Code
 
 ```julia
 function prepHybrid(forcing, observations, info, ::MachineLearningTrainingType)
@@ -1110,6 +1166,8 @@ function prepHybrid(forcing, observations, info, ::MachineLearningTrainingType)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1118,7 +1176,7 @@ end
 shuffleBatches
 ```
 
- Code
+:::details Code
 
 ```julia
 function shuffleBatches(list, bs; seed=1)
@@ -1129,6 +1187,8 @@ function shuffleBatches(list, bs; seed=1)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1137,7 +1197,7 @@ end
 shuffleList
 ```
 
- Code
+:::details Code
 
 ```julia
 function shuffleList(list; seed=123)
@@ -1145,6 +1205,8 @@ function shuffleList(list; seed=123)
     return list[rand_indxs]
 end
 ```
+
+:::
 
 
 ----
@@ -1154,13 +1216,15 @@ end
 siteNameToID
 ```
 
- Code
+:::details Code
 
 ```julia
 function siteNameToID(site_name, sites_list)
     return findfirst(s -> s == site_name, sites_list)
 end
 ```
+
+:::
 
 
 ----
@@ -1170,7 +1234,7 @@ end
 toClass
 ```
 
- Code
+:::details Code
 
 ```julia
 function toClass(x::Number; vegetation_rules=vegetation_rules)
@@ -1184,6 +1248,8 @@ function toClass(x::Number; vegetation_rules=vegetation_rules)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1192,7 +1258,7 @@ end
 trainML
 ```
 
- Code
+:::details Code
 
 ```julia
 function trainML(hybrid_helpers, ::MixedGradient)
@@ -1266,6 +1332,8 @@ function trainML(hybrid_helpers, ::MixedGradient)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1274,7 +1342,7 @@ end
 vegKAoneHotbatch
 ```
 
- Code
+:::details Code
 
 ```julia
 function vegKAoneHotbatch(pft_data, ka_labels)
@@ -1282,6 +1350,8 @@ function vegKAoneHotbatch(pft_data, ka_labels)
     return KeyedArray(Array(oneHot_veg); features=vegetation_labels, site=ka_labels)
 end
 ```
+
+:::
 
 
 ----
@@ -1291,7 +1361,7 @@ end
 vegOneHot
 ```
 
- Code
+:::details Code
 
 ```julia
 function vegOneHotbatch(veg_classes; vegetation_labels=vegetation_labels)
@@ -1303,6 +1373,8 @@ function vegOneHot(v_class; vegetation_labels=vegetation_labels)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1311,13 +1383,15 @@ end
 vegOneHotbatch
 ```
 
- Code
+:::details Code
 
 ```julia
 function vegOneHotbatch(veg_classes; vegetation_labels=vegetation_labels)
     return Flux.onehotbatch(veg_classes, vegetation_labels)
 end
 ```
+
+:::
 
 
 ----

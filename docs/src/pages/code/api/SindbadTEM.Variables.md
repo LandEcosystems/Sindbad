@@ -8,7 +8,7 @@ SindbadTEM.Variables
 checkMissingVarInfo
 ```
 
- Code
+:::details Code
 
 ```julia
 function checkMissingVarInfo end
@@ -97,6 +97,8 @@ function checkMissingVarInfo()
 end 
 ```
 
+:::
+
 
 ----
 
@@ -105,7 +107,7 @@ end
 getUniqueVarNames
 ```
 
- Code
+:::details Code
 
 ```julia
 function getUniqueVarNames(var_pairs)
@@ -124,6 +126,8 @@ function getUniqueVarNames(var_pairs)
 end
 ```
 
+:::
+
 
 ----
 
@@ -132,13 +136,15 @@ end
 getVarFull
 ```
 
- Code
+:::details Code
 
 ```julia
 function getVarFull(var_pair)
     return Symbol(String(first(var_pair)) * "__" * String(last(var_pair)))
 end
 ```
+
+:::
 
 
 ----
@@ -148,7 +154,7 @@ end
 getVariableInfo
 ```
 
- Code
+:::details Code
 
 ```julia
 function getVariableInfo(vari_b, t_step="day")
@@ -222,6 +228,8 @@ function getVariableInfo(vari_b::Symbol, t_step="day")
 end
 ```
 
+:::
+
 
 ----
 
@@ -230,7 +238,7 @@ end
 whatIs
 ```
 
- Code
+:::details Code
 
 ```julia
 function whatIs end
@@ -283,6 +291,8 @@ function whatIs(var_field::Symbol, var_sfield::Symbol)
     return nothing
 end
 ```
+
+:::
 
 
 ----

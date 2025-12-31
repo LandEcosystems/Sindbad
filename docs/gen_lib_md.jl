@@ -14,6 +14,16 @@ output_dir = joinpath(@__DIR__, "src/pages/code/api")
 mkpath(output_dir)
 lib_path = joinpath(@__DIR__, "../lib")
 
+# Write a Julia code block in a Vitepress collapsible container (collapsed by default).
+function write_collapsed_code(io::IO, code::AbstractString; title::AbstractString = "Code")
+    write(io, "\n:::details $(title)\n\n")
+    write(io, "```julia\n")
+    write(io, code)
+    write(io, "\n```\n\n")
+    write(io, ":::\n\n")
+    return nothing
+end
+
 # Get source directories
 sindbad_src_dir = dirname(pathof(Sindbad))
 sindbadTEM_src_dir = dirname(pathof(SindbadTEM))
@@ -172,10 +182,7 @@ function generate_module_docs(module_path::String, module_expr::String, module_n
                 if func_file !== nothing
                     func_code = extract_function_code(func_file, string(function_name))
                     if func_code !== nothing && strip(func_code) != ""
-                        write(o_file, "\n Code\n\n")
-                        write(o_file, "```julia\n")
-                        write(o_file, func_code)
-                        write(o_file, "\n```\n\n")
+                        write_collapsed_code(o_file, func_code)
                     end
                 end
                 
@@ -195,10 +202,7 @@ function generate_module_docs(module_path::String, module_expr::String, module_n
                 if func_file !== nothing
                     func_code = extract_function_code(func_file, string(method_name))
                     if func_code !== nothing && strip(func_code) != ""
-                        write(o_file, "\n Code\n\n")
-                        write(o_file, "```julia\n")
-                        write(o_file, func_code)
-                        write(o_file, "\n```\n\n")
+                        write_collapsed_code(o_file, func_code)
                     end
                 end
                 
@@ -238,10 +242,7 @@ foreach(packages_list) do package_name
                 if func_file !== nothing
                     func_code = extract_function_code(func_file, string(function_name))
                     if func_code !== nothing && strip(func_code) != ""
-                        write(o_file, "\n Code\n\n")
-                        write(o_file, "```julia\n")
-                        write(o_file, func_code)
-                        write(o_file, "\n```\n\n")
+                        write_collapsed_code(o_file, func_code)
                     end
                 end
                 
@@ -260,10 +261,7 @@ foreach(packages_list) do package_name
                 if func_file !== nothing
                     func_code = extract_function_code(func_file, string(method_name))
                     if func_code !== nothing && strip(func_code) != ""
-                        write(o_file, "\n Code\n\n")
-                        write(o_file, "```julia\n")
-                        write(o_file, func_code)
-                        write(o_file, "\n```\n\n")
+                        write_collapsed_code(o_file, func_code)
                     end
                 end
                 
@@ -382,10 +380,7 @@ function generate_file_docs(file_name::String, package_name::Symbol)
                 end
                 
                 if func_code !== nothing && strip(func_code) != ""
-                    write(o_file, "\n Code\n\n")
-                    write(o_file, "```julia\n")
-                    write(o_file, func_code)
-                    write(o_file, "\n```\n\n")
+                    write_collapsed_code(o_file, func_code)
                 end
                 
                 write(o_file, "\n----\n\n")

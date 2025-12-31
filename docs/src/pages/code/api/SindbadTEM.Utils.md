@@ -8,7 +8,7 @@ SindbadTEM.Utils
 getInOutModel
 ```
 
- Code
+:::details Code
 
 ```julia
 function getInOutModel end
@@ -233,6 +233,8 @@ function getInOutModels(models, model_func::Symbol)
 end
 ```
 
+:::
+
 
 ----
 
@@ -241,7 +243,7 @@ end
 getInOutModels
 ```
 
- Code
+:::details Code
 
 ```julia
 function getInOutModels end
@@ -327,6 +329,8 @@ function getInOutModels(models, model_func::Symbol)
 end
 ```
 
+:::
+
 
 ----
 
@@ -335,7 +339,7 @@ end
 getSindbadModelOrder
 ```
 
- Code
+:::details Code
 
 ```julia
 function getSindbadModelOrder(model_name; all_models=SindbadTEM.Processes.standard_sindbad_model)
@@ -343,6 +347,8 @@ function getSindbadModelOrder(model_name; all_models=SindbadTEM.Processes.standa
     println("The order [default] of $(model_name) in models.jl of core SINDBAD is $(mo)")
 end
 ```
+
+:::
 
 
 ----
@@ -352,7 +358,7 @@ end
 getSindbadModels
 ```
 
- Code
+:::details Code
 
 ```julia
 function getSindbadModels(; all_models=SindbadTEM.Processes.standard_sindbad_model)
@@ -364,6 +370,8 @@ function getSindbadModels(; all_models=SindbadTEM.Processes.standard_sindbad_mod
 end
 ```
 
+:::
+
 
 ----
 
@@ -372,7 +380,7 @@ end
 getTypedModel
 ```
 
- Code
+:::details Code
 
 ```julia
 function getTypedModel end
@@ -407,6 +415,8 @@ function getTypedModel(model::Symbol, model_timestep="day", num_type=Float64)
 end
 ```
 
+:::
+
 
 ----
 
@@ -415,7 +425,7 @@ end
 getUnitConversionForParameter
 ```
 
- Code
+:::details Code
 
 ```julia
 function getUnitConversionForParameter(p_timescale, model_timestep)
@@ -468,6 +478,8 @@ function getUnitConversionForParameter(p_timescale, model_timestep)
 end
 ```
 
+:::
+
 
 ----
 
@@ -476,7 +488,7 @@ end
 modelParameter
 ```
 
- Code
+:::details Code
 
 ```julia
 function modelParameters(models)
@@ -574,6 +586,8 @@ function modelParameter(model::LandEcosystem, show=true)
 end
 ```
 
+:::
+
 
 ----
 
@@ -582,7 +596,7 @@ end
 modelParameters
 ```
 
- Code
+:::details Code
 
 ```julia
 function modelParameters(models)
@@ -593,6 +607,8 @@ function modelParameters(models)
     return nothing
 end
 ```
+
+:::
 
 
 ----

@@ -8,7 +8,7 @@ Sindbad.Setup
 backScaleParameters
 ```
 
- Code
+:::details Code
 
 ```julia
 function backScaleParameters end
@@ -34,6 +34,8 @@ function backScaleParameters(parameter_vector_scaled, parameter_table, ::ScaleBo
 end
 ```
 
+:::
+
 
 ----
 
@@ -42,7 +44,7 @@ end
 checkParameterBounds
 ```
 
- Code
+:::details Code
 
 ```julia
 function checkParameterBounds(p_names, parameter_values, lower_bounds, upper_bounds, _sc::ParameterScaling; p_units=nothing, show_info=false, model_names=nothing)
@@ -76,6 +78,8 @@ function checkParameterBounds(p_names, parameter_values, lower_bounds, upper_bou
 end
 ```
 
+:::
+
 
 ----
 
@@ -84,7 +88,7 @@ end
 convertRunFlagsToTypes
 ```
 
- Code
+:::details Code
 
 ```julia
 function convertRunFlagsToTypes(info)
@@ -109,6 +113,8 @@ function convertRunFlagsToTypes(info)
 end
 ```
 
+:::
+
 
 ----
 
@@ -117,7 +123,7 @@ end
 createArrayofType
 ```
 
- Code
+:::details Code
 
 ```julia
 function createArrayofType end
@@ -149,6 +155,8 @@ function createArrayofType(input_values, pool_array, num_type, indx, ismain, ::M
 end
 ```
 
+:::
+
 
 ----
 
@@ -157,7 +165,7 @@ end
 createInitLand
 ```
 
- Code
+:::details Code
 
 ```julia
 function createInitLand(pool_info, tem)
@@ -173,6 +181,8 @@ function createInitLand(pool_info, tem)
 end
 ```
 
+:::
+
 
 ----
 
@@ -181,7 +191,7 @@ end
 createInitPools
 ```
 
- Code
+:::details Code
 
 ```julia
 function createInitPools(info_pools::NamedTuple, tem_helpers::NamedTuple)
@@ -215,6 +225,8 @@ function createInitPools(info_pools::NamedTuple, tem_helpers::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -223,7 +235,7 @@ end
 createInitStates
 ```
 
- Code
+:::details Code
 
 ```julia
 function createInitStates(info_pools::NamedTuple, tem_helpers::NamedTuple)
@@ -270,6 +282,8 @@ function createInitStates(info_pools::NamedTuple, tem_helpers::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -278,7 +292,7 @@ end
 createNestedDict
 ```
 
- Code
+:::details Code
 
 ```julia
 function createNestedDict(dict::AbstractDict)
@@ -313,6 +327,8 @@ function createNestedDict(dict::AbstractDict)
 end
 ```
 
+:::
+
 
 ----
 
@@ -321,7 +337,7 @@ end
 deepMerge
 ```
 
- Code
+:::details Code
 
 ```julia
 function deepMerge end
@@ -349,6 +365,8 @@ function getRootDirs(local_root, sindbad_experiment)
 end
 ```
 
+:::
+
 
 ----
 
@@ -357,7 +375,7 @@ end
 filterParameterTable
 ```
 
- Code
+:::details Code
 
 ```julia
 function filterParameterTable(parameter_table::Table; prop_name::Symbol=:model, prop_values::Union{Vector{Symbol},Symbol}=:all)
@@ -371,6 +389,8 @@ function filterParameterTable(parameter_table::Table; prop_name::Symbol=:model, 
 end
 ```
 
+:::
+
 
 ----
 
@@ -379,7 +399,7 @@ end
 generateSindbadApproach
 ```
 
- Code
+:::details Code
 
 ```julia
 function generateSindbadApproach(model_name::Symbol, model_purpose::String, appr_name::Symbol, appr_purpose::String, n_parameters::Int; methods=(:define, :precompute, :compute, :update), force_over_write=:none)
@@ -518,6 +538,8 @@ function generateSindbadApproach(model_name::Symbol, model_purpose::String, appr
 end
 ```
 
+:::
+
 
 ----
 
@@ -526,7 +548,7 @@ end
 getAbsDataPath
 ```
 
- Code
+:::details Code
 
 ```julia
 function getAbsDataPath(info, data_path)
@@ -542,6 +564,8 @@ function getAbsDataPath(info, data_path)
 end
 ```
 
+:::
+
 
 ----
 
@@ -550,7 +574,7 @@ end
 getConfiguration
 ```
 
- Code
+:::details Code
 
 ```julia
 function getConfiguration(sindbad_experiment::String; replace_info=Dict())
@@ -603,6 +627,8 @@ function getConfiguration(sindbad_experiment::String; replace_info=Dict())
 end
 ```
 
+:::
+
 
 ----
 
@@ -611,7 +637,7 @@ end
 getConstraintNames
 ```
 
- Code
+:::details Code
 
 ```julia
 function getConstraintNames(optim::NamedTuple)
@@ -629,6 +655,8 @@ function getConstraintNames(optim::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -637,7 +665,7 @@ end
 getCostOptions
 ```
 
- Code
+:::details Code
 
 ```julia
 function getCostOptions(optim_info::NamedTuple, vars_info, tem_variables, number_helpers, dates_helpers)
@@ -721,6 +749,8 @@ function getCostOptions(optim_info::NamedTuple, vars_info, tem_variables, number
 end
 ```
 
+:::
+
 
 ----
 
@@ -729,7 +759,7 @@ end
 getDepthDimensionSizeName
 ```
 
- Code
+:::details Code
 
 ```julia
 function getDepthDimensionSizeName(v_full_pair, info::NamedTuple)
@@ -774,6 +804,8 @@ function getDepthDimensionSizeName(v_full_pair, info::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -782,7 +814,7 @@ end
 getDepthInfoAndVariables
 ```
 
- Code
+:::details Code
 
 ```julia
 function getDepthInfoAndVariables(info, output_vars)
@@ -795,6 +827,8 @@ function getDepthInfoAndVariables(info, output_vars)
 end
 ```
 
+:::
+
 
 ----
 
@@ -803,7 +837,7 @@ end
 getExperimentConfiguration
 ```
 
- Code
+:::details Code
 
 ```julia
 function getExperimentConfiguration(experiment_json::String; replace_info=Dict())
@@ -823,6 +857,8 @@ function getExperimentConfiguration(experiment_json::String; replace_info=Dict()
 end
 ```
 
+:::
+
 
 ----
 
@@ -831,7 +867,7 @@ end
 getExperimentInfo
 ```
 
- Code
+:::details Code
 
 ```julia
 function getExperimentInfo(sindbad_experiment::String; replace_info=Dict())
@@ -851,6 +887,8 @@ function getExperimentInfo(sindbad_experiment::String; replace_info=Dict())
 end
 ```
 
+:::
+
 
 ----
 
@@ -859,7 +897,7 @@ end
 getGlobalAttributesForOutCubes
 ```
 
- Code
+:::details Code
 
 ```julia
 function getGlobalAttributesForOutCubes(info)
@@ -888,6 +926,8 @@ function getGlobalAttributesForOutCubes(info)
 end
 ```
 
+:::
+
 
 ----
 
@@ -896,7 +936,7 @@ end
 getNumberType
 ```
 
- Code
+:::details Code
 
 ```julia
 function getNumberType end
@@ -916,6 +956,8 @@ function getNumberType(t::DataType)
 end
 ```
 
+:::
+
 
 ----
 
@@ -924,7 +966,7 @@ end
 getOptimizationParametersTable
 ```
 
- Code
+:::details Code
 
 ```julia
 function getOptimizationParametersTable(parameter_table_all::Table, model_parameter_default, optimization_parameters)
@@ -974,6 +1016,8 @@ function getOptimizationParametersTable(parameter_table_all::Table, model_parame
 end
 ```
 
+:::
+
 
 ----
 
@@ -982,7 +1026,7 @@ end
 getParameterIndices
 ```
 
- Code
+:::details Code
 
 ```julia
 function getParameterIndices(selected_models::LongTuple, parameter_table::Table)
@@ -1000,6 +1044,8 @@ function getParameterIndices(selected_models::Tuple, parameter_table::Table)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1008,7 +1054,7 @@ end
 getParameters
 ```
 
- Code
+:::details Code
 
 ```julia
 function getParameters end
@@ -1117,6 +1163,8 @@ function getParameters(selected_models::Tuple, num_type, model_timestep; return_
 end
 ```
 
+:::
+
 
 ----
 
@@ -1125,7 +1173,7 @@ end
 getSindbadDataDepot
 ```
 
- Code
+:::details Code
 
 ```julia
 function getSindbadDataDepot(; env_data_depot_var="SINDBAD_DATA_DEPOT", local_data_depot="../data")
@@ -1133,6 +1181,8 @@ function getSindbadDataDepot(; env_data_depot_var="SINDBAD_DATA_DEPOT", local_da
     return data_depot
 end
 ```
+
+:::
 
 
 ----
@@ -1142,7 +1192,7 @@ end
 getSpinupSequenceWithTypes
 ```
 
- Code
+:::details Code
 
 ```julia
 function getSpinupSequenceWithTypes(seqq, helpers_dates)
@@ -1179,6 +1229,8 @@ function getSpinupSequenceWithTypes(seqq, helpers_dates)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1187,7 +1239,7 @@ end
 getTypeInstanceForCostMetric
 ```
 
- Code
+:::details Code
 
 ```julia
 function getTypeInstanceForCostMetric(source_module::Module, option_name::String)
@@ -1197,6 +1249,8 @@ function getTypeInstanceForCostMetric(source_module::Module, option_name::String
 end
 ```
 
+:::
+
 
 ----
 
@@ -1205,7 +1259,7 @@ end
 getTypeInstanceForFlags
 ```
 
- Code
+:::details Code
 
 ```julia
 function getTypeInstanceForFlags(option_name::Symbol, option_value, opt_pref="Do")
@@ -1219,6 +1273,8 @@ function getTypeInstanceForFlags(option_name::Symbol, option_value, opt_pref="Do
 end
 ```
 
+:::
+
 
 ----
 
@@ -1227,7 +1283,7 @@ end
 getTypeInstanceForNamedOptions
 ```
 
- Code
+:::details Code
 
 ```julia
 function getTypeInstanceForNamedOptions end
@@ -1249,6 +1305,8 @@ function getTypeInstanceForNamedOptions(option_name::Symbol)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1257,7 +1315,7 @@ end
 perturbParameters
 ```
 
- Code
+:::details Code
 
 ```julia
 function perturbParameters(x::AbstractVector, lower::AbstractVector, upper::AbstractVector; percent_range::Tuple{Float64,Float64}=(0.0, 0.1))
@@ -1282,6 +1340,8 @@ function perturbParameters(x::AbstractVector, lower::AbstractVector, upper::Abst
 end
 ```
 
+:::
+
 
 ----
 
@@ -1290,7 +1350,7 @@ end
 prepCostOptions
 ```
 
- Code
+:::details Code
 
 ```julia
 function prepCostOptions end
@@ -1337,6 +1397,8 @@ function prepCostOptions(observations, cost_options, ::CostModelObs)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1345,7 +1407,7 @@ end
 readConfiguration
 ```
 
- Code
+:::details Code
 
 ```julia
 function readConfiguration(info_exp::AbstractDict, base_path::String)
@@ -1381,6 +1443,8 @@ function readConfiguration(info_exp::AbstractDict, base_path::String)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1389,7 +1453,7 @@ end
 scaleParameters
 ```
 
- Code
+:::details Code
 
 ```julia
 function scaleParameters end
@@ -1431,6 +1495,8 @@ function scaleParameters(parameter_table, _sc::ScaleBounds)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1439,7 +1505,7 @@ end
 setHybridInfo
 ```
 
- Code
+:::details Code
 
 ```julia
 function setHybridInfo(info::NamedTuple)
@@ -1497,6 +1563,8 @@ function setHybridInfo(info::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1505,7 +1573,7 @@ end
 setModelOutput
 ```
 
- Code
+:::details Code
 
 ```julia
 function setModelOutput(info::NamedTuple)
@@ -1548,6 +1616,8 @@ function setModelOutputLandAll(info, land)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1556,7 +1626,7 @@ end
 setModelOutputLandAll
 ```
 
- Code
+:::details Code
 
 ```julia
 function setModelOutputLandAll(info, land)
@@ -1592,6 +1662,8 @@ function setModelOutputLandAll(info, land)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1600,7 +1672,7 @@ end
 setOptimization
 ```
 
- Code
+:::details Code
 
 ```julia
 function setOptimization(info::NamedTuple)
@@ -1660,6 +1732,8 @@ function setOptimization(info::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1668,7 +1742,7 @@ end
 setOrderedSelectedModels
 ```
 
- Code
+:::details Code
 
 ```julia
 function setOrderedSelectedModels(info::NamedTuple)
@@ -1691,6 +1765,8 @@ function setOrderedSelectedModels(info::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1699,7 +1775,7 @@ end
 setPoolsInfo
 ```
 
- Code
+:::details Code
 
 ```julia
 function setPoolsInfo(info::NamedTuple)
@@ -1896,6 +1972,8 @@ function setPoolsInfo(info::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1904,7 +1982,7 @@ end
 setSpinupAndForwardModels
 ```
 
- Code
+:::details Code
 
 ```julia
 function setSpinupAndForwardModels(info::NamedTuple)
@@ -1958,6 +2036,8 @@ function setSpinupAndForwardModels(info::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -1966,7 +2046,7 @@ end
 setupInfo
 ```
 
- Code
+:::details Code
 
 ```julia
 function setupInfo(info::NamedTuple)
@@ -2031,6 +2111,8 @@ function setupInfo(info::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -2039,7 +2121,7 @@ end
 sindbadDefaultOptions
 ```
 
- Code
+:::details Code
 
 ```julia
 function sindbadDefaultOptions end
@@ -2056,6 +2138,8 @@ sindbadDefaultOptions(::GSASobolDM) = sindbadDefaultOptions(GSASobol())
 
 ```
 
+:::
+
 
 ----
 
@@ -2064,7 +2148,7 @@ sindbadDefaultOptions(::GSASobolDM) = sindbadDefaultOptions(GSASobol())
 updateModelParameters
 ```
 
- Code
+:::details Code
 
 ```julia
 function updateModelParameters end
@@ -2115,6 +2199,8 @@ function updateModelParameters(parameter_to_index::NamedTuple, selected_models, 
 end
 ```
 
+:::
+
 
 ----
 
@@ -2123,7 +2209,7 @@ end
 updateModels
 ```
 
- Code
+:::details Code
 
 ```julia
 function updateModels(parameter_vector, parameter_updater, parameter_scaling_type, selected_models)
@@ -2133,6 +2219,8 @@ function updateModels(parameter_vector, parameter_updater, parameter_scaling_typ
 end
 ```
 
+:::
+
 
 ----
 
@@ -2141,7 +2229,7 @@ end
 updateVariablesToStore
 ```
 
- Code
+:::details Code
 
 ```julia
 function updateVariablesToStore(info::NamedTuple)
@@ -2159,6 +2247,8 @@ function updateVariablesToStore(info::NamedTuple)
     return info
 end
 ```
+
+:::
 
 
 ----

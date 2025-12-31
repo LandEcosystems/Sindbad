@@ -8,7 +8,7 @@ Sindbad
 addExtensionToSindbad
 ```
 
- Code
+:::details Code
 
 ```julia
   function addExtensionToSindbad(function_to_extend::Function, external_package::String)
@@ -17,6 +17,8 @@ addExtensionToSindbad
     return add_extension_to_function(function_to_extend, external_package; extension_location=:Folder)
   end
 ```
+
+:::
 
 
 ----

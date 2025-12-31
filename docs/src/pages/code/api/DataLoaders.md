@@ -8,7 +8,7 @@ Sindbad.DataLoaders
 getForcing
 ```
 
- Code
+:::details Code
 
 ```julia
 function getForcing(info::NamedTuple)
@@ -60,6 +60,8 @@ function getForcing(info::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -68,7 +70,7 @@ end
 getNumberOfTimeSteps
 ```
 
- Code
+:::details Code
 
 ```julia
 function getNumberOfTimeSteps(incubes, time_name)
@@ -76,6 +78,8 @@ function getNumberOfTimeSteps(incubes, time_name)
     return length(getAxis(time_name, incubes[i1]).values)
 end
 ```
+
+:::
 
 
 ----
@@ -85,7 +89,7 @@ end
 getObservation
 ```
 
- Code
+:::details Code
 
 ```julia
 function getObservation(info::NamedTuple, forcing_helpers::NamedTuple)
@@ -179,6 +183,8 @@ function getObservation(info::NamedTuple, forcing_helpers::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -187,7 +193,7 @@ end
 getSpatialSubset
 ```
 
- Code
+:::details Code
 
 ```julia
 function getSpatialSubset(ss, v)
@@ -209,6 +215,8 @@ function getSpatialSubset(ss, v)
 end
 ```
 
+:::
+
 
 ----
 
@@ -217,7 +225,7 @@ end
 mapCleanData
 ```
 
- Code
+:::details Code
 
 ```julia
 function mapCleanData(_data, _data_qc, _data_fill, bounds_qc, _data_info, ::Val{T}) where {T}
@@ -230,6 +238,8 @@ function mapCleanData(_data, _data_qc, _data_fill, bounds_qc, _data_info, ::Val{
 end
 ```
 
+:::
+
 
 ----
 
@@ -238,7 +248,7 @@ end
 subsetAndProcessYax
 ```
 
- Code
+:::details Code
 
 ```julia
 function subsetAndProcessYax(yax, forcing_mask, tar_dims, _data_info, info, ::Val{num_type}; clean_data=true, fill_nan=false, yax_qc=nothing, bounds_qc=nothing) where {num_type}
@@ -278,6 +288,8 @@ function subsetAndProcessYax(yax, forcing_mask, tar_dims, _data_info, info, ::Va
 end
 ```
 
+:::
+
 
 ----
 
@@ -286,13 +298,15 @@ end
 toDimStackArray
 ```
 
- Code
+:::details Code
 
 ```julia
 function toDimStackArray(stackArr, time_interval, p_names; name=:pools)
     return DimArray(stackArr,  (p_names=p_names, Ti=time_interval,); name=name,)
 end
 ```
+
+:::
 
 
 ----
@@ -302,7 +316,7 @@ end
 yaxCubeToKeyedArray
 ```
 
- Code
+:::details Code
 
 ```julia
 function yaxCubeToKeyedArray(c)
@@ -310,6 +324,8 @@ function yaxCubeToKeyedArray(c)
     return KeyedArray(Array(c.data); t_dims...)
 end
 ```
+
+:::
 
 
 ----

@@ -8,7 +8,7 @@ Sindbad.Visualization
 namedTupleToFlareJSON
 ```
 
- Code
+:::details Code
 
 ```julia
 function namedTupleToFlareJSON(info::NamedTuple)
@@ -30,6 +30,8 @@ function namedTupleToFlareJSON(info::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -38,7 +40,7 @@ end
 plotIOModelStructure
 ```
 
- Code
+:::details Code
 
 ```julia
 function plotIOModelStructure(info, which_function=:compute, which_field=[:input, :output])
@@ -141,6 +143,8 @@ function plotIOModelStructure(info, which_function=:compute, which_field=[:input
 end
 ```
 
+:::
+
 
 ----
 
@@ -149,7 +153,7 @@ end
 plotPerformanceHistograms
 ```
 
- Code
+:::details Code
 
 ```julia
 function plotPerformanceHistograms(out_opti)
@@ -205,6 +209,8 @@ function plotPerformanceHistograms(out_opti)
 end
 ```
 
+:::
+
 
 ----
 
@@ -213,7 +219,7 @@ end
 plotTimeSeriesDebug
 ```
 
- Code
+:::details Code
 
 ```julia
 function plotTimeSeriesDebug(info, opt_dat, def_dat)
@@ -251,6 +257,8 @@ function plotTimeSeriesDebug(info, opt_dat, def_dat)
 end
 ```
 
+:::
+
 
 ----
 
@@ -259,7 +267,7 @@ end
 plotTimeSeriesWithObs
 ```
 
- Code
+:::details Code
 
 ```julia
 function plotTimeSeriesWithObs(out_opti)
@@ -370,6 +378,8 @@ function plotTimeSeriesWithObs(out,obs_array,cost_options)
     return nothing
 end
 ```
+
+:::
 
 
 ----

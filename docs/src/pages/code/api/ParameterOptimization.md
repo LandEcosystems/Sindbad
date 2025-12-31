@@ -8,7 +8,7 @@ Sindbad.ParameterOptimization
 combineMetric
 ```
 
- Code
+:::details Code
 
 ```julia
 function combineMetric end
@@ -34,6 +34,8 @@ function combineMetric(metric_vector::AbstractArray, percentile_value::T) where 
 end
 ```
 
+:::
+
 
 ----
 
@@ -42,7 +44,7 @@ end
 cost
 ```
 
- Code
+:::details Code
 
 ```julia
 function cost end
@@ -130,6 +132,8 @@ function costLand(parameter_vector::AbstractArray, selected_models, forcing, spi
 end
 ```
 
+:::
+
 
 ----
 
@@ -138,7 +142,7 @@ end
 costLand
 ```
 
- Code
+:::details Code
 
 ```julia
 function costLand end
@@ -171,6 +175,8 @@ function costLand(parameter_vector::AbstractArray, selected_models, forcing, spi
 end
 ```
 
+:::
+
 
 ----
 
@@ -179,7 +185,7 @@ end
 getCostVectorSize
 ```
 
- Code
+:::details Code
 
 ```julia
 function getCostVectorSize end
@@ -243,6 +249,8 @@ function getCostVectorSize(algo_options, parameter_vector, ::GSASobolDM)
 end
 ```
 
+:::
+
 
 ----
 
@@ -251,7 +259,7 @@ end
 getData
 ```
 
- Code
+:::details Code
 
 ```julia
 function getDataWithoutNaN end
@@ -276,6 +284,8 @@ function getDataWithoutNaN(y, yσ, ŷ)
     return y[idxs], yσ[idxs], ŷ[idxs]
 end
 ```
+
+:::
 
 
 ----
@@ -285,7 +295,7 @@ end
 getDataWithoutNaN
 ```
 
- Code
+:::details Code
 
 ```julia
 function getDataWithoutNaN end
@@ -311,6 +321,8 @@ function getDataWithoutNaN(y, yσ, ŷ)
 end
 ```
 
+:::
+
 
 ----
 
@@ -319,7 +331,7 @@ end
 getModelOutputView
 ```
 
- Code
+:::details Code
 
 ```julia
 function getModelOutputView(_dat::AbstractArray{<:Any,N}) where N
@@ -333,6 +345,8 @@ function getModelOutputView(_dat::AbstractArray{<:Any,N}) where N
 end
 ```
 
+:::
+
 
 ----
 
@@ -341,7 +355,7 @@ end
 globalSensitivity
 ```
 
- Code
+:::details Code
 
 ```julia
 function globalSensitivity end
@@ -373,6 +387,8 @@ function globalSensitivity(cost_function, method_options, p_bounds, ::GSASobolDM
 end
 ```
 
+:::
+
 
 ----
 
@@ -381,7 +397,7 @@ end
 metricVector
 ```
 
- Code
+:::details Code
 
 ```julia
 function metricVector end
@@ -443,6 +459,8 @@ function metricVector(model_output::LandWrapper, observations, cost_options)
 end
 ```
 
+:::
+
 
 ----
 
@@ -451,7 +469,7 @@ end
 optimizeTEM
 ```
 
- Code
+:::details Code
 
 ```julia
 function optimizeTEM end
@@ -497,6 +515,8 @@ function optimizeTEMYax(forcing::NamedTuple, output::NamedTuple, tem::NamedTuple
 end
 ```
 
+:::
+
 
 ----
 
@@ -505,7 +525,7 @@ end
 optimizeTEMYax
 ```
 
- Code
+:::details Code
 
 ```julia
 function optimizeTEMYax(forcing::NamedTuple, output::NamedTuple, tem::NamedTuple, optim::NamedTuple, observations::NamedTuple; max_cache=1e9)
@@ -521,6 +541,8 @@ function optimizeTEMYax(forcing::NamedTuple, output::NamedTuple, tem::NamedTuple
 end
 ```
 
+:::
+
 
 ----
 
@@ -529,7 +551,7 @@ end
 optimizer
 ```
 
- Code
+:::details Code
 
 ```julia
 function optimizer(::Any, default_values::Any, ::Any, ::Any, ::Any, x::ParameterOptimizationMethod)
@@ -551,6 +573,8 @@ function optimizer(::Any, default_values::Any, ::Any, ::Any, ::Any, x::Parameter
 end
 ```
 
+:::
+
 
 ----
 
@@ -559,7 +583,7 @@ end
 prepOpti
 ```
 
- Code
+:::details Code
 
 ```julia
 function prepOpti end
@@ -618,6 +642,8 @@ function  prepOpti(forcing, observations, info, cost_method::CostModelObs)
 end
 ```
 
+:::
+
 
 ----
 
@@ -626,7 +652,7 @@ end
 prepParameters
 ```
 
- Code
+:::details Code
 
 ```julia
 function prepParameters(parameter_table, parameter_scaling)
@@ -637,6 +663,8 @@ function prepParameters(parameter_table, parameter_scaling)
     return parameter_helpers
 end
 ```
+
+:::
 
 
 ----

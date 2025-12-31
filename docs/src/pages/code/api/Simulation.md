@@ -8,7 +8,7 @@ Sindbad.Simulation
 TEMYax
 ```
 
- Code
+:::details Code
 
 ```julia
 function TEMYax(map_cubes...;selected_models::Tuple, forcing_vars::AbstractArray, loc_land::NamedTuple, output_vars, tem::NamedTuple)
@@ -26,6 +26,8 @@ function TEMYax(map_cubes...;selected_models::Tuple, forcing_vars::AbstractArray
 end
 ```
 
+:::
+
 
 ----
 
@@ -34,7 +36,7 @@ end
 coreTEM
 ```
 
- Code
+:::details Code
 
 ```julia
 function coreTEM end
@@ -69,6 +71,8 @@ function coreTEM(selected_models, loc_forcing, loc_spinup_forcing, loc_forcing_t
 end
 ```
 
+:::
+
 
 ----
 
@@ -77,7 +81,7 @@ end
 coreTEM!
 ```
 
- Code
+:::details Code
 
 ```julia
 function coreTEM!(selected_models, loc_forcing, loc_spinup_forcing, loc_forcing_t, loc_output, loc_land, tem_info)
@@ -93,6 +97,8 @@ function coreTEM!(selected_models, loc_forcing, loc_spinup_forcing, loc_forcing_
 end
 ```
 
+:::
+
 
 ----
 
@@ -101,7 +107,7 @@ end
 getAllSpinupForcing
 ```
 
- Code
+:::details Code
 
 ```julia
 function getAllSpinupForcing(forcing, spin_sequences::Vector{SpinupSequenceWithAggregator}, tem_helpers)
@@ -118,6 +124,8 @@ function getAllSpinupForcing(forcing, spin_sequences::Vector{SpinupSequenceWithA
 end
 ```
 
+:::
+
 
 ----
 
@@ -133,7 +141,7 @@ getForcingForTimeStep
 getLocData
 ```
 
- Code
+:::details Code
 
 ```julia
 function getLocData(forcing::NamedTuple, output_array::AbstractArray, loc_ind)
@@ -157,6 +165,8 @@ function getLocData(forcing::NamedTuple, loc_ind)
 end
 ```
 
+:::
+
 
 ----
 
@@ -165,7 +175,7 @@ end
 getOutDims
 ```
 
- Code
+:::details Code
 
 ```julia
 function getOutDims end
@@ -301,6 +311,8 @@ function getOutDimsPairs(tem_output, forcing_helpers; dthres=1)
 end
 ```
 
+:::
+
 
 ----
 
@@ -309,7 +321,7 @@ end
 getOutDimsArrays
 ```
 
- Code
+:::details Code
 
 ```julia
 function getOutDimsArrays end
@@ -351,6 +363,8 @@ function getOutDimsArrays(info, forcing_helpers, oayax::OutputYAXArray)
 end
 ```
 
+:::
+
 
 ----
 
@@ -359,7 +373,7 @@ end
 getSequence
 ```
 
- Code
+:::details Code
 
 ```julia
 function getSequence(year_disturbance, info_helpers_dates; nrepeat_base=200, year_start = 1979)
@@ -388,6 +402,8 @@ function getSequence(year_disturbance, info_helpers_dates; nrepeat_base=200, yea
 end
 ```
 
+:::
+
 
 ----
 
@@ -396,7 +412,7 @@ end
 getSpatialInfo
 ```
 
- Code
+:::details Code
 
 ```julia
 function getSpatialInfo end
@@ -443,6 +459,8 @@ function getSpatialInfo(forcing, filter_nan_pixels)
 end
 ```
 
+:::
+
 
 ----
 
@@ -451,7 +469,7 @@ end
 prepTEM
 ```
 
- Code
+:::details Code
 
 ```julia
 function prepTEM end
@@ -486,6 +504,8 @@ function prepTEM(selected_models, forcing::NamedTuple, observations::NamedTuple,
 end
 ```
 
+:::
+
 
 ----
 
@@ -494,7 +514,7 @@ end
 prepTEMOut
 ```
 
- Code
+:::details Code
 
 ```julia
 function prepTEMOut(info::NamedTuple, forcing_helpers::NamedTuple)
@@ -514,6 +534,8 @@ function prepTEMOut(info::NamedTuple, forcing_helpers::NamedTuple)
 end
 ```
 
+:::
+
 
 ----
 
@@ -522,7 +544,7 @@ end
 runTEM
 ```
 
- Code
+:::details Code
 
 ```julia
 function runTEMOne(selected_models, loc_forcing, land_init, tem)
@@ -541,6 +563,8 @@ function runTEMOne(selected_models, loc_forcing, land_init, tem)
 end
 ```
 
+:::
+
 
 ----
 
@@ -549,7 +573,7 @@ end
 runTEM!
 ```
 
- Code
+:::details Code
 
 ```julia
 function runTEM! end
@@ -578,6 +602,8 @@ function runTEM!(space_selected_models, space_forcing, space_spinup_forcing, loc
 end
 ```
 
+:::
+
 
 ----
 
@@ -586,7 +612,7 @@ end
 runTEMYax
 ```
 
- Code
+:::details Code
 
 ```julia
 function runTEMYax(selected_models::Tuple, forcing::NamedTuple, info::NamedTuple)
@@ -614,6 +640,8 @@ function runTEMYax(selected_models::Tuple, forcing::NamedTuple, info::NamedTuple
 end
 ```
 
+:::
+
 
 ----
 
@@ -629,13 +657,15 @@ setOutputForTimeStep!
 setSequence
 ```
 
- Code
+:::details Code
 
 ```julia
 function setSequence(tem_info, new_sequence)
     return @set tem_info.spinup_sequence = new_sequence
 end
 ```
+
+:::
 
 
 ----
@@ -645,7 +675,7 @@ end
 setupOptiOutput
 ```
 
- Code
+:::details Code
 
 ```julia
 function setupOptiOutput end
@@ -687,6 +717,8 @@ function setupOptiOutput(info::NamedTuple, output::NamedTuple, ::DoNotRunOptimiz
 end
 ```
 
+:::
+
 
 ----
 
@@ -695,7 +727,7 @@ end
 spinup
 ```
 
- Code
+:::details Code
 
 ```julia
 function spinup(::Any, ::Any, ::Any, land, ::Any, ::Any, x::SpinupMode)
@@ -904,6 +936,8 @@ function spinupTEM(selected_models, spinup_forcings, loc_forcing_t, land, tem_in
 end
 ```
 
+:::
+
 
 ----
 
@@ -912,7 +946,7 @@ end
 spinupTEM
 ```
 
- Code
+:::details Code
 
 ```julia
 function spinupTEM end
@@ -954,6 +988,8 @@ function spinupTEM(selected_models, spinup_forcings, loc_forcing_t, land, tem_in
 end
 ```
 
+:::
+
 
 ----
 
@@ -962,7 +998,7 @@ end
 timeLoopTEMSpinup
 ```
 
- Code
+:::details Code
 
 ```julia
 function timeLoopTEMSpinup(spinup_models, spinup_forcing, loc_forcing_t, land, tem_info, n_timesteps)
@@ -973,6 +1009,8 @@ function timeLoopTEMSpinup(spinup_models, spinup_forcing, loc_forcing_t, land, t
     return land
 end
 ```
+
+:::
 
 
 ----
