@@ -5,14 +5,23 @@ import mathjax3 from 'markdown-it-mathjax3'
 
 // https://vitepress.dev/reference/site-config
 
-// DocumenterVitepress deploys under versioned subpaths (e.g. `/dev/`, `/stable/`, `/previews/PR123/`).
-// At deploy time it injects the correct absolute base path into this config.
+// IMPORTANT:
+// DocumenterVitepress *rewrites this file* at build time. In particular it replaces:
+// - `base: 'REPLACE_ME_DOCUMENTER_VITEPRESS'` with the correct base for each deployed version
+//   (e.g. `/Sindbad.jl/dev/`, `/Sindbad.jl/stable/`, `/Sindbad.jl/v0.1.0/`).
+// - `REPLACE_ME_DOCUMENTER_VITEPRESS_DEPLOY_ABSPATH` with the repository absolute base (e.g. `/Sindbad.jl`).
 //
-// For local dev builds (no injection), we fall back to `/`.
-const DEPLOY_BASE_RAW =
-  process.env.DOCUMENTER_VITEPRESS_DEPLOY_ABSPATH ??
-  'REPLACE_ME_DOCUMENTER_VITEPRESS_DEPLOY_ABSPATH'
-const DEPLOY_BASE = DEPLOY_BASE_RAW.startsWith('REPLACE_ME') ? '/' : DEPLOY_BASE_RAW
+// To keep our custom sidebar/nav, we still need to preserve the placeholder strings that
+// DocumenterVitepress expects to find.
+function getBaseRepository(base: string): string {
+  if (!base || base === '/') return '/'
+  const parts = base.split('/').filter(Boolean)
+  return parts.length > 0 ? `/${parts[0]}/` : '/'
+}
+
+const baseTemp = {
+  base: 'REPLACE_ME_DOCUMENTER_VITEPRESS',
+}
 
 const conceptItems = [
   { text: 'SINDBAD', link: '/pages/concept/overview' },
@@ -158,7 +167,7 @@ const sidebar = [
 ]
 
 export default defineConfig({
-  base: DEPLOY_BASE,
+  base: 'REPLACE_ME_DOCUMENTER_VITEPRESS',
   title: "SINDBAD",
   description: "A model-data integration framework for terrestrial ecosystem processes",
   lastUpdated: true,
@@ -168,7 +177,11 @@ export default defineConfig({
   
   head: [
     // IMPORTANT: Vitepress does not automatically prefix `head` hrefs with `base`.
-    ['link', { rel: 'icon', href: `${DEPLOY_BASE}favicon.ico` }],
+    // Let DocumenterVitepress inject the correct base-dependent favicon path.
+    ['link', { rel: 'icon', href: 'REPLACE_ME_DOCUMENTER_VITEPRESS_FAVICON' }],
+    // Required by DocumenterVitepress' VersionPicker component.
+    ['script', { src: `${getBaseRepository(baseTemp.base)}versions.js` }],
+    ['script', { src: `${baseTemp.base}siteinfo.js` }],
     ['script', {}, `
       window.MathJax = {
         tex: {
@@ -259,8 +272,8 @@ export default defineConfig({
       },
     ],
     footer: {
-      // IMPORTANT: `footer.message` is raw HTML (no withBase), so we must prefix `base`.
-      message: `<a href="https://www.bgc-jena.mpg.de/en" target="_blank" rel="noopener"><img src="${DEPLOY_BASE}logo_mpi_grey.png" class="footer-logo" alt="MPI Logo"/></a>`,
+      // IMPORTANT: `footer.message` is raw HTML (no withBase), so we must include the correct base prefix.
+      message: `<a href="https://www.bgc-jena.mpg.de/en" target="_blank" rel="noopener"><img src="${baseTemp.base}logo_mpi_grey.png" class="footer-logo" alt="MPI Logo"/></a>`,
       copyright: '© Copyright 2025 <strong> SINDBAD Development Team</strong></span>'
     }
   }
