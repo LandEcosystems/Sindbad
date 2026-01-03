@@ -10,11 +10,11 @@
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://landecosystems.github.io/Sindbad.jl/stable/
 
-[codecov-img]: https://codecov.io/gh/LandEcosystems/Sindbad/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/LandEcosystems/Sindbad
+[codecov-img]: https://codecov.io/gh/LandEcosystems/Sindbad.jl/branch/main/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/LandEcosystems/Sindbad.jl
 
-[ci-img]: https://github.com/LandEcosystems/Sindbad/workflows/CI/badge.svg
-[ci-url]: https://github.com/LandEcosystems/Sindbad/actions?query=workflow%3ACI
+[ci-img]: https://github.com/LandEcosystems/Sindbad.jl/workflows/Sindbad.jl/badge.svg
+[ci-url]: https://github.com/LandEcosystems/Sindbad.jl/actions?query=workflow%3A%22Sindbad.jl%22
 
 [julia-img]: https://img.shields.io/badge/julia-v1.10+-blue.svg
 [julia-url]: https://julialang.org/
