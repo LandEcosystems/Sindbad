@@ -31,6 +31,14 @@ makedocs(; sitename="Sindbad",
     clean=true,
     format=DocumenterVitepress.MarkdownVitepress(
         repo = "github.com/LandEcosystems/Sindbad.jl",
+        # IMPORTANT:
+        # We intentionally skip the internal VitePress build during `makedocs`.
+        # DocumenterVitepress emits `build/.documenter/index.md` from Documenter markdown,
+        # which mangles YAML frontmatter (required for `layout: home`) into plain text.
+        # We overwrite `build/.documenter/index.md` with the raw VitePress home page and
+        # then run a single VitePress build *afterwards*, so the deployed HTML uses the
+        # correct homepage layout.
+        build_vitepress = false,
     ),
     remotes=nothing,
     draft=false,
@@ -49,6 +57,12 @@ generated_index = joinpath(documenter_src_dir, "index.md")
 if isdir(documenter_src_dir) && isfile(raw_vitepress_index)
     cp(raw_vitepress_index, generated_index; force=true)
 end
+
+# Build the VitePress site (after we restored the homepage frontmatter).
+#
+# CI installs JS dependencies via the docs workflow (`npm ci` in `docs/`), and local dev
+# already has `docs/node_modules` when running `npm run docs:dev` / `docs:build`.
+DocumenterVitepress.build_docs(joinpath(@__DIR__, "build"); md_output_path = ".documenter")
 
 final_site_dir = joinpath(@__DIR__,"build/final_site/")
 if !isdir(final_site_dir)

@@ -28,6 +28,14 @@ jobs:
           version: '1'
       - name: Julia cache
         uses: julia-actions/cache@v2
+      - name: Setup Node (for VitePress deps)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: docs/package-lock.json
+      - name: Install JS deps (VitePress)
+        run: cd docs && npm ci
       - name: Build and deploy docs
         env:
           # Prefer the ephemeral workflow token. (Same value as `secrets.GITHUB_TOKEN` but clearer.)
