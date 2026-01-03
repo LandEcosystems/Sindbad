@@ -5,10 +5,10 @@
 <img src="docs/src/assets/sindbad_logo.png" align="right" style="padding-left:10px;" width="150"/>
 
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
-[docs-dev-url]: https://landecosystems.github.io/Sindbad/dev/
+[docs-dev-url]: https://landecosystems.github.io/Sindbad.jl/dev/
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: https://landecosystems.github.io/Sindbad/stable/
+[docs-stable-url]: https://landecosystems.github.io/Sindbad.jl/stable/
 
 [codecov-img]: https://codecov.io/gh/LandEcosystems/Sindbad/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/LandEcosystems/Sindbad
@@ -130,8 +130,8 @@ out = Sindbad.Experiment.runExperimentForward("experiment_config.json")
 ## Documentation
 
 Comprehensive documentation is available at:
-- **Stable**: [landecosystems.github.io/Sindbad/stable](https://landecosystems.github.io/Sindbad/dev/)
-- **Development**: [landecosystems.github.io/Sindbad/dev](https://landecosystems.github.io/Sindbad/dev/)
+- **Stable**: [landecosystems.github.io/Sindbad.jl/stable](https://landecosystems.github.io/Sindbad.jl/stable/)
+- **Development**: [landecosystems.github.io/Sindbad.jl/dev](https://landecosystems.github.io/Sindbad.jl/dev/)
 
 ## SINDBAD Contributors
 

@@ -5,10 +5,10 @@ import mathjax3 from 'markdown-it-mathjax3'
 
 // https://vitepress.dev/reference/site-config
 
-// GitHub Pages deploys this site under https://<org>.github.io/sindbad/
+// GitHub Pages deploys this site under https://<org>.github.io/<repo>/
 // (i.e. it is NOT hosted at the domain root). Any assets referenced in raw HTML
 // (e.g. `head` tags, footer HTML strings) must include the base prefix.
-const DEPLOY_BASE = '/sindbad/'
+const DEPLOY_BASE = '/Sindbad.jl/'
 
 const conceptItems = [
   { text: 'SINDBAD', link: '/pages/concept/overview' },
