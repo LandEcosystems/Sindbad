@@ -5,10 +5,15 @@ import mathjax3 from 'markdown-it-mathjax3'
 
 // https://vitepress.dev/reference/site-config
 
-// GitHub Pages deploys this site under https://<org>.github.io/<repo>/
-// (i.e. it is NOT hosted at the domain root). Any assets referenced in raw HTML
-// (e.g. `head` tags, footer HTML strings) must include the base prefix.
-const DEPLOY_BASE = '/Sindbad.jl/'
+// DocumenterVitepress deploys under versioned subpaths (e.g. `/dev/`, `/stable/`, `/previews/PR123/`)
+// and rewrites the placeholder below to the correct absolute base path at build time.
+//
+// This must be used for:
+// - VitePress `base`
+// - Any asset URLs in raw HTML (e.g. `head` tags, footer HTML strings),
+//   because VitePress does not auto-prefix those with `base`.
+declare const __DEPLOY_ABSPATH__: string
+const DEPLOY_BASE = __DEPLOY_ABSPATH__
 
 const conceptItems = [
   { text: 'SINDBAD', link: '/pages/concept/overview' },
