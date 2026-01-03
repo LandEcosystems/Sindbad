@@ -39,6 +39,17 @@ makedocs(; sitename="Sindbad",
     build="build",
     )
 
+# VitePress "home" pages rely on YAML frontmatter, but DocumenterVitepress' Markdown pipeline
+# rewrites `src/index.md` (escaping/flattening YAML), which makes VitePress render the YAML
+# as plain text. For local preview (`vitepress dev build/.documenter`) and for deployment,
+# overwrite the generated entrypoint with the raw VitePress source.
+documenter_src_dir = joinpath(@__DIR__, "build", ".documenter")
+raw_vitepress_index = joinpath(@__DIR__, "src", "index.md")
+generated_index = joinpath(documenter_src_dir, "index.md")
+if isdir(documenter_src_dir) && isfile(raw_vitepress_index)
+    cp(raw_vitepress_index, generated_index; force=true)
+end
+
 final_site_dir = joinpath(@__DIR__,"build/final_site/")
 if !isdir(final_site_dir)
     final_site_dir = joinpath(@__DIR__,"build/1/")
