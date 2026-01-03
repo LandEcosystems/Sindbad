@@ -5,15 +5,14 @@ import mathjax3 from 'markdown-it-mathjax3'
 
 // https://vitepress.dev/reference/site-config
 
-// DocumenterVitepress deploys under versioned subpaths (e.g. `/dev/`, `/stable/`, `/previews/PR123/`)
-// and rewrites the placeholder below to the correct absolute base path at build time.
+// DocumenterVitepress deploys under versioned subpaths (e.g. `/dev/`, `/stable/`, `/previews/PR123/`).
+// At deploy time it injects the correct absolute base path into this config.
 //
-// This must be used for:
-// - VitePress `base`
-// - Any asset URLs in raw HTML (e.g. `head` tags, footer HTML strings),
-//   because VitePress does not auto-prefix those with `base`.
-declare const __DEPLOY_ABSPATH__: string
-const DEPLOY_BASE = __DEPLOY_ABSPATH__
+// For local dev builds (no injection), we fall back to `/`.
+const DEPLOY_BASE_RAW =
+  process.env.DOCUMENTER_VITEPRESS_DEPLOY_ABSPATH ??
+  'REPLACE_ME_DOCUMENTER_VITEPRESS_DEPLOY_ABSPATH'
+const DEPLOY_BASE = DEPLOY_BASE_RAW.startsWith('REPLACE_ME') ? '/' : DEPLOY_BASE_RAW
 
 const conceptItems = [
   { text: 'SINDBAD', link: '/pages/concept/overview' },
